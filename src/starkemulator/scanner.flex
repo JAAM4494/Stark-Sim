@@ -48,7 +48,7 @@ public void echo(int pToken)  {
             System.out.println("Token: " + TokenName + " Lex: " + yytext());
           }
       } catch (IllegalArgumentException | IllegalAccessException ex) {
-          Logger.getLogger(myLexer.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(MyLexer.class.getName()).log(Level.SEVERE, null, ex);
       }
 }
 
@@ -176,6 +176,9 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 <YYINITIAL>")"                 {echo(sym.ClPar); return new Symbol(sym.ClPar,   yyline, yychar, yytext());}
 <YYINITIAL>"{"                 {echo(sym.OpKey); return new Symbol(sym.OpKey,   yyline, yychar, yytext());}
 <YYINITIAL>"}"                 {echo(sym.ClKey); return new Symbol(sym.ClKey,   yyline, yychar, yytext());}
+
+<YYINITIAL>","                 {echo(sym.Comma); return new Symbol(sym.Comma,   yyline, yychar, yytext());}
+<YYINITIAL>";"                 {echo(sym.SemCo); return new Symbol(sym.SemCo,   yyline, yychar, yytext());}
 
 <YYINITIAL>{DIGIT}+            {echo(sym.Num); return new Symbol(sym.Num,       yyline, yychar, yytext());}
 
