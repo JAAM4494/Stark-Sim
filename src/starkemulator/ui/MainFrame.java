@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import starkemulator.MyCompiler;
 import starkemulator.help.Converter;
 
 /**
@@ -49,6 +50,8 @@ public class MainFrame extends javax.swing.JFrame {
     private boolean binFlag;
     private boolean decFlag;
     private boolean hexFlag;
+    
+    private MyCompiler compiler;
 
     /**
      * Creates new form MainFrame
@@ -78,6 +81,8 @@ public class MainFrame extends javax.swing.JFrame {
         decFlag = false;
         binFlag = false;
         hexFlag = true;
+        
+        compiler = new MyCompiler();
     }
 
     /**
@@ -183,6 +188,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         runBtn.setText("Run");
         runBtn.setToolTipText("Run actual Script");
+        runBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runBtnActionPerformed(evt);
+            }
+        });
 
         resBtn.setText("Reset");
         resBtn.setToolTipText("Reset");
@@ -711,6 +721,11 @@ public class MainFrame extends javax.swing.JFrame {
         this.hexFlag = true;
         convertion(2);
     }//GEN-LAST:event_hexBtnActionPerformed
+
+    private void runBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runBtnActionPerformed
+        // TODO add your handling code here:
+        compiler.procesarEntrada(pathDeArchivo.toString());
+    }//GEN-LAST:event_runBtnActionPerformed
 
     
     private void convertion(int pType) {
