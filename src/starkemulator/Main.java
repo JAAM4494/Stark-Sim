@@ -9,7 +9,7 @@ import java.io.File;
 import starkemulator.ui.MainFrame;
 
 /**
- *
+ * Main class
  * @author jaam
  */
 public class Main {
@@ -71,7 +71,7 @@ public class Main {
         // habilita la opcion de nombre
         opciones[2] = "-parser";
         // nombre dela clase del parser
-        opciones[3] = "Parser";
+        opciones[3] = "MyParser";
         // path donde se encuentra el archivo parser.cup
         opciones[4] = "src/starkemulator/parser.cup";
         try {
