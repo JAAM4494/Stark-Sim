@@ -700,18 +700,27 @@
                 <Property name="text" type="java.lang.String" value="Dec"/>
                 <Property name="toolTipText" type="java.lang.String" value="Decimal"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="decBtnActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="binBtn">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Bin"/>
                 <Property name="toolTipText" type="java.lang.String" value="Binary"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binBtnActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="hexBtn">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Hex"/>
                 <Property name="toolTipText" type="java.lang.String" value="Hexadecimal"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hexBtnActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>

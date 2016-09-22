@@ -25,9 +25,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import starkemulator.help.Converter;
 
 /**
  *
@@ -43,6 +45,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private Path pathDeArchivo;
     private String retornoArchivo;
+    
+    private boolean binFlag;
+    private boolean decFlag;
+    private boolean hexFlag;
 
     /**
      * Creates new form MainFrame
@@ -68,6 +74,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         docFilter = new CustomDocumentFilter(mainTextPane);
         docFilter.setPane();
+        
+        decFlag = false;
+        binFlag = false;
+        hexFlag = true;
     }
 
     /**
@@ -308,12 +318,27 @@ public class MainFrame extends javax.swing.JFrame {
 
         decBtn.setText("Dec");
         decBtn.setToolTipText("Decimal");
+        decBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                decBtnActionPerformed(evt);
+            }
+        });
 
         binBtn.setText("Bin");
         binBtn.setToolTipText("Binary");
+        binBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                binBtnActionPerformed(evt);
+            }
+        });
 
         hexBtn.setText("Hex");
         hexBtn.setToolTipText("Hexadecimal");
+        hexBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hexBtnActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         jLabel1.setText("REGISTERS");
@@ -669,6 +694,104 @@ public class MainFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuActionPerformed
 
+    private void decBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decBtnActionPerformed
+        // TODO add your handling code here:
+        this.decFlag = true;
+        convertion(0);
+    }//GEN-LAST:event_decBtnActionPerformed
+
+    private void binBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binBtnActionPerformed
+        // TODO add your handling code here:
+        this.binFlag = true;
+        convertion(1);
+    }//GEN-LAST:event_binBtnActionPerformed
+
+    private void hexBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hexBtnActionPerformed
+        // TODO add your handling code here:
+        this.hexFlag = true;
+        convertion(2);
+    }//GEN-LAST:event_hexBtnActionPerformed
+
+    
+    private void convertion(int pType) {
+        if(hexFlag && (pType == 0)) {
+            this.hexFlag = false;
+            convertionAux(0);
+        }
+        if(binFlag && (pType == 0)) {
+            this.binFlag = false;
+            convertionAux(1);
+        }
+        if(decFlag && (pType == 1)) {
+            this.decFlag = false;
+            convertionAux(2);
+        }
+        if(hexFlag && (pType == 1)) {
+            this.hexFlag = false;
+            convertionAux(3);
+        }
+        if(decFlag && (pType == 2)) {
+            this.decFlag = false;
+            convertionAux(4);
+        }
+        if(binFlag && (pType == 2)) {
+            this.binFlag = false;
+            convertionAux(5);
+        }
+    }
+    
+    private void convertionAux(int pOption) {
+        Converter conv = new Converter();
+        
+        ArrayList<JTextField> list = doTvList();
+        
+        for (int i = 0; i < list.size(); i++) {
+            switch(pOption) {
+            case 0:
+                list.get(i).setText(conv.hexToDec(list.get(i).getText()));
+                break;
+            case 1:
+                list.get(i).setText(conv.binToDec(list.get(i).getText()));
+                break;
+            case 2:
+                list.get(i).setText(conv.decToBin(list.get(i).getText()));
+                break;
+            case 3:
+                list.get(i).setText(conv.hexToBin(list.get(i).getText()));
+                break;
+            case 4:
+                list.get(i).setText(conv.decToHex(list.get(i).getText()));
+                break;
+            case 5:
+                list.get(i).setText(conv.binToHex(list.get(i).getText()));
+                break;
+        }
+        }
+    }
+    
+    private ArrayList doTvList() {
+        ArrayList<JTextField> list = new ArrayList<>();
+        
+        list.add(r0Tv);
+        list.add(r1Tv);
+        list.add(r2Tv);
+        list.add(r3Tv);
+        list.add(r4Tv);
+        list.add(r5Tv);
+        list.add(r6Tv);
+        list.add(r7Tv);
+        list.add(r8Tv);
+        list.add(r9Tv);
+        list.add(r10Tv);
+        list.add(r11Tv);
+        list.add(r12Tv);
+        list.add(r13Tv);
+        list.add(r14Tv);
+        list.add(r15Tv);
+        
+        return list;
+    }
+    
     private void newScript(String pContent) {
         JTextPane newScriptPane = new JTextPane();
         newScriptPane.setLayout(new BorderLayout());
