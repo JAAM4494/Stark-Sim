@@ -9,13 +9,25 @@ import starkemulator.ui.CustomDocumentFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -29,6 +41,9 @@ public class MainFrame extends javax.swing.JFrame {
     private int numScripts;
     private int numTabs;
 
+    private Path pathDeArchivo;
+    private String retornoArchivo;
+
     /**
      * Creates new form MainFrame
      */
@@ -38,7 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
         this.setName("STARK Simulator");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.getContentPane().setBackground(Color.WHITE); 
+        this.getContentPane().setBackground(Color.WHITE);
         jPanel1.setBackground(Color.LIGHT_GRAY);
 
         this.paneList = new ArrayList<>();
@@ -118,11 +133,11 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        openMenu = new javax.swing.JMenuItem();
+        saveMenu = new javax.swing.JMenuItem();
+        openMcMenu = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        exitMenu = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         runningMenu = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -142,9 +157,19 @@ public class MainFrame extends javax.swing.JFrame {
 
         openBtn.setText("Open");
         openBtn.setToolTipText("Open Script");
+        openBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openBtnActionPerformed(evt);
+            }
+        });
 
         saveBtn.setText("Save");
         saveBtn.setToolTipText("Save Script");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
 
         runBtn.setText("Run");
         runBtn.setToolTipText("Run actual Script");
@@ -450,6 +475,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         openMcBtn.setText("Open MC");
         openMcBtn.setToolTipText("Open Machine Code");
+        openMcBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMcBtnActionPerformed(evt);
+            }
+        });
 
         jLabel18.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jLabel18.setText("STARK-Sim");
@@ -473,18 +503,38 @@ public class MainFrame extends javax.swing.JFrame {
         });
         fileMenu.add(newMenu);
 
-        jMenuItem2.setText("Open Script");
-        fileMenu.add(jMenuItem2);
+        openMenu.setText("Open Script");
+        openMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openMenu);
 
-        jMenuItem3.setText("Save Script");
-        fileMenu.add(jMenuItem3);
+        saveMenu.setText("Save Script");
+        saveMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveMenu);
 
-        jMenuItem4.setText("Open STARK Machine Code");
-        fileMenu.add(jMenuItem4);
+        openMcMenu.setText("Open STARK Machine Code");
+        openMcMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMcMenuActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openMcMenu);
         fileMenu.add(jSeparator1);
 
-        jMenuItem5.setText("Exit");
-        fileMenu.add(jMenuItem5);
+        exitMenu.setText("Exit");
+        exitMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitMenu);
 
         jMenuBar1.add(fileMenu);
 
@@ -571,7 +621,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void newBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBtnActionPerformed
         // TODO add your handling code here:
-        newScript();
+        newScript("");
     }//GEN-LAST:event_newBtnActionPerformed
 
     private void r6TvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r6TvActionPerformed
@@ -580,12 +630,49 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void newMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuActionPerformed
         // TODO add your handling code here:
-        newScript();
+        newScript("");
     }//GEN-LAST:event_newMenuActionPerformed
 
-    private void newScript() {
+    private void openBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBtnActionPerformed
+        // TODO add your handling code here:
+        openScript();
+    }//GEN-LAST:event_openBtnActionPerformed
+
+    private void openMcBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMcBtnActionPerformed
+        // TODO add your handling code here:
+        openMachineCode();
+    }//GEN-LAST:event_openMcBtnActionPerformed
+
+    private void openMcMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMcMenuActionPerformed
+        // TODO add your handling code here:
+        openMachineCode();
+    }//GEN-LAST:event_openMcMenuActionPerformed
+
+    private void openMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuActionPerformed
+        // TODO add your handling code here:
+        openScript();
+    }//GEN-LAST:event_openMenuActionPerformed
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        // TODO add your handling code here:
+        saveScript();
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
+        // TODO add your handling code here:
+        saveScript();
+    }//GEN-LAST:event_saveMenuActionPerformed
+
+    private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuActionPerformed
+
+    private void newScript(String pContent) {
         JTextPane newScriptPane = new JTextPane();
         newScriptPane.setLayout(new BorderLayout());
+        newScriptPane.setText(pContent);
 
         CustomDocumentFilter tempDocFil = new CustomDocumentFilter(newScriptPane);
         tempDocFil.setPane();
@@ -606,10 +693,73 @@ public class MainFrame extends javax.swing.JFrame {
 
     }
 
+    private void openScript() {
+        JFileChooser Buscador = new JFileChooser();
+        Buscador.setAcceptAllFileFilterUsed(false);
+        Buscador.setMultiSelectionEnabled(false);
+        Buscador.setFileFilter(new FileNameExtensionFilter(".txt", "txt"));
+        Buscador.showOpenDialog(Buscador);
+        File file = Buscador.getSelectedFile();
+        try {
+            pathDeArchivo = Paths.get(file.getAbsolutePath());
+            retornoArchivo = new String(Files.readAllBytes(pathDeArchivo));
+            newScript(retornoArchivo);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "ERROR, we can't load the file");
+        }
+    }
+
+    private void openMachineCode() {
+        JFileChooser Buscador = new JFileChooser();
+        Buscador.setAcceptAllFileFilterUsed(false);
+        Buscador.setMultiSelectionEnabled(false);
+        Buscador.setFileFilter(new FileNameExtensionFilter(".stark", "stark"));
+        Buscador.showOpenDialog(Buscador);
+        File file = Buscador.getSelectedFile();
+        try {
+            pathDeArchivo = Paths.get(file.getAbsolutePath());
+            retornoArchivo = new String(Files.readAllBytes(pathDeArchivo));
+            newScript(retornoArchivo);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "ERROR, we can't load the file");
+        }
+    }
+
+    private void saveScript() {
+        JFileChooser saveFile = new JFileChooser();
+        //saveFile.showSaveDialog(null);
+        int returnVal = saveFile.showSaveDialog(null);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            BufferedWriter out = null;
+            try {
+                out = new BufferedWriter(new FileWriter(saveFile.getSelectedFile().getPath() + ".txt"));
+                JTextPane tempPane = null;
+                int textPaneSelected = jTabbedPane1.getSelectedIndex();
+                if (textPaneSelected != -1) {
+                    tempPane = paneList.get(textPaneSelected);
+                }
+                if (tempPane != null) {
+                    out.write(tempPane.getText());
+                }
+            } catch (IOException ex) {
+                System.out.println("ERROR, with saving file");
+            } finally {
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton binBtn;
     private javax.swing.JButton decBtn;
     private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton hexBtn;
@@ -633,10 +783,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
@@ -649,6 +795,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem newMenu;
     private javax.swing.JButton openBtn;
     private javax.swing.JButton openMcBtn;
+    private javax.swing.JMenuItem openMcMenu;
+    private javax.swing.JMenuItem openMenu;
     private javax.swing.JTextField r0Tv;
     private javax.swing.JTextField r10Tv;
     private javax.swing.JTextField r11Tv;
@@ -669,6 +817,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton runBtn;
     private javax.swing.JMenu runningMenu;
     private javax.swing.JButton saveBtn;
+    private javax.swing.JMenuItem saveMenu;
     private javax.swing.JButton stepBBtn;
     private javax.swing.JButton stepFBtn;
     private javax.swing.JMenu toolsMenu;

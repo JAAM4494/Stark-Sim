@@ -71,7 +71,7 @@ public class Main {
         // habilita la opcion de nombre
         opciones[2] = "-parser";
         // nombre dela clase del parser
-        opciones[3] = "myParser";
+        opciones[3] = "Parser";
         // path donde se encuentra el archivo parser.cup
         opciones[4] = "src/starkemulator/parser.cup";
         try {
