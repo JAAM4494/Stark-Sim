@@ -1,4 +1,5 @@
 package starkemulator;
+
 import java_cup.runtime.Symbol;
 import java_cup.runtime.*;
 import java.util.*;
@@ -24,40 +25,36 @@ ArrayList<String> arraySemantic = new ArrayList<String>();
 //        return 4;}
 
  public void syntax_error(Symbol cur_token) {
-                System.out.println("#Error sintactico con el token: " + cur_token.value);
-                VentanaPrincipal.mostrarSalida("#Error sintactico con el token: " + cur_token.value);
-                arraySyntax.add("Error sintactico con el token: " + cur_token.value);
-                AnalizadorMain.canGenerateCode = false;
-                report_error("Syntax Error", null);
+                System.out.println("ERROR, syntax error on token: " + cur_token.value);
+                arraySyntax.add("ERROR, syntax error on token: " + cur_token.value);
+                report_error("ERROR, syntax error", null);
 }
 
 public void unrecovered_syntax_error(Symbol cur_token) {
-            System.out.println("#Error sintactico ya no se recupera");
-            VentanaPrincipal.mostrarSalida("#Error sintactico ya no se recupera");
+            System.out.println("ERROR, unreovered syntax error");
 }
 
  public void semanticError(String pCurToken,String pMsg) {
-                System.out.println("#Error semantico sobre el token: " + pCurToken + " " + pMsg);
-                VentanaPrincipal.mostrarSalida("#Error semantico sobre el token: " + pCurToken + " " + pMsg);
-                arraySemantic.add("Error semantico sobre el token: " + pCurToken + " " + pMsg);
-                AnalizadorMain.canGenerateCode = false;
+                System.out.println("ERROR, semantic error on token: " + pCurToken + " " + pMsg);
+                arraySemantic.add("ERROR, semantic error on token: " + pCurToken + " " + pMsg);
 }
 
 :};
 
                 /**** TERMINALES ****/
 
-terminal   True,         False,     Si,        Entonces,   Mientras,    Haga,       Sino;
-terminal   Menor,        Mayor,     MenorEq,   MayorEq,    EqEq,        Diferente;
-terminal   Hola,         Adios,     Lindos,    Pura,       Vida ;
-terminal   Izquierda,    Arriba,    Derecha,   Abajo,      Resta;
-terminal   Mover,        Decir,     NewLine,   Suma;
-terminal   Declarar,     Eq,        Multi,     Divi,        Asignar;
+terminal   Plus,        Min,     Mul,        And,       Nand,    Or,       Xor;
+terminal   Shl,         Shr,     Sb,         Lb,        Sw,      Lw;
+terminal   Smw,         Lmw,     Je,         Jne,       Jlt;
+terminal   Jgt,         J;
 
-terminal   OpParenth,    CloseParenth;
-terminal   OpKey,        CloseKey; 
+terminal   R0,     R1,     R2,     R3,     R4;
+terminal   R5,     R6,     R7,     R8,     R9;
+terminal   R10,    R11,    R12,    R13,    R14;
+terminal   R15;
 
-terminal   Boca,         Ojos,     Cabeza;
+terminal   OpPar,    ClPar;
+terminal   OpKey,    ClKey; 
 
 terminal   String Num;
 terminal   ID;
