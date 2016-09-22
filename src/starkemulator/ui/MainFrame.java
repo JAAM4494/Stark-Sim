@@ -7,7 +7,11 @@ package starkemulator.ui;
 
 import starkemulator.ui.CustomDocumentFilter;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -20,7 +24,7 @@ import javax.swing.ScrollPaneConstants;
 public class MainFrame extends javax.swing.JFrame {
 
     private CustomDocumentFilter docFilter;
-    
+
     private ArrayList<JTextPane> paneList;
     private int numScripts;
     private int numTabs;
@@ -34,19 +38,19 @@ public class MainFrame extends javax.swing.JFrame {
         this.setName("STARK Simulator");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        
+        this.getContentPane().setBackground(Color.WHITE); 
+        jPanel1.setBackground(Color.LIGHT_GRAY);
+
         this.paneList = new ArrayList<>();
         paneList.add(mainTextPane);
         numScripts = 1;
         numTabs = 0;
-        
+
         jTabbedPane1.setToolTipTextAt(0, "Script 1");
 
-        
-        
         TextLineNumber lineNum = new TextLineNumber(mainTextPane);
-        jScrollPane3.setRowHeaderView( lineNum );
-        
+        jScrollPane3.setRowHeaderView(lineNum);
+
         docFilter = new CustomDocumentFilter(mainTextPane);
         docFilter.setPane();
     }
@@ -110,6 +114,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         stepFBtn = new javax.swing.JButton();
         stepBBtn = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenuItem();
@@ -447,13 +452,16 @@ public class MainFrame extends javax.swing.JFrame {
         openMcBtn.setToolTipText("Open Machine Code");
 
         jLabel18.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
-        jLabel18.setText("STARK Sim");
+        jLabel18.setText("STARK-Sim");
 
         stepFBtn.setText("StepF");
         stepFBtn.setToolTipText("Step Forward");
 
         stepBBtn.setText("StepB");
         stepBBtn.setToolTipText("Step Backward");
+
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/starkemulator/ui/images/stark.png"))); // NOI18N
+        jLabel19.setText("jLabel19");
 
         fileMenu.setText("File");
 
@@ -509,7 +517,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel18)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -520,7 +531,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(openMcBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
                         .addComponent(runBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stepFBtn)
@@ -534,7 +545,7 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newBtn)
                     .addComponent(openBtn)
@@ -544,8 +555,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(openMcBtn)
                     .addComponent(jLabel18)
                     .addComponent(stepFBtn)
-                    .addComponent(stepBBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(stepBBtn)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1)
                     .addGroup(layout.createSequentialGroup()
@@ -577,14 +589,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         CustomDocumentFilter tempDocFil = new CustomDocumentFilter(newScriptPane);
         tempDocFil.setPane();
-        
+
         JScrollPane sp = new JScrollPane();
         sp.setAutoscrolls(true);
         sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(newScriptPane);
-        
+
         TextLineNumber lineNum = new TextLineNumber(newScriptPane);
-        sp.setRowHeaderView( lineNum );
+        sp.setRowHeaderView(lineNum);
 
         jTabbedPane1.addTab("Script " + Integer.toString(numScripts += 1), sp);
         jTabbedPane1.setSelectedIndex(numTabs += 1);
@@ -611,6 +623,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
