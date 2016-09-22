@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 %%
-%class Lexer
+%class MyLexer
 
 %{String literal;
   String temp_include;
