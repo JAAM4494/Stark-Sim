@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package starkemulator;
 
 import java.io.FileNotFoundException;
@@ -24,9 +19,9 @@ public class MyCompiler {
             //canGenerateCode = true;
             
             MyLexer AnalizadorLexico = new MyLexer(new FileReader(pPathEntrada));
-            //MyParser AnalizadorSintactico = new MyParser(AnalizadorLexico);
+            MyParser AnalizadorSintactico = new MyParser(AnalizadorLexico);
             
-            //AnalizadorSintactico.parse();
+            AnalizadorSintactico.parse();
             
             //Symbol currToken;
             //   do {

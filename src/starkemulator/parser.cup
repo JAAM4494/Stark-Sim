@@ -8,9 +8,7 @@ import java.io.*;
                 /**** ACTION CODE ****/
 
 action code {:
-    Hashtable table = new Hashtable();
-    TablaSim tablaSim=new TablaSim();
-    Errores reportadorErr = new Errores();
+    
 :}
 
                 /**** PARSER CODE ****/
@@ -58,168 +56,127 @@ terminal   OpKey,    ClKey;
 
 terminal   String Num;
 terminal   ID;
+terminal   NewLine, SemCo;
+terminal    Hexadecimal;
+
+
+terminal    Comma, Tag, Points;
+
 
                 /**** NO TERMINALES ****/
 
 non terminal    PROGRAMA;
-non terminal    LISTAVARIABLES,         DECLARACIONVARIABLE;
-non terminal    LISTADECLARACIONES,     DECLARACION;
-non terminal    MOVER,                  VOZ,                 DECLARACIONSELECCION,       PALABRA;
-non terminal    DECLARACIONITERACION,   TIPO;
-non terminal    OPERADORSUMA;
-non terminal    EXPRESIONCONDICION,     OPERADORMULT;
-non terminal    OPERADORRELACIONAL;
-non terminal    LISTADECLARACIONESCONDICIONADAS;
 
-non terminal EXPRESIONSUMA, EXPRESIONMULT, TERMINO;
-non terminal EXPRESION;
+non terminal    REGISTERS, PLUS_COPERAND, INMEDIATE;
 
-non terminal BOCA,          OJOS,              CABEZA;
-non terminal DIRECCIONES,   DIRECCIONBOCA,     DIRECCIONHEAD;
+non terminal   STATEMENT, STATEMENTLIST;
 
-non terminal ASIGNACIONES,  ASIGNAR;
+non terminal    MIN_STATEMENT, PLUS_STATEMENT, MUL_STATEMENT;
+
+non terminal    AND_STATEMENT, NAND_STATEMENT, OR_STATEMENT, XOR_STATEMENT ;
+
+non terminal    SHL_STATEMENT, SHR_STATEMENT;
+
+
+non terminal    SB_STATEMENT, LB_STATEMENT;
+
+non terminal    SHW_STATEMENT , LHW_STATEMENT;
+
+non terminal    SW_STATEMENT , LW_STATEMENT;
+
+non terminal JE_STATEMENT, JNE_STATEMENT, JLT_STATEMENT, JGT_STATEMENT ,J_STATEMENT;
+
+non terminal TAG_STATEMENT ;
+
+
+
+non terminal    COPERAND;
+
 
                 /**** PRECEDENCIAS ****/
 
-precedence left Sino;
-precedence left Suma, Resta;
-precedence left Divi, Multi;
+
 
                 /**** INICIO DE LA GRAMATICA ****/
 
 start with PROGRAMA;
 
-PROGRAMA ::= LISTAVARIABLES ASIGNACIONES LISTADECLARACIONES {: reportadorErr.reportarErrores(arraySyntax,arraySemantic); :}
-           ;
 
-ASIGNACIONES ::= ASIGNACIONES ASIGNAR | ASIGNAR 
-                | error;
 
-ASIGNAR ::= Asignar ID:id Eq Num:n {: RESULT=id;
-                            if(table.containsKey(id.toString())){
-                                table.replace(id.toString(),new Integer(n));
-                                tablaSim.writeSymbol(id.toString(), new Integer(n));
-                            }
-                            else{
-                                System.out.println("VARIABLE NO DECLARADA");
-                                parser.semanticError(id.toString(),"variable sin declarar");
-                            }:}
-                            ;
+PROGRAMA ::=  STATEMENTLIST ;
 
-LISTAVARIABLES ::= LISTAVARIABLES DECLARACIONVARIABLE:d 
-                 | DECLARACIONVARIABLE:d 
-                 | error;
 
-DECLARACIONVARIABLE ::= Declarar ID:id NewLine {:
-                        RESULT= id;
-                        table.put(id.toString(),-1);:}
-                        ;
+STATEMENTLIST  ::= STATEMENTLIST STATEMENT | STATEMENT ;
 
-LISTADECLARACIONES ::=  LISTADECLARACIONES DECLARACION
-                      | DECLARACION
-                      | error;
 
-DECLARACION ::=  MOVER:d {: RESULT= d; :}
-               | VOZ:d {: RESULT= d; :}
-               | DECLARACIONSELECCION:d {: RESULT= d; :}
-               | DECLARACIONITERACION:d {: RESULT= d; :}
-               ;
+STATEMENT ::= PLUS_STATEMENT | MIN_STATEMENT | MUL_STATEMENT | 
+AND_STATEMENT | NAND_STATEMENT | OR_STATEMENT | XOR_STATEMENT |
+ SHL_STATEMENT | SHR_STATEMENT | SB_STATEMENT | 
+LB_STATEMENT | SHW_STATEMENT | LHW_STATEMENT | SW_STATEMENT | LW_STATEMENT |
+  JE_STATEMENT | JNE_STATEMENT | JLT_STATEMENT | JGT_STATEMENT | J_STATEMENT
+ | TAG_STATEMENT ;
 
-MOVER ::=  Mover TIPO:d NewLine {: RESULT= d; :};
 
-VOZ ::= Decir PALABRA:d {: RESULT= d; :};
 
-PALABRA ::= Hola:d    {: RESULT= d.toString(); :}  
-          | Adios:d   {: RESULT= d.toString(); :}  
-          | Lindos:d  {: RESULT= d.toString(); :}  
-          | Pura:d    {: RESULT= d.toString(); :}  	
-          | Vida:d    {: RESULT= d.toString(); :}
-          ;
+PLUS_STATEMENT ::= Plus REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-TIPO ::= OJOS:d    {: RESULT= d.toString(); :} 
-       | CABEZA:d  {: RESULT= d.toString(); :}
-       | BOCA:d    {: RESULT= d.toString(); :}
-       ;
+MIN_STATEMENT ::= Min REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-OJOS ::= Ojos DIRECCIONES:d {: RESULT= d.toString(); :};
+MUL_STATEMENT ::= Mul REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-CABEZA ::= Cabeza DIRECCIONHEAD:d {: RESULT= d.toString(); :};
 
-BOCA ::= Boca DIRECCIONBOCA:d {: RESULT= d.toString(); :};
+AND_STATEMENT ::= And REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-DIRECCIONES ::= Izquierda:d {: RESULT= d.toString(); :}  
-              | Arriba:d    {: RESULT= d.toString(); :}  
-              | Derecha:d   {: RESULT= d.toString(); :}  
-              | Abajo:d     {: RESULT= d.toString(); :}
-              ;
+NAND_STATEMENT ::= Nand REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-DIRECCIONHEAD ::= Izquierda:d {: RESULT= d.toString(); :} 
-                | Derecha:d   {: RESULT= d.toString(); :}
-                ;
+OR_STATEMENT ::= Or REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-DIRECCIONBOCA ::= Arriba:d {: RESULT= d.toString(); :}
-                | Abajo:d  {: RESULT= d.toString(); :}
-                ;
+XOR_STATEMENT ::= Xor REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-OPERADORSUMA ::= Suma:d  {: RESULT= d.toString(); :}
-               | Resta:d {: RESULT= d.toString(); :};
+SHL_STATEMENT ::= Shl REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-OPERADORMULT ::= Multi:d  {: RESULT= d.toString(); :}
-               | Divi:d   {: RESULT= d.toString(); :};
+SHR_STATEMENT ::= Shr REGISTERS Comma REGISTERS Comma COPERAND ; 
 
-EXPRESION ::= ID:id Eq EXPRESIONSUMA:expr {: if(!table.containsKey(id.toString())){
-                                                    System.out.println("Variable no declarada");
-                                                    parser.semanticError(id.toString(),"variable sin declarar");
-                                               } else {
-                                                    if((Integer)table.get(id.toString())==-1){
-                                                    System.out.println("Null_Exception");
-                                                    parser.semanticError(id.toString(),"Null_Exception");
-                                                }
-                                                }
-                                               
- :}  
-            | EXPRESIONSUMA OPERADORRELACIONAL EXPRESIONSUMA
-            | EXPRESIONSUMA:d {: RESULT= d; :}
-            ;
 
-OPERADORRELACIONAL ::= Menor:d {: RESULT= d.toString(); :}  
-                    |  Mayor:d {: RESULT= d.toString(); :}
-                    |  MenorEq:d {: RESULT= d.toString(); :}
-                    |  MayorEq:d {: RESULT= d.toString(); :}
-                    |  EqEq:d {: RESULT= d.toString(); :}
-                    |  Diferente:d {: RESULT= d.toString(); :}
-                    ;
 
-EXPRESIONSUMA ::= EXPRESIONSUMA:n OPERADORSUMA:d TERMINO:m {: if("+".equals(d.toString())){RESULT= new Integer(((Integer)n).intValue()+((Integer)m).intValue());}
-                                                              else{RESULT= new Integer(((Integer)n).intValue()- ((Integer)m).intValue());} :} 
- 		| EXPRESIONMULT:d {: RESULT= d; :};
+SB_STATEMENT ::= Sb REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-EXPRESIONMULT ::= EXPRESIONMULT:n OPERADORMULT:d EXPRESIONSUMA:m {:if("/".equals(d.toString())){
-                                                                 if((Integer)m==0){System.out.println("division entre cero");
-                                                                    parser.semanticError(m.toString(),"division entre cero"); RESULT= new Integer(0);}
-                                                                 else{RESULT=new Integer(((Integer)n).intValue()/((Integer)m).intValue());}}
-                                                                 else{RESULT= new Integer(((Integer)n).intValue()*((Integer)m).intValue());}:}
-                | TERMINO:d {: RESULT= d; :};
+LB_STATEMENT ::= Lb REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-TERMINO ::=  OpParenth:OP EXPRESION:d CloseParenth:CP {: RESULT= d; :}
-          | ID:d {: Integer value = (Integer) table.get(d);
-            if(value==null){ parser.semanticError(d.toString(),"Null_Exception");
-                            value = new Integer (0);}
-            RESULT= value;:}
-          | Num:d {: RESULT= new Integer(d); :};
+SHW_STATEMENT ::= Smw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-EXPRESIONCONDICION ::= EXPRESION:d {: RESULT= d; :}
-                     | True:cond   {: RESULT= cond; :}
-                     | False:cond2 {: RESULT= cond2; :};
+LHW_STATEMENT ::= Lmw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-LISTADECLARACIONESCONDICIONADAS ::= DECLARACION:d {: RESULT= d; :}
-                                  | OpKey:a LISTADECLARACIONES:list CloseKey:b {: RESULT= list; :};
 
-DECLARACIONSELECCION ::= Si:cond OpParenth:LP EXPRESIONCONDICION:expr CloseParenth:RP Entonces:then LISTADECLARACIONESCONDICIONADAS:list 
-                      {: RESULT= list; :}
-                    | Si:cond OpParenth:LP EXPRESIONCONDICION CloseParenth:RP Entonces:then LISTADECLARACIONESCONDICIONADAS:list Sino:cond2 LISTADECLARACIONESCONDICIONADAS:list2;
+SW_STATEMENT ::= Sw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-DECLARACIONITERACION ::=  Mientras:cond OpParenth:OP EXPRESIONCONDICION:expr CloseParenth:CP Haga:cond2 LISTADECLARACIONESCONDICIONADAS:list 
- 			| Haga:cond LISTADECLARACIONESCONDICIONADAS:list Mientras:cond2 OpParenth EXPRESION:expr CloseParenth;
+LW_STATEMENT ::= Lw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ;
 
-                                /**** FIN DE LA GRAMATICA ****/
+
+
+JE_STATEMENT ::= Je REGISTERS Comma REGISTERS Comma ID  ;
+
+JNE_STATEMENT ::= Jne REGISTERS Comma REGISTERS Comma ID  ;
+
+JLT_STATEMENT ::= Jlt REGISTERS Comma REGISTERS Comma ID  ;
+
+JGT_STATEMENT ::= Jgt REGISTERS Comma REGISTERS Comma ID  ;
+
+
+J_STATEMENT ::= J ID  ;
+
+TAG_STATEMENT ::= ID  Points ;
+
+
+
+
+
+
+COPERAND ::= INMEDIATE | REGISTERS;
+
+
+INMEDIATE ::= (Tag Num) |  ( Hexadecimal) ;
+
+
+REGISTERS ::= R0 | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | R9 | R10 | R11 | R12 
+| R13 | R14 ;
