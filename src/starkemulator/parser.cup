@@ -57,7 +57,7 @@ terminal   OpKey,    ClKey;
 terminal   String Num;
 terminal   ID;
 terminal   NewLine, SemCo;
-terminal    Hexadecimal;
+terminal   Hexadecimal;
 
 
 terminal    Comma, Tag, Points;
@@ -69,7 +69,7 @@ non terminal    PROGRAMA;
 
 non terminal    REGISTERS, PLUS_COPERAND, INMEDIATE;
 
-non terminal   STATEMENT, STATEMENTLIST;
+non terminal    STATEMENT, STATEMENTLIST;
 
 non terminal    MIN_STATEMENT, PLUS_STATEMENT, MUL_STATEMENT;
 
@@ -84,11 +84,9 @@ non terminal    SHW_STATEMENT , LHW_STATEMENT;
 
 non terminal    SW_STATEMENT , LW_STATEMENT;
 
-non terminal JE_STATEMENT, JNE_STATEMENT, JLT_STATEMENT, JGT_STATEMENT ,J_STATEMENT;
+non terminal    JE_STATEMENT, JNE_STATEMENT, JLT_STATEMENT, JGT_STATEMENT ,J_STATEMENT;
 
-non terminal TAG_STATEMENT ;
-
-
+non terminal    TAG_STATEMENT ;
 
 non terminal    COPERAND;
 
@@ -100,8 +98,6 @@ non terminal    COPERAND;
                 /**** INICIO DE LA GRAMATICA ****/
 
 start with PROGRAMA;
-
-
 
 PROGRAMA ::=  STATEMENTLIST ;
 
@@ -166,11 +162,6 @@ JGT_STATEMENT ::= Jgt REGISTERS Comma REGISTERS Comma ID  ;
 J_STATEMENT ::= J ID  ;
 
 TAG_STATEMENT ::= ID  Points ;
-
-
-
-
-
 
 COPERAND ::= INMEDIATE | REGISTERS;
 
