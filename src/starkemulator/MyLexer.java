@@ -824,7 +824,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 66: break;
           case 14: 
-            { echo(sym.Tag ); return new Symbol(sym.Tag,   yyline, yychar, yytext());
+            { echo(sym.Tag ); return new Symbol(sym.Tag,      yyline, yychar, yytext());
             }
           case 67: break;
           case 15: 
@@ -836,7 +836,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 69: break;
           case 17: 
-            { echo(sym.Points); return new Symbol(sym.Points,   yyline, yychar, yytext());
+            { echo(sym.Points); return new Symbol(sym.Points, yyline, yychar, yytext());
             }
           case 70: break;
           case 18: 
