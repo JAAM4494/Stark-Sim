@@ -46,11 +46,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private Path pathDeArchivo;
     private String retornoArchivo;
-    
+
     private boolean binFlag;
     private boolean decFlag;
     private boolean hexFlag;
-    
+
     private MyCompiler compiler;
 
     /**
@@ -77,11 +77,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         docFilter = new CustomDocumentFilter(mainTextPane);
         docFilter.setPane();
-        
+
         decFlag = false;
         binFlag = false;
         hexFlag = true;
-        
+
         compiler = new MyCompiler();
     }
 
@@ -724,69 +724,101 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void runBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runBtnActionPerformed
         // TODO add your handling code here:
-        compiler.procesarEntrada(pathDeArchivo.toString());
+        runScript();
     }//GEN-LAST:event_runBtnActionPerformed
 
-    
+    private void runScript() {
+
+        BufferedWriter out = null;
+        File temp = null;
+        
+        try {
+            temp = File.createTempFile("Script", ".txt");
+            //create a temp file
+            temp.deleteOnExit();
+            //System.out.println("Temp file : " + temp.getAbsolutePath());
+            out = new BufferedWriter(new FileWriter(temp.getAbsolutePath()));
+            JTextPane tempPane = null;
+            int textPaneSelected = jTabbedPane1.getSelectedIndex();
+            if (textPaneSelected != -1) {
+                tempPane = paneList.get(textPaneSelected);
+            }
+            if (tempPane != null) {
+                out.write(tempPane.getText());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        // running the selected script 
+        compiler.procesarEntrada(temp.getAbsolutePath());
+    }
+
     private void convertion(int pType) {
-        if(hexFlag && (pType == 0)) {
+        if (hexFlag && (pType == 0)) {
             this.hexFlag = false;
             convertionAux(0);
         }
-        if(binFlag && (pType == 0)) {
+        if (binFlag && (pType == 0)) {
             this.binFlag = false;
             convertionAux(1);
         }
-        if(decFlag && (pType == 1)) {
+        if (decFlag && (pType == 1)) {
             this.decFlag = false;
             convertionAux(2);
         }
-        if(hexFlag && (pType == 1)) {
+        if (hexFlag && (pType == 1)) {
             this.hexFlag = false;
             convertionAux(3);
         }
-        if(decFlag && (pType == 2)) {
+        if (decFlag && (pType == 2)) {
             this.decFlag = false;
             convertionAux(4);
         }
-        if(binFlag && (pType == 2)) {
+        if (binFlag && (pType == 2)) {
             this.binFlag = false;
             convertionAux(5);
         }
     }
-    
+
     private void convertionAux(int pOption) {
         Converter conv = new Converter();
-        
+
         ArrayList<JTextField> list = doTvList();
-        
+
         for (int i = 0; i < list.size(); i++) {
-            switch(pOption) {
-            case 0:
-                list.get(i).setText(conv.hexToDec(list.get(i).getText()));
-                break;
-            case 1:
-                list.get(i).setText(conv.binToDec(list.get(i).getText()));
-                break;
-            case 2:
-                list.get(i).setText(conv.decToBin(list.get(i).getText()));
-                break;
-            case 3:
-                list.get(i).setText(conv.hexToBin(list.get(i).getText()));
-                break;
-            case 4:
-                list.get(i).setText(conv.decToHex(list.get(i).getText()));
-                break;
-            case 5:
-                list.get(i).setText(conv.binToHex(list.get(i).getText()));
-                break;
-        }
+            switch (pOption) {
+                case 0:
+                    list.get(i).setText(conv.hexToDec(list.get(i).getText()));
+                    break;
+                case 1:
+                    list.get(i).setText(conv.binToDec(list.get(i).getText()));
+                    break;
+                case 2:
+                    list.get(i).setText(conv.decToBin(list.get(i).getText()));
+                    break;
+                case 3:
+                    list.get(i).setText(conv.hexToBin(list.get(i).getText()));
+                    break;
+                case 4:
+                    list.get(i).setText(conv.decToHex(list.get(i).getText()));
+                    break;
+                case 5:
+                    list.get(i).setText(conv.binToHex(list.get(i).getText()));
+                    break;
+            }
         }
     }
-    
+
     private ArrayList doTvList() {
         ArrayList<JTextField> list = new ArrayList<>();
-        
+
         list.add(r0Tv);
         list.add(r1Tv);
         list.add(r2Tv);
@@ -803,10 +835,10 @@ public class MainFrame extends javax.swing.JFrame {
         list.add(r13Tv);
         list.add(r14Tv);
         list.add(r15Tv);
-        
+
         return list;
     }
-    
+
     private void newScript(String pContent) {
         JTextPane newScriptPane = new JTextPane();
         newScriptPane.setLayout(new BorderLayout());
@@ -886,8 +918,10 @@ public class MainFrame extends javax.swing.JFrame {
             } finally {
                 try {
                     out.close();
+
                 } catch (IOException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MainFrame.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
