@@ -1,1 +1,7 @@
 ***********  LEXICAL ANALISIS  ***********
+Token: Min Lex: min
+Token: R4 Lex: r4
+Token: Comma Lex: ,
+Token: R5 Lex: r5
+Token: Comma Lex: ,
+Token: R6 Lex: r6
