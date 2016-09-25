@@ -6,6 +6,9 @@
 package starkemulator;
 
 import java.io.File;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import starkemulator.ui.MainFrame;
 
 /**
@@ -42,8 +45,6 @@ public class Main {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-         generateScanner();
-         generateParser();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -51,6 +52,8 @@ public class Main {
             }
         });
         
+        // generateScanner();
+        // generateParser();        
        
     }
     
