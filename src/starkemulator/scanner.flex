@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import starkemulator.help.MCodeGenerator;
+
 %%
 %class MyLexer
 
@@ -38,6 +40,8 @@ boolean newLineFlag = false;
  public void init(){};
 
 Vector TokensOut = new Vector();
+
+public MCodeGenerator codeGen = new MCodeGenerator();
 
 public void echo(int pToken)  {
       try {
@@ -132,37 +136,37 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 \' { /* ignora apostrofes. */ }
 
 <YYINITIAL> {WHITE_SPACE}      {/*no hace nada, aumenta una columna,continua lectura*/yychar++; }
-<YYINITIAL> {NEW_LINE}*        {yychar=0; yyline=0; echo(sym.NewLine);
+<YYINITIAL> {NEW_LINE}*        {yychar=0; yyline=0; echo(sym.NewLine);System.out.println("Salto linea");
                                     if(newLineFlag == true) {
                                         //System.out.println("Salto linea");
                                         newLineFlag = false;
                                         return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
                                     }}
 
-<YYINITIAL>"plus"              {echo(sym.Plus); return new Symbol(sym.Plus,     yyline, yychar, yytext());}
-<YYINITIAL>"min"               {echo(sym.Min); return new Symbol(sym.Min,       yyline, yychar, yytext());}
-<YYINITIAL>"mul"               {echo(sym.Mul); return new Symbol(sym.Mul,       yyline, yychar, yytext());}
-<YYINITIAL>"and"               {echo(sym.And); return new Symbol(sym.And,       yyline, yychar, yytext());}
-<YYINITIAL>"nand"              {echo(sym.Nand); return new Symbol(sym.Nand,     yyline, yychar, yytext());}
-<YYINITIAL>"or"                {echo(sym.Or); return new Symbol(sym.Or,         yyline, yychar, yytext());}
-<YYINITIAL>"xor"               {echo(sym.Xor); return new Symbol(sym.Xor,       yyline, yychar, yytext());}
-<YYINITIAL>"shl"               {echo(sym.Shl); return new Symbol(sym.Shl,       yyline, yychar, yytext());}
-<YYINITIAL>"shr"               {echo(sym.Shr); return new Symbol(sym.Shr,       yyline, yychar, yytext());}
-<YYINITIAL>"sb"                {echo(sym.Sb); return new Symbol(sym.Sb,         yyline, yychar, yytext());}
-<YYINITIAL>"lb"                {echo(sym.Lb); return new Symbol(sym.Lb,         yyline, yychar, yytext());}
-<YYINITIAL>"sw"                {echo(sym.Sw); return new Symbol(sym.Sw,         yyline, yychar, yytext());}
-<YYINITIAL>"lw"                {echo(sym.Lw); return new Symbol(sym.Lw,         yyline, yychar, yytext());}
-<YYINITIAL>"smw"               {echo(sym.Smw); return new Symbol(sym.Smw,       yyline, yychar, yytext());}
-<YYINITIAL>"lmw"               {echo(sym.Lmw); return new Symbol(sym.Lmw,       yyline, yychar, yytext());}
-<YYINITIAL>"je"                {echo(sym.Je); return new Symbol(sym.Je,         yyline, yychar, yytext());}
-<YYINITIAL>"jne"               {echo(sym.Jne); return new Symbol(sym.Jne,       yyline, yychar, yytext());}
-<YYINITIAL>"jlt"               {echo(sym.Jlt); return new Symbol(sym.Jlt,       yyline, yychar, yytext());}		
-<YYINITIAL>"jgt"               {echo(sym.Jgt); return new Symbol(sym.Jgt,       yyline, yychar, yytext());}
-<YYINITIAL>"j"                 {echo(sym.J); return new Symbol(sym.J,           yyline, yychar, yytext());}
+<YYINITIAL>"plus"              {echo(sym.Plus); codeGen.appendOp("plus");  return new Symbol(sym.Plus,     yyline, yychar, yytext());}
+<YYINITIAL>"min"               {echo(sym.Min);  codeGen.appendOp("min");   return new Symbol(sym.Min,       yyline, yychar, yytext());}
+<YYINITIAL>"mul"               {echo(sym.Mul);  codeGen.appendOp("mul");   return new Symbol(sym.Mul,       yyline, yychar, yytext());}
+<YYINITIAL>"and"               {echo(sym.And);  codeGen.appendOp("and");   return new Symbol(sym.And,       yyline, yychar, yytext());}
+<YYINITIAL>"nand"              {echo(sym.Nand); codeGen.appendOp("nand");  return new Symbol(sym.Nand,     yyline, yychar, yytext());}
+<YYINITIAL>"or"                {echo(sym.Or);   codeGen.appendOp("or");    return new Symbol(sym.Or,         yyline, yychar, yytext());}
+<YYINITIAL>"xor"               {echo(sym.Xor);  codeGen.appendOp("xor");   return new Symbol(sym.Xor,       yyline, yychar, yytext());}
+<YYINITIAL>"shl"               {echo(sym.Shl);  codeGen.appendOp("shl");   return new Symbol(sym.Shl,       yyline, yychar, yytext());}
+<YYINITIAL>"shr"               {echo(sym.Shr);  codeGen.appendOp("shr");   return new Symbol(sym.Shr,       yyline, yychar, yytext());}
+<YYINITIAL>"sb"                {echo(sym.Sb);   codeGen.appendOp("sb");    return new Symbol(sym.Sb,         yyline, yychar, yytext());}
+<YYINITIAL>"lb"                {echo(sym.Lb);   codeGen.appendOp("lb");    return new Symbol(sym.Lb,         yyline, yychar, yytext());}
+<YYINITIAL>"sw"                {echo(sym.Sw);   codeGen.appendOp("sw");    return new Symbol(sym.Sw,         yyline, yychar, yytext());}
+<YYINITIAL>"lw"                {echo(sym.Lw);   codeGen.appendOp("lw");    return new Symbol(sym.Lw,         yyline, yychar, yytext());}
+<YYINITIAL>"smw"               {echo(sym.Smw);  codeGen.appendOp("smw");   return new Symbol(sym.Smw,       yyline, yychar, yytext());}
+<YYINITIAL>"lmw"               {echo(sym.Lmw);  codeGen.appendOp("lmw");   return new Symbol(sym.Lmw,       yyline, yychar, yytext());}
+<YYINITIAL>"je"                {echo(sym.Je);   codeGen.appendOp("je");    return new Symbol(sym.Je,         yyline, yychar, yytext());}
+<YYINITIAL>"jne"               {echo(sym.Jne);  codeGen.appendOp("jne");   return new Symbol(sym.Jne,       yyline, yychar, yytext());}
+<YYINITIAL>"jlt"               {echo(sym.Jlt);  codeGen.appendOp("jlt");   return new Symbol(sym.Jlt,       yyline, yychar, yytext());}		
+<YYINITIAL>"jgt"               {echo(sym.Jgt);  codeGen.appendOp("jgt");   return new Symbol(sym.Jgt,       yyline, yychar, yytext());}
+<YYINITIAL>"j"                 {echo(sym.J);    codeGen.appendOp("j");     return new Symbol(sym.J,           yyline, yychar, yytext());}
 
-<YYINITIAL>"r0"                {echo(sym.R0); return new Symbol(sym.R0,         yyline, yychar, yytext());}
-<YYINITIAL>"r1"                {echo(sym.R1); return new Symbol(sym.R1,         yyline, yychar, yytext());}
-<YYINITIAL>"r2"                {echo(sym.R2); return new Symbol(sym.R2,         yyline, yychar, yytext());}
+<YYINITIAL>"r0"                {echo(sym.R0);   codeGen.appendReg("r0");   return new Symbol(sym.R0,         yyline, yychar, yytext());}
+<YYINITIAL>"r1"                {echo(sym.R1);   codeGen.appendReg("r1");   return new Symbol(sym.R1,         yyline, yychar, yytext());}
+<YYINITIAL>"r2"                {echo(sym.R2);   codeGen.appendReg("r2");codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.R2,         yyline, yychar, yytext());}
 <YYINITIAL>"r3"                {echo(sym.R3); return new Symbol(sym.R3,         yyline, yychar, yytext());}
 <YYINITIAL>"r4"                {echo(sym.R4); return new Symbol(sym.R4,         yyline, yychar, yytext());}
 <YYINITIAL>"r5"                {echo(sym.R5); return new Symbol(sym.R5,         yyline, yychar, yytext());}

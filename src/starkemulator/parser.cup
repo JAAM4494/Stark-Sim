@@ -5,9 +5,14 @@ import java_cup.runtime.*;
 import java.util.*;
 import java.io.*;
 
+import starkemulator.arch.Register;
+import starkemulator.arch.ALU;
+
                 /**** ACTION CODE ****/
 
 action code {:
+
+ALU alu = new ALU();
     
 :}
 
@@ -114,7 +119,8 @@ LB_STATEMENT | SHW_STATEMENT | LHW_STATEMENT | SW_STATEMENT | LW_STATEMENT |
 
 
 
-PLUS_STATEMENT ::= Plus REGISTERS Comma REGISTERS Comma COPERAND ; 
+PLUS_STATEMENT ::= Plus REGISTERS:f Comma REGISTERS:s Comma COPERAND:t {: alu.doOp(0,Register.R0,Register.R1,Register.R2);
+                                                                          System.out.println(Register.R0);:} ; 
 
 MIN_STATEMENT ::= Min REGISTERS Comma REGISTERS Comma COPERAND ; 
 
@@ -163,7 +169,7 @@ J_STATEMENT ::= J ID  ;
 
 TAG_STATEMENT ::= ID  Points ;
 
-COPERAND ::= INMEDIATE | REGISTERS;
+COPERAND ::= INMEDIATE NewLine | REGISTERS NewLine;
 
 
 INMEDIATE ::= (Tag Num) |  ( Hexadecimal) ;

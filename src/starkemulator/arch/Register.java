@@ -12,8 +12,8 @@ package starkemulator.arch;
 public class Register {
     
     public static int R0= 0;
-    public static int R1= 0;
-    public static int R2= 0;
+    public static int R1= 2;
+    public static int R2= 4;
     public static int R3= 0;
     public static int R4= 0;
     public static int R5= 0;

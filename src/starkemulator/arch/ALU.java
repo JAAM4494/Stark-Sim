@@ -11,7 +11,7 @@ package starkemulator.arch;
  */
 public class ALU {
     
-    public void doOp(int pOperationCode, int pDestiny, int pOperand1, int pOperand2) {
+    public int doOp(int pOperationCode, int pDestiny, int pOperand1, int pOperand2) {
         //int retVal = 0;
         switch(pOperationCode) {
             case 0: // suma
@@ -33,6 +33,7 @@ public class ALU {
                 pDestiny = Math.abs(~(pOperand1 & pOperand2));
                 break;
         }
+        return pDestiny;
     }
     
 }
