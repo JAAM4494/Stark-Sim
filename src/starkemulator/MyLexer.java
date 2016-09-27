@@ -788,7 +788,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 56: break;
           case 4: 
-            { echo(sym.Num); codeGen.appendImm("D",yytext()); codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.Num,       yyline, yychar, yytext());
+            { echo(sym.Num); codeGen.appendImm("D",yytext());  return new Symbol(sym.Num,       yyline, yychar, yytext());
             }
           case 57: break;
           case 5: 
@@ -844,7 +844,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 70: break;
           case 18: 
-            { echo(sym.Hexadecimal); codeGen.appendImm("H",yytext()); codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
+            { echo(sym.Hexadecimal); codeGen.appendImm("H",yytext()); return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
             }
           case 71: break;
           case 19: 

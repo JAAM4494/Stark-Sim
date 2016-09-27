@@ -23,25 +23,28 @@ public class MCodeGenerator {
     private String tempLine;
     private String tempLineReg;
     private int counterReg;
+    private Boolean shiftOp;
+    private Boolean memOp;
+
 
     
-    private boolean inmmediateFlag;
 
     public MCodeGenerator() {
         codeList = new ArrayList<>();
         tempLine = "";
         tempLineReg="";
-        inmmediateFlag=false;
         counterReg=0;
+        shiftOp=false;
+        memOp=false;
+        
     }
     
-    public void setInmediateFlag(boolean valFlag){
-        inmmediateFlag=valFlag;
-    }
+    
     
     public void genMid() {
         //String reverse = new StringBuffer(this.tempLine).reverse().toString();
         //System.out.println(reverse);
+        if( memOp==true){  tempLine=tempLineReg+tempLine;  memOp=false;   }
         this.codeList.add(this.tempLine);
         this.tempLine = "";
     }
@@ -71,25 +74,77 @@ public class MCodeGenerator {
         }
     }
     
-    // ------------------- IMMIDIATE ----------------- FALTA****
+    // ------------------- IMMIDIATE -----------------
     public void appendImm(String pType, String inmmediate ) {
-        String binaryImm;
         switch(pType) {
             case "H":
-                inmmediate=inmmediate.replace("0x", "");
-                binaryImm =Integer.toBinaryString(Integer.parseInt(inmmediate,16) );
+                if(shiftOp){  appendShiftDisp(pType,inmmediate);  }
+                else if (memOp){ appendMem (pType,inmmediate);   }
+                else{ appendArithLogic(pType,inmmediate); }
+                
+                break;
+            case "D":
+                if(shiftOp){   appendShiftDisp(pType,inmmediate);   }
+                else if (memOp){ appendMem (pType,inmmediate);   }
+                else{ appendArithLogic(pType,inmmediate); }
+
+                break;
+        }    
+    }
+    
+    private void appendArithLogic(String type,String immediate){
+        String binaryImm;
+        switch(type) {
+            case "H":
+                immediate=immediate.replace("0x", "");
+                binaryImm =Integer.toBinaryString(Integer.parseInt(immediate,16) );
                 binaryImm=pad(binaryImm,17);
                 tempLine=tempLineReg+binaryImm+ "1" + tempLine;
                 break;
             case "D":
-               binaryImm =Integer.toBinaryString(Integer.parseInt(inmmediate) );
+               binaryImm =Integer.toBinaryString(Integer.parseInt(immediate) );
                binaryImm=pad(binaryImm,17);
                tempLine=tempLineReg+binaryImm+ "1" + tempLine;
-                break;
-        }    
-        
-       
+
+               break;
+        }
     }
+    
+    private void appendMem(String type,String immediate){
+        String binaryImm;
+        switch(type) {
+            case "H":
+                immediate=immediate.replace("0x", "");
+                binaryImm =Integer.toBinaryString(Integer.parseInt(immediate,16) );
+                binaryImm=pad(binaryImm,17);
+                tempLine=binaryImm+ "1" + tempLine;
+                break;
+            case "D":
+               binaryImm =Integer.toBinaryString(Integer.parseInt(immediate) );
+               binaryImm=pad(binaryImm,17);
+               tempLine=binaryImm+ "1" + tempLine;
+               break;
+        }
+    }
+    
+    private void appendShiftDisp(String type,String immediate){
+        String binaryImm;
+        shiftOp=false;
+        switch(type) {
+            case "H":
+                immediate=immediate.replace("0x", "");
+                binaryImm =Integer.toBinaryString(Integer.parseInt(immediate,16) );
+                binaryImm=pad(binaryImm,18);
+                tempLine=tempLineReg+binaryImm + tempLine;
+                break;
+            case "D":
+               binaryImm =Integer.toBinaryString(Integer.parseInt(immediate) );
+               binaryImm=pad(binaryImm,18);
+               tempLine=tempLineReg+binaryImm + tempLine;
+               break;
+        }
+    }
+
     
     private String pad(String s, int numDigits){
         StringBuffer sb = new StringBuffer(s);
@@ -157,10 +212,10 @@ public class MCodeGenerator {
     }
     
     private void verifyRegCount(){
-        System.out.println("verifying" + tempLine);
         if(counterReg==3){
-            tempLine=tempLineReg+"000000000000000"+ "0" + tempLine;
+            tempLine=tempLineReg+"0000000000000"+ "0" + tempLine;
             counterReg=0;
+            memOp=false;
         }
     }
 
@@ -190,26 +245,35 @@ public class MCodeGenerator {
                 break;
             case "shl":
                 tempLine = "000" + "010";
+                shiftOp=true;
                 break;
             case "shr":
                 tempLine = "001" + "010";
+                shiftOp=true;
+
                 break;
             case "sb":
                 tempLine = "000" + "011";
+                memOp=true;
                 break;
             case "lb":
                 tempLine = "001" + "011";
+                memOp=true;
                 break;
             case "sw":
                 tempLine = "010" + "011";
+                memOp=true;
                 break;
             case "lw":
+                memOp=true;
                 tempLine = "011" + "011";
                 break;
             case "smw":
+                memOp=true;
                 tempLine = "100" + "011";
                 break;
             case "lmw":
+                memOp=true;
                 tempLine = "101" + "011";
                 break;
             case "je":
