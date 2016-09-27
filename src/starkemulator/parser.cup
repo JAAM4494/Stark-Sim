@@ -169,7 +169,7 @@ J_STATEMENT ::= J ID  ;
 
 TAG_STATEMENT ::= ID  Points ;
 
-COPERAND ::= INMEDIATE NewLine | REGISTERS NewLine;
+COPERAND ::= INMEDIATE |  REGISTERS ;
 
 
 INMEDIATE ::= (Tag Num) |  ( Hexadecimal) ;

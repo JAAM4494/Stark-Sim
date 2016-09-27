@@ -143,7 +143,7 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
                                         return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
                                     }}
 
-<YYINITIAL>"plus"              {echo(sym.Plus); codeGen.appendOp("plus");  return new Symbol(sym.Plus,     yyline, yychar, yytext());}
+<YYINITIAL>"plus"              {echo(sym.Plus); codeGen.appendOp("plus");   return new Symbol(sym.Plus,     yyline, yychar, yytext());}
 <YYINITIAL>"min"               {echo(sym.Min);  codeGen.appendOp("min");   return new Symbol(sym.Min,       yyline, yychar, yytext());}
 <YYINITIAL>"mul"               {echo(sym.Mul);  codeGen.appendOp("mul");   return new Symbol(sym.Mul,       yyline, yychar, yytext());}
 <YYINITIAL>"and"               {echo(sym.And);  codeGen.appendOp("and");   return new Symbol(sym.And,       yyline, yychar, yytext());}
@@ -164,38 +164,39 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 <YYINITIAL>"jgt"               {echo(sym.Jgt);  codeGen.appendOp("jgt");   return new Symbol(sym.Jgt,       yyline, yychar, yytext());}
 <YYINITIAL>"j"                 {echo(sym.J);    codeGen.appendOp("j");     return new Symbol(sym.J,           yyline, yychar, yytext());}
 
-<YYINITIAL>"r0"                {echo(sym.R0);   codeGen.appendReg("r0");   return new Symbol(sym.R0,         yyline, yychar, yytext());}
-<YYINITIAL>"r1"                {echo(sym.R1);   codeGen.appendReg("r1");   return new Symbol(sym.R1,         yyline, yychar, yytext());}
-<YYINITIAL>"r2"                {echo(sym.R2);   codeGen.appendReg("r2");codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.R2,         yyline, yychar, yytext());}
-<YYINITIAL>"r3"                {echo(sym.R3); return new Symbol(sym.R3,         yyline, yychar, yytext());}
-<YYINITIAL>"r4"                {echo(sym.R4); return new Symbol(sym.R4,         yyline, yychar, yytext());}
-<YYINITIAL>"r5"                {echo(sym.R5); return new Symbol(sym.R5,         yyline, yychar, yytext());}
-<YYINITIAL>"r6"                {echo(sym.R6); return new Symbol(sym.R6,         yyline, yychar, yytext());}
-<YYINITIAL>"r7"                {echo(sym.R7); return new Symbol(sym.R7,         yyline, yychar, yytext());}
-<YYINITIAL>"r8"                {echo(sym.R8); return new Symbol(sym.R8,         yyline, yychar, yytext());}
-<YYINITIAL>"r9"                {echo(sym.R9); return new Symbol(sym.R9,         yyline, yychar, yytext());}
-<YYINITIAL>"r10"               {echo(sym.R10); return new Symbol(sym.R10,       yyline, yychar, yytext());}
-<YYINITIAL>"r11"               {echo(sym.R11); return new Symbol(sym.R11,       yyline, yychar, yytext());}
-<YYINITIAL>"r12"               {echo(sym.R12); return new Symbol(sym.R12,       yyline, yychar, yytext());}
-<YYINITIAL>"r13"               {echo(sym.R13); return new Symbol(sym.R13,       yyline, yychar, yytext());}
-<YYINITIAL>"r14"               {echo(sym.R14); return new Symbol(sym.R14,       yyline, yychar, yytext());}
-<YYINITIAL>"r15"               {echo(sym.R15); return new Symbol(sym.R15,       yyline, yychar, yytext());}
+<YYINITIAL>"r0"                {echo(sym.R0);   codeGen.appendReg("r0");    return new Symbol(sym.R0,         yyline, yychar, yytext());}
+<YYINITIAL>"r1"                {echo(sym.R1);   codeGen.appendReg("r1");   codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.R1,         yyline, yychar, yytext());}
+<YYINITIAL>"r2"                {echo(sym.R2);   codeGen.appendReg("r2"); return new Symbol(sym.R2,         yyline, yychar, yytext());}
+<YYINITIAL>"r3"                {echo(sym.R3);   codeGen.appendReg("r3");return new Symbol(sym.R3,         yyline, yychar, yytext());}
+<YYINITIAL>"r4"                {echo(sym.R4);   codeGen.appendReg("r4");return new Symbol(sym.R4,         yyline, yychar, yytext());}
+<YYINITIAL>"r5"                {echo(sym.R5);   codeGen.appendReg("r5");return new Symbol(sym.R5,         yyline, yychar, yytext());}
+<YYINITIAL>"r6"                {echo(sym.R6);   codeGen.appendReg("r6");return new Symbol(sym.R6,         yyline, yychar, yytext());}
+<YYINITIAL>"r7"                {echo(sym.R7);   codeGen.appendReg("r7");return new Symbol(sym.R7,         yyline, yychar, yytext());}
+<YYINITIAL>"r8"                {echo(sym.R8);   codeGen.appendReg("r8");return new Symbol(sym.R8,         yyline, yychar, yytext());}
+<YYINITIAL>"r9"                {echo(sym.R9);   codeGen.appendReg("r9");return new Symbol(sym.R9,         yyline, yychar, yytext());}
+<YYINITIAL>"r10"               {echo(sym.R10);  codeGen.appendReg("r10");return new Symbol(sym.R10,       yyline, yychar, yytext());}
+<YYINITIAL>"r11"               {echo(sym.R11);  codeGen.appendReg("r11");return new Symbol(sym.R11,       yyline, yychar, yytext());}
+<YYINITIAL>"r12"               {echo(sym.R12);  codeGen.appendReg("r12");return new Symbol(sym.R12,       yyline, yychar, yytext());}
+<YYINITIAL>"r13"               {echo(sym.R13);  codeGen.appendReg("r13");return new Symbol(sym.R13,       yyline, yychar, yytext());}
+<YYINITIAL>"r14"               {echo(sym.R14);  codeGen.appendReg("r14");return new Symbol(sym.R14,       yyline, yychar, yytext());}
+<YYINITIAL>"r15"               {echo(sym.R15);  codeGen.appendReg("r15");return new Symbol(sym.R15,       yyline, yychar, yytext());}
 
 <YYINITIAL>"("                 {echo(sym.OpPar); return new Symbol(sym.OpPar,   yyline, yychar, yytext());}
 <YYINITIAL>")"                 {echo(sym.ClPar); return new Symbol(sym.ClPar,   yyline, yychar, yytext());}
 <YYINITIAL>"{"                 {echo(sym.OpKey); return new Symbol(sym.OpKey,   yyline, yychar, yytext());}
 <YYINITIAL>"}"                 {echo(sym.ClKey); return new Symbol(sym.ClKey,   yyline, yychar, yytext());}
 
-<YYINITIAL>"#"                 {echo(sym.Tag ); return new Symbol(sym.Tag,      yyline, yychar, yytext());}
+<YYINITIAL>"#"                 {echo(sym.Tag );  return new Symbol(sym.Tag,      yyline, yychar, yytext());}
 <YYINITIAL>","                 {echo(sym.Comma); return new Symbol(sym.Comma,   yyline, yychar, yytext());}
 <YYINITIAL>";"                 {echo(sym.SemCo); return new Symbol(sym.SemCo,   yyline, yychar, yytext());}
 <YYINITIAL>":"                 {echo(sym.Points); return new Symbol(sym.Points, yyline, yychar, yytext());}
 
-<YYINITIAL>{DIGIT}+            {echo(sym.Num); return new Symbol(sym.Num,       yyline, yychar, yytext());}
+<YYINITIAL>{DIGIT}+            {echo(sym.Num); codeGen.appendImm("D",yytext()); codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.Num,       yyline, yychar, yytext());}
 
 <YYINITIAL>{ID}                {echo(sym.ID); return new Symbol(sym.ID,         yyline, yychar, yytext());}
 
-<YYINITIAL>{Hexadecimal}       {echo(sym.Hexadecimal); return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());}
+<YYINITIAL>{Hexadecimal}       {echo(sym.Hexadecimal); codeGen.appendImm("H",yytext()); codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());}
+
 
 
 . {TokensOut.addElement("WARNING, Unknow character, line: " + yyline + ", column: " + yychar);

@@ -788,7 +788,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 56: break;
           case 4: 
-            { echo(sym.Num); return new Symbol(sym.Num,       yyline, yychar, yytext());
+            { echo(sym.Num); codeGen.appendImm("D",yytext()); codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.Num,       yyline, yychar, yytext());
             }
           case 57: break;
           case 5: 
@@ -828,7 +828,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 66: break;
           case 14: 
-            { echo(sym.Tag ); return new Symbol(sym.Tag,      yyline, yychar, yytext());
+            { echo(sym.Tag );  return new Symbol(sym.Tag,      yyline, yychar, yytext());
             }
           case 67: break;
           case 15: 
@@ -844,7 +844,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 70: break;
           case 18: 
-            { echo(sym.Hexadecimal); return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
+            { echo(sym.Hexadecimal); codeGen.appendImm("H",yytext()); codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
             }
           case 71: break;
           case 19: 
@@ -868,43 +868,43 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 76: break;
           case 24: 
-            { echo(sym.R9); return new Symbol(sym.R9,         yyline, yychar, yytext());
+            { echo(sym.R9);   codeGen.appendReg("r9");return new Symbol(sym.R9,         yyline, yychar, yytext());
             }
           case 77: break;
           case 25: 
-            { echo(sym.R0);   codeGen.appendReg("r0");   return new Symbol(sym.R0,         yyline, yychar, yytext());
+            { echo(sym.R0);   codeGen.appendReg("r0");    return new Symbol(sym.R0,         yyline, yychar, yytext());
             }
           case 78: break;
           case 26: 
-            { echo(sym.R1);   codeGen.appendReg("r1");   return new Symbol(sym.R1,         yyline, yychar, yytext());
+            { echo(sym.R1);   codeGen.appendReg("r1");   codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.R1,         yyline, yychar, yytext());
             }
           case 79: break;
           case 27: 
-            { echo(sym.R2);   codeGen.appendReg("r2");codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.R2,         yyline, yychar, yytext());
+            { echo(sym.R2);   codeGen.appendReg("r2"); return new Symbol(sym.R2,         yyline, yychar, yytext());
             }
           case 80: break;
           case 28: 
-            { echo(sym.R3); return new Symbol(sym.R3,         yyline, yychar, yytext());
+            { echo(sym.R3);   codeGen.appendReg("r3");return new Symbol(sym.R3,         yyline, yychar, yytext());
             }
           case 81: break;
           case 29: 
-            { echo(sym.R4); return new Symbol(sym.R4,         yyline, yychar, yytext());
+            { echo(sym.R4);   codeGen.appendReg("r4");return new Symbol(sym.R4,         yyline, yychar, yytext());
             }
           case 82: break;
           case 30: 
-            { echo(sym.R5); return new Symbol(sym.R5,         yyline, yychar, yytext());
+            { echo(sym.R5);   codeGen.appendReg("r5");return new Symbol(sym.R5,         yyline, yychar, yytext());
             }
           case 83: break;
           case 31: 
-            { echo(sym.R6); return new Symbol(sym.R6,         yyline, yychar, yytext());
+            { echo(sym.R6);   codeGen.appendReg("r6");return new Symbol(sym.R6,         yyline, yychar, yytext());
             }
           case 84: break;
           case 32: 
-            { echo(sym.R7); return new Symbol(sym.R7,         yyline, yychar, yytext());
+            { echo(sym.R7);   codeGen.appendReg("r7");return new Symbol(sym.R7,         yyline, yychar, yytext());
             }
           case 85: break;
           case 33: 
-            { echo(sym.R8); return new Symbol(sym.R8,         yyline, yychar, yytext());
+            { echo(sym.R8);   codeGen.appendReg("r8");return new Symbol(sym.R8,         yyline, yychar, yytext());
             }
           case 86: break;
           case 34: 
@@ -944,27 +944,27 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 95: break;
           case 43: 
-            { echo(sym.R10); return new Symbol(sym.R10,       yyline, yychar, yytext());
+            { echo(sym.R10);  codeGen.appendReg("r10");return new Symbol(sym.R10,       yyline, yychar, yytext());
             }
           case 96: break;
           case 44: 
-            { echo(sym.R11); return new Symbol(sym.R11,       yyline, yychar, yytext());
+            { echo(sym.R11);  codeGen.appendReg("r11");return new Symbol(sym.R11,       yyline, yychar, yytext());
             }
           case 97: break;
           case 45: 
-            { echo(sym.R12); return new Symbol(sym.R12,       yyline, yychar, yytext());
+            { echo(sym.R12);  codeGen.appendReg("r12");return new Symbol(sym.R12,       yyline, yychar, yytext());
             }
           case 98: break;
           case 46: 
-            { echo(sym.R13); return new Symbol(sym.R13,       yyline, yychar, yytext());
+            { echo(sym.R13);  codeGen.appendReg("r13");return new Symbol(sym.R13,       yyline, yychar, yytext());
             }
           case 99: break;
           case 47: 
-            { echo(sym.R14); return new Symbol(sym.R14,       yyline, yychar, yytext());
+            { echo(sym.R14);  codeGen.appendReg("r14");return new Symbol(sym.R14,       yyline, yychar, yytext());
             }
           case 100: break;
           case 48: 
-            { echo(sym.R15); return new Symbol(sym.R15,       yyline, yychar, yytext());
+            { echo(sym.R15);  codeGen.appendReg("r15");return new Symbol(sym.R15,       yyline, yychar, yytext());
             }
           case 101: break;
           case 49: 
@@ -980,7 +980,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 104: break;
           case 52: 
-            { echo(sym.Plus); codeGen.appendOp("plus");  return new Symbol(sym.Plus,     yyline, yychar, yytext());
+            { echo(sym.Plus); codeGen.appendOp("plus");   return new Symbol(sym.Plus,     yyline, yychar, yytext());
             }
           case 105: break;
           case 53: 

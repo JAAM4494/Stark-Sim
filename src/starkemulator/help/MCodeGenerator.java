@@ -21,10 +21,22 @@ public class MCodeGenerator {
     private ArrayList<String> codeList;
     
     private String tempLine;
+    private String tempLineReg;
+    private int counterReg;
+
+    
+    private boolean inmmediateFlag;
 
     public MCodeGenerator() {
         codeList = new ArrayList<>();
         tempLine = "";
+        tempLineReg="";
+        inmmediateFlag=false;
+        counterReg=0;
+    }
+    
+    public void setInmediateFlag(boolean valFlag){
+        inmmediateFlag=valFlag;
     }
     
     public void genMid() {
@@ -60,61 +72,95 @@ public class MCodeGenerator {
     }
     
     // ------------------- IMMIDIATE ----------------- FALTA****
-    public void appendImm(String pToken, int pImm) {
-         
+    public void appendImm(String pType, String inmmediate ) {
+        String binaryImm;
+        switch(pType) {
+            case "H":
+                inmmediate=inmmediate.replace("0x", "");
+                binaryImm =Integer.toBinaryString(Integer.parseInt(inmmediate,16) );
+                binaryImm=pad(binaryImm,17);
+                tempLine=tempLineReg+binaryImm+ "1" + tempLine;
+                break;
+            case "D":
+               binaryImm =Integer.toBinaryString(Integer.parseInt(inmmediate) );
+               binaryImm=pad(binaryImm,17);
+               tempLine=tempLineReg+binaryImm+ "1" + tempLine;
+                break;
+        }    
+        
+       
+    }
+    
+    private String pad(String s, int numDigits){
+        StringBuffer sb = new StringBuffer(s);
+        int numZeros = numDigits - s.length();
+        while(numZeros-- > 0) { 
+            sb.insert(0, "0");
+        }
+        return sb.toString();
     }
     
     // ------------------- REGISTERS -----------------
     public void appendReg(String pToken) {
+        counterReg++;
         switch(pToken) {
             case "r0":
-                tempLine = "0000" + tempLine;
+                tempLineReg = tempLineReg+ "0000"  ;
                 break;
             case "r1":
-                tempLine = "0001" + tempLine;
+                tempLineReg = tempLineReg+ "0001" ;
                 break;
             case "r2":
-                tempLine = "0010" + tempLine;
+                tempLineReg = tempLineReg+"0010" ;
                 break;
             case "r3":
-                tempLine = "0011" + tempLine;
+                tempLineReg = tempLineReg+ "0011" ;
                 break;
             case "r4":
-                tempLine = "0100" + tempLine;
+                tempLineReg = tempLineReg+"0100";
                 break;
             case "r5":
-                tempLine = "0101" + tempLine;
+                tempLineReg = tempLineReg+"0101" ;
                 break;
             case "r6":
-                tempLine = "0110" + tempLine;
+                tempLineReg = tempLineReg+"0110" ;
                 break;
             case "r7":
-                tempLine = "0111" + tempLine;
+                tempLineReg = tempLineReg+"0111" ;
                 break;
             case "r8":
-                tempLine = "1000" + tempLine;
+                tempLineReg = tempLineReg+"1000" ;
                 break;
             case "r9":
-                tempLine = "1001" + tempLine;
+                tempLineReg = tempLineReg+"1001" ;
                 break;
             case "r10":
-                tempLine = "1010" + tempLine;
+                tempLineReg = tempLineReg+"1010";
                 break;
             case "r11":
-                tempLine = "1011" + tempLine;
+                tempLineReg = tempLineReg+"1011" ;
                 break;
             case "r12":
-                tempLine = "1100" + tempLine;
+                tempLineReg = tempLineReg+"1100" ;
                 break;
             case "r13":
-                tempLine = "1101" + tempLine;
+                tempLineReg = tempLineReg+"1101" ;
                 break;
             case "r14":
-                tempLine = "1110" + tempLine;
+                tempLineReg = tempLineReg+"1110" ;
                 break;
             case "r15":
-                tempLine = "1111" + tempLine;
+                tempLineReg = tempLineReg+"1111";
                 break;
+        }
+        verifyRegCount();
+    }
+    
+    private void verifyRegCount(){
+        System.out.println("verifying" + tempLine);
+        if(counterReg==3){
+            tempLine=tempLineReg+"000000000000000"+ "0" + tempLine;
+            counterReg=0;
         }
     }
 

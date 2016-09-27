@@ -11,7 +11,7 @@ import starkemulator.ui.MainFrame;
  * @author jaam
  */
 public class MyCompiler {
-    
+   
     // Metodo principal del compilador, se encarga del procesamiento de la entrada
     public void procesarEntrada(String pPathEntrada) {
 
