@@ -770,12 +770,13 @@ private static String returnTokenName(int pIntToken) throws IllegalArgumentExcep
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { yychar=0; yyline=0; echo(sym.NewLine);System.out.println("Salto linea");
-                                    if(newLineFlag == true) {
+            { echo(sym.NewLine); codeGen.genMid();
+                                    return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
+                                    /* if(newLineFlag == true) {
                                         //System.out.println("Salto linea");
                                         newLineFlag = false;
                                         return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
-                                    }
+                                    }*/
             }
           case 54: break;
           case 2: 
@@ -840,11 +841,11 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 69: break;
           case 17: 
-            { echo(sym.Points); return new Symbol(sym.Points, yyline, yychar, yytext());
+            { echo(sym.Points); codeGen.genFinal(); return new Symbol(sym.Points, yyline, yychar, yytext());
             }
           case 70: break;
           case 18: 
-            { echo(sym.Hexadecimal); codeGen.appendImm("H",yytext()); return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
+            { echo(sym.Hexadecimal); codeGen.appendImm("H",yytext());  return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
             }
           case 71: break;
           case 19: 
@@ -876,7 +877,7 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 78: break;
           case 26: 
-            { echo(sym.R1);   codeGen.appendReg("r1");   codeGen.genMid();codeGen.genFinal(); return new Symbol(sym.R1,         yyline, yychar, yytext());
+            { echo(sym.R1);   codeGen.appendReg("r1");  return new Symbol(sym.R1,         yyline, yychar, yytext());
             }
           case 79: break;
           case 27: 

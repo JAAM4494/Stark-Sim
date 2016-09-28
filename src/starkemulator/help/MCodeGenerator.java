@@ -47,6 +47,8 @@ public class MCodeGenerator {
         if( memOp==true){  tempLine=tempLineReg+tempLine;  memOp=false;   }
         this.codeList.add(this.tempLine);
         this.tempLine = "";
+        this.tempLineReg = "";
+        counterReg=0;
     }
     
     public void genFinal() {
@@ -93,7 +95,8 @@ public class MCodeGenerator {
     }
     
     private void appendArithLogic(String type,String immediate){
-        String binaryImm;
+        String binaryImm="";
+        
         switch(type) {
             case "H":
                 immediate=immediate.replace("0x", "");
@@ -213,10 +216,26 @@ public class MCodeGenerator {
     
     private void verifyRegCount(){
         if(counterReg==3){
+            System.out.println("verif tmpLineReg" +tempLineReg);
+            if(memOp){ tempLineReg= rotateRegisters(tempLineReg) ;   }
+            System.out.println("verif tmpLineReg" +tempLineReg);
             tempLine=tempLineReg+"0000000000000"+ "0" + tempLine;
             counterReg=0;
             memOp=false;
         }
+    }
+    
+    private String rotateRegisters(String tmpLineReg){
+       String Reg1=tmpLineReg.substring(0, 4);
+       String Reg2=tmpLineReg.substring(4, 8);
+       String Reg3=tmpLineReg.substring(8, 12);
+       System.out.println("Reg1"+Reg1);
+       System.out.println("Reg2"+Reg2);
+       System.out.println("Reg3"+Reg3);
+
+       String rotatedReg=Reg1+Reg3+Reg2;
+       return rotatedReg;
+        
     }
 
     // ------------------- OPERATIONS -----------------
