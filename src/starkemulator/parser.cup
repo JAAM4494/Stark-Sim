@@ -7,12 +7,15 @@ import java.io.*;
 
 import starkemulator.arch.Register;
 import starkemulator.arch.ALU;
+import starkemulator.arch.Shift;
+
 
                 /**** ACTION CODE ****/
 
 action code {:
 
 ALU alu = new ALU();
+Shift shiftOp= new Shift();
     
 :}
 
@@ -134,9 +137,9 @@ OR_STATEMENT ::= Or REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine {: al
 
 XOR_STATEMENT ::= Xor REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine  {: alu.aluArithmeticLogicAdmin(5,s,d,t.toString());   :} ;
 
-SHL_STATEMENT ::= Shl REGISTERS Comma REGISTERS Comma INMEDIATE NewLine ; 
+SHL_STATEMENT ::= Shl REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t NewLine {: shiftOp.makeShiftOp(1,s,d,t.toString());   :} ;
 
-SHR_STATEMENT ::= Shr REGISTERS Comma REGISTERS Comma INMEDIATE NewLine ; 
+SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t NewLine {: shiftOp.makeShiftOp(0,s,d,t.toString());   :} ;
 
 
 

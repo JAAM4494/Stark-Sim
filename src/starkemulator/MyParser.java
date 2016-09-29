@@ -11,6 +11,7 @@ import java.util.*;
 import java.io.*;
 import starkemulator.arch.Register;
 import starkemulator.arch.ALU;
+import starkemulator.arch.Shift;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20150326 (SVN rev 63) generated parser.
@@ -588,6 +589,7 @@ class CUP$MyParser$actions {
 
 
 ALU alu = new ALU();
+Shift shiftOp= new Shift();
     
 
   private final MyParser parser;
@@ -977,7 +979,16 @@ ALU alu = new ALU();
           case 32: // SHL_STATEMENT ::= Shl REGISTERS Comma REGISTERS Comma INMEDIATE NewLine 
             {
               Object RESULT =null;
-
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int dleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int dright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		String d = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 shiftOp.makeShiftOp(1,s,d,t.toString());   
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SHL_STATEMENT",13, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -986,7 +997,16 @@ ALU alu = new ALU();
           case 33: // SHR_STATEMENT ::= Shr REGISTERS Comma REGISTERS Comma INMEDIATE NewLine 
             {
               Object RESULT =null;
-
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int dleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int dright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		String d = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 shiftOp.makeShiftOp(0,s,d,t.toString());   
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SHR_STATEMENT",14, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
