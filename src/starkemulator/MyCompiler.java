@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import starkemulator.ui.MainFrame;
+import java_cup.runtime.Symbol;
+
 
 /**
  * Compiler class
@@ -23,10 +25,10 @@ public class MyCompiler {
             
             AnalizadorSintactico.parse();
             
-            //Symbol currToken;
+           // Symbol currToken;
             //   do {
             // currToken = AnalizadorLexico.next_token();
-            //} while (currToken.sym != sym.EOF);
+           // } while (currToken.sym != sym.EOF);
             
             System.out.println("Fin de escaneo..!!");
         } catch (FileNotFoundException ex) {

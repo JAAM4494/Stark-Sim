@@ -13,6 +13,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,13 +51,16 @@ public class MainFrame extends javax.swing.JFrame {
     private boolean binFlag;
     private boolean decFlag;
     private boolean hexFlag;
-
+    public static boolean modified;
+    public static String newVal;
+    public static String regMod;
+    
     private MyCompiler compiler;
 
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
+    public MainFrame() throws InterruptedException {
         initComponents();
 
         this.setName("STARK Simulator");
@@ -81,9 +85,102 @@ public class MainFrame extends javax.swing.JFrame {
         decFlag = false;
         binFlag = false;
         hexFlag = true;
-
         compiler = new MyCompiler();
+        updateManager();
+        
+        
+        
     }
+    
+    public void updateManager() throws InterruptedException{
+
+        Thread one = new Thread() {
+            public void run() {
+                try {
+                    while(true){
+                        if(modified){
+                           modified=false;
+                           preparenewVal();
+                           updateRegisters();
+                        }
+                        sleep(500); 
+                    }
+                } catch(InterruptedException v) {
+                    System.out.println(v);
+                }
+            }  
+        };
+
+        one.start();
+    }
+    
+    private void preparenewVal(){
+        if(hexFlag){
+            newVal= "0x"+Integer.toHexString(Integer.parseInt(newVal));
+        }
+        else if(binFlag){
+            newVal= Integer.toBinaryString(Integer.parseInt(newVal));
+        }
+        
+        
+        
+    }
+    
+    private void updateRegisters(){
+        switch(regMod) {
+        case "r0":
+            r0Tv.setText(newVal);
+            break;
+        case "r1":
+            r1Tv.setText(newVal);
+            break;
+        case "r2":
+            r2Tv.setText(newVal);
+            break;
+        case "r3":
+            r3Tv.setText(newVal);
+            break;
+        case "r4":
+            r4Tv.setText(newVal);
+            break;
+        case "r5":
+            r5Tv.setText(newVal);
+            break;
+        case "r6":
+            r6Tv.setText(newVal);
+            break;
+        case "r7":
+            r7Tv.setText(newVal);
+            break;
+        case "r8":
+            r8Tv.setText(newVal);
+            break;
+        case "r9":
+            r9Tv.setText(newVal);
+            break;
+        case "r10":
+            r10Tv.setText(newVal);
+            break;
+        case "r11":
+            r11Tv.setText(newVal);
+            break;
+        case "r12":
+            r12Tv.setText(newVal);
+            break;
+        case "r13":
+            r13Tv.setText(newVal);
+            break;
+        case "r14":
+            r14Tv.setText(newVal);
+            break;
+        case "r15":
+            r15Tv.setText(newVal);
+            break;
+    }
+
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -236,6 +333,7 @@ public class MainFrame extends javax.swing.JFrame {
         r0Tv.setEditable(false);
         r0Tv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         r0Tv.setText("0x0");
+        r0Tv.setToolTipText("");
 
         r1Tv.setEditable(false);
         r1Tv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -818,7 +916,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private ArrayList doTvList() {
         ArrayList<JTextField> list = new ArrayList<>();
-
         list.add(r0Tv);
         list.add(r1Tv);
         list.add(r2Tv);
@@ -835,9 +932,11 @@ public class MainFrame extends javax.swing.JFrame {
         list.add(r13Tv);
         list.add(r14Tv);
         list.add(r15Tv);
-
+        
         return list;
     }
+    
+  
 
     private void newScript(String pContent) {
         JTextPane newScriptPane = new JTextPane();
