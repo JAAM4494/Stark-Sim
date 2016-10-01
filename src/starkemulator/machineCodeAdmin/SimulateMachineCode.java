@@ -34,7 +34,7 @@ public class SimulateMachineCode {
                proccessArithInstr(pInstruction);
                 break;
             case "L":
-               // proccessLogicInstr(pInstruction);
+                proccessLogicInstr(pInstruction);
 
                 break;
             case "S":
@@ -61,11 +61,20 @@ public class SimulateMachineCode {
         String rb =getRb(cmp,immFlag);
         String ra =getRegister(pInstruction.substring(4, 8));
         String rc =getRegister(pInstruction.substring(0, 4));
-        arithLog.aluArithmeticLogicAdmin(OpTypeI,rc ,ra, rb);
-        
-
-       
+        arithLog.aluArithmeticLogicAdmin(OpTypeI,rc ,ra, rb);  
     }
+    
+    private void proccessLogicInstr(String pInstruction){
+        String opType=pInstruction.substring(26, 29);
+        int OpTypeI=getOpTypeL(opType);
+        String immFlag= pInstruction.substring(25, 26);
+        String cmp=pInstruction.substring(8, 25);
+        String rb =getRb(cmp,immFlag);
+        String ra =getRegister(pInstruction.substring(4, 8));
+        String rc =getRegister(pInstruction.substring(0, 4));
+        arithLog.aluArithmeticLogicAdmin(OpTypeI,rc ,ra, rb);
+    }
+    
     
     private String getRb(String pCmp,String pImmFlag){
         if(pImmFlag.equals("1")){
@@ -148,6 +157,26 @@ public class SimulateMachineCode {
                 break;
             case "010":
                 result=2;
+                break;
+        }
+        
+        return result;  
+    }
+    
+    private int getOpTypeL(String pOpType){
+        int result=9;
+        switch(pOpType) {
+            case "000":
+               result=3;
+                break;
+            case "001":
+                result=6;
+                break;
+            case "010":
+                result=4;
+                break;
+            case "011":
+                result=5;
                 break;
         }
         
