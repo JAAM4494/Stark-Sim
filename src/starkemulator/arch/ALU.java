@@ -13,6 +13,10 @@ import starkemulator.ui.MainFrame;
  */
 public class ALU {
     
+    /*
+    * Makes the Alu operations (ADD,SUB,ETC) based on a operation Code
+    * Two registers are the operands and returns the result value.
+    */
     public int doOp(int pOperationCode, int pDestiny, int pOperand1, int pOperand2) {
         //int retVal = 0;
         switch(pOperationCode) {
@@ -41,7 +45,11 @@ public class ALU {
         }
         return pDestiny;
     }
-    
+    /*
+    * Arithmetic Logic Administrator method
+    *Verifies if the second operand is a immediate or register
+    *And calls the methods depending of the result
+    */
     public void aluArithmeticLogicAdmin(int opCode,String regDest,String pOperand1,String pOperand2){
         if(!pOperand2.contains("r")|| pOperand2.contains("0x")  ){ 
             makeImmOp(opCode,regDest,pOperand1,pOperand2);  
@@ -51,6 +59,11 @@ public class ALU {
         }
          
     }
+    /*
+    * Makes the arithmeti,logic operation in the case that the second operand is
+    * an immediate
+    *
+    */
     
     private void makeImmOp(int opCode,String regDest,String pOperand1,String pOperand2){
         if(pOperand2.contains("0x")){
@@ -71,6 +84,11 @@ public class ALU {
 
         }
     }
+    /*
+    * Makes the arithmetic,logic operation in the case that the second operand is
+    * a register
+    *
+    */
     
     private void makeRegistersOp(int opCode,String regDest,String pOperand1,String pOperand2){
         int regtoModVal=getReg(regDest);
@@ -82,7 +100,12 @@ public class ALU {
         updateGUI(regDest,result); 
     }
     
-    
+    /*
+    *
+    * Notifies the GUI, that the register has 
+    * changed
+    *
+    */
     private void updateGUI(String regDest,int regtoModVal){
         MainFrame.modified=true;
         MainFrame.regMod=regDest;
@@ -90,7 +113,10 @@ public class ALU {
     }
     
     
-    
+    /*
+    *
+    * Returns the value of the specified register
+    */
     private int getReg(String pReg){
         switch(pReg) {
             case "r0" :
@@ -130,7 +156,10 @@ public class ALU {
         
        
     }
-    
+     /*
+    *
+    * Sets the specified value of a register
+    */
      private void setReg(String pReg,int value){
         System.out.println("setting  reg"+pReg);
         switch(pReg) {

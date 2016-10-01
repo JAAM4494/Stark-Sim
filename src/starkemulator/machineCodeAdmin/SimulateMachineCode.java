@@ -12,6 +12,12 @@ import starkemulator.arch.Shift;
  *
  * @author edwin
  */
+
+/*
+ *
+ * Simulates the machine Code specified by the user
+ *
+*/
 public class SimulateMachineCode {
     ALU arithLog;
     Shift ShiftOp;
@@ -20,7 +26,12 @@ public class SimulateMachineCode {
        ShiftOp= new Shift();
         
     }
-    
+    /*
+    *
+    * Verifies if the instruction specified is of lenght 32
+    * If it is not, the instructions is not analized
+    *
+   */
     public void proccessMachineCode(String pmachineCode){
         if(pmachineCode.length()!=32){
             
@@ -31,6 +42,14 @@ public class SimulateMachineCode {
         }
     }
     
+    /*
+    *
+    * Process the instruction based on the opCode
+    * And calls a process function 
+    * depending if it is an arithmetic,logic,etc instruction
+    *
+    *
+   */
     private void processInstByType(String pType,String pInstruction){
         switch(pType) {
             case "A":
@@ -56,6 +75,14 @@ public class SimulateMachineCode {
         
     }
     
+    /*
+    *
+    * Process the machine code of an arithmetic instruction
+    * Calls the ALU function to perform the specified operation
+    *
+    *
+   */
+    
     private void proccessArithInstr(String pInstruction){
         String opType=pInstruction.substring(26, 29);
         int OpTypeI=getOpTypeA(opType);
@@ -67,6 +94,14 @@ public class SimulateMachineCode {
         arithLog.aluArithmeticLogicAdmin(OpTypeI,rc ,ra, rb);  
     }
     
+     /*
+    *
+    * Process the machine code of an logic instruction
+    * Calls the ALU function to perform the specified operation
+    *
+    *
+   */
+    
     private void proccessLogicInstr(String pInstruction){
         String opType=pInstruction.substring(26, 29);
         int OpTypeI=getOpTypeL(opType);
@@ -77,6 +112,13 @@ public class SimulateMachineCode {
         String rc =getRegister(pInstruction.substring(0, 4));
         arithLog.aluArithmeticLogicAdmin(OpTypeI,rc ,ra, rb);
     }
+     /*
+    *
+    * Process the machine code of an shift instruction
+    * Calls the Shift function to perform the specified operation
+    *
+    *
+   */
     
     private void proccessShiftInstr(String pInstruction){
         System.out.println("Entra");
@@ -90,6 +132,14 @@ public class SimulateMachineCode {
         ShiftOp.makeShiftOp(OpTypeI,rc ,ra, shiftDisp);
     }
     
+    /*
+    *
+    * Returns the value of the Second operand
+    * If the flag of the immediate is 1, 
+    * Returns the value of the immediate
+    * If it is not, returns the value of the register
+    *
+   */
     
     private String getRb(String pCmp,String pImmFlag){
         if(pImmFlag.equals("1")){
@@ -100,6 +150,11 @@ public class SimulateMachineCode {
         }
         
     }
+    /*
+    *
+    * Returns the register depending of the binary representation
+    *
+   */
     
     private String getRegister(String pReg){
         String result=""; 
@@ -158,8 +213,12 @@ public class SimulateMachineCode {
     
     
     
-    
-    
+   /*
+    *
+    * Returns the operation number of the ALU depending 
+    * of the OpType for arithmetic operations
+    *
+   */
     
     private int getOpTypeA(String pOpType){
         int result=9;
@@ -178,6 +237,12 @@ public class SimulateMachineCode {
         return result;  
     }
     
+     /*
+    *
+    * Returns the operation number of the ALU depending 
+    * of the OpType for logic operations
+    *
+   */
     private int getOpTypeL(String pOpType){
         int result=9;
         switch(pOpType) {
@@ -198,6 +263,12 @@ public class SimulateMachineCode {
         return result;
         
     }
+    /*
+    *
+    * Returns the operation number of the Shift operations depending 
+    * of the OpType for Shift instructions
+    *
+   */
     
     private int getOpTypeS(String pOpType){
         int result=9;
@@ -213,8 +284,12 @@ public class SimulateMachineCode {
         return result;
         
     }
-    
-    
+    /*
+    *
+    * Based on the op Code of the instruction, returns what type 
+    * Of instruction is, if it is Arithmetic(A),Logic(L), etc
+    *
+   */
     private String getOpCode(String pmachineCode){
         String opCode=pmachineCode.substring(29, 32);
         String result="";

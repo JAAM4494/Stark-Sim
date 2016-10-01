@@ -11,10 +11,24 @@ import starkemulator.ui.MainFrame;
  *
  * @author edwin
  */
+
+/*
+    *
+    * Class that makes all the logic of the Shift operations(Shift Right,Left)
+    *
+    */
+    
 public class Shift {
     public Shift(){
         
     }
+    
+    /*
+    *
+    * Calls the method of the shift operation depending if it is Shift Left
+    *  Shift Right, based on the Shift type
+    *
+    */
     
     public void makeShiftOp(int shiftType,String pRegDest ,String pOperand1,String shiftDisp ){
         if(shiftType==0){
@@ -24,6 +38,13 @@ public class Shift {
             shiftLeftOp(pRegDest,pOperand1,shiftDisp);
         }
     }
+   
+    /*
+    *
+    * Makes all the logic of the Shift Right operation
+    *  Calls the register that is going to be updated
+    *   Calls the method that refreshes the register in the GUI
+    */
     
     private void shiftRightOp(String pRegDest,String pRegister,String pDisp){
         int operandReg=getReg(pRegister);
@@ -32,12 +53,24 @@ public class Shift {
         setReg(pRegDest, resultVal);
         updateGUI(pRegDest, resultVal);
     }
+    /*
+    *
+    * Notifies the GUI, that the register has 
+    * changed
+    *
+    */
     
     private void updateGUI(String regDest,int regtoModVal){
         MainFrame.modified=true;
         MainFrame.regMod=regDest;
         MainFrame.newVal=Integer.toString(regtoModVal);
     }
+    /*
+    *
+    * Makes all the logic of the Shift Left operation
+    *  Calls the register that is going to be updated
+    *   Calls the method that refreshes the register in the GUI
+    */
     
     private void shiftLeftOp(String pRegDest,String pRegister,String pDisp){
          int operandReg=getReg(pRegister);
@@ -47,10 +80,19 @@ public class Shift {
         updateGUI(pRegDest, resultVal);
     }
     
+     /*
+    *
+    * Method that converts the hexadecimal immediate to a decimal value
+    */
     private String hexImm(String pImmHex){
         String result=pImmHex.replace("0x", "");
         return result=Integer.toString(Integer.parseInt(result, 16 ));
     }
+    
+     /*
+    *
+    * Returns the value of the specified register
+    */
     
     private int getReg(String pReg){
         switch(pReg) {
@@ -91,6 +133,10 @@ public class Shift {
         
        
     }
+      /*
+    *
+    * Sets the specified value of a register
+    */
     
      private void setReg(String pReg,int value){
         System.out.println("setting  reg"+pReg);
