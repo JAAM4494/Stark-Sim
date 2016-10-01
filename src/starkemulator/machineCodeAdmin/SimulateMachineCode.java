@@ -6,6 +6,7 @@
 package starkemulator.machineCodeAdmin;
 
 import starkemulator.arch.ALU;
+import starkemulator.arch.Shift;
 
 /**
  *
@@ -13,8 +14,10 @@ import starkemulator.arch.ALU;
  */
 public class SimulateMachineCode {
     ALU arithLog;
+    Shift ShiftOp;
     public SimulateMachineCode(){
        arithLog=new ALU();
+       ShiftOp= new Shift();
         
     }
     
@@ -38,7 +41,7 @@ public class SimulateMachineCode {
 
                 break;
             case "S":
-                //proccessShiftInstr(pInstruction);
+                proccessShiftInstr(pInstruction);
 
                 break;
             case "M":
@@ -73,6 +76,18 @@ public class SimulateMachineCode {
         String ra =getRegister(pInstruction.substring(4, 8));
         String rc =getRegister(pInstruction.substring(0, 4));
         arithLog.aluArithmeticLogicAdmin(OpTypeI,rc ,ra, rb);
+    }
+    
+    private void proccessShiftInstr(String pInstruction){
+        System.out.println("Entra");
+        String opType=pInstruction.substring(26, 29);
+        int OpTypeI=getOpTypeS(opType);
+        String cmp=pInstruction.substring(8, 26);
+        String shiftDisp =getRb(cmp,"1");
+        System.out.println("Shift Disp"+shiftDisp);
+        String ra =getRegister(pInstruction.substring(4, 8));
+        String rc =getRegister(pInstruction.substring(0, 4));
+        ShiftOp.makeShiftOp(OpTypeI,rc ,ra, shiftDisp);
     }
     
     
@@ -177,6 +192,21 @@ public class SimulateMachineCode {
                 break;
             case "011":
                 result=5;
+                break;
+        }
+        
+        return result;
+        
+    }
+    
+    private int getOpTypeS(String pOpType){
+        int result=9;
+        switch(pOpType) {
+            case "000":
+               result=1;
+                break;
+            case "001":
+                result=0;
                 break;
         }
         
