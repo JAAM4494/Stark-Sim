@@ -789,7 +789,8 @@ System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " +
             }
           case 56: break;
           case 4: 
-            { echo(sym.Num); codeGen.appendImm("D",yytext());  return new Symbol(sym.Num,       yyline, yychar, yytext());
+            { echo(sym.Num); //codeGen.appendImm("D",yytext());  
+                                                    return new Symbol(sym.Num,       yyline, yychar, yytext());
             }
           case 57: break;
           case 5: 

@@ -116,6 +116,7 @@ LETTER=[a-zA-Z]
 DIGIT=[0-9]
 ALPHA_NUMERIC={LETTER}|{DIGIT}
 
+
 ID=("_"|{LETTER})({ALPHA_NUMERIC})*
 
 Hexadecimal=("0x") ({ALPHA_NUMERIC})* 
@@ -193,11 +194,14 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 <YYINITIAL>";"                 {echo(sym.SemCo); return new Symbol(sym.SemCo,   yyline, yychar, yytext());}
 <YYINITIAL>":"                 {echo(sym.Points); codeGen.genFinal(); return new Symbol(sym.Points, yyline, yychar, yytext());}
 
-<YYINITIAL>{DIGIT}+            {echo(sym.Num); codeGen.appendImm("D",yytext());  return new Symbol(sym.Num,       yyline, yychar, yytext());}
+<YYINITIAL>{DIGIT}+            {echo(sym.Num); //codeGen.appendImm("D",yytext());  
+                                                    return new Symbol(sym.Num,       yyline, yychar, yytext());}
 
 <YYINITIAL>{ID}                {echo(sym.ID); return new Symbol(sym.ID,         yyline, yychar, yytext());}
 
 <YYINITIAL>{Hexadecimal}       {echo(sym.Hexadecimal); codeGen.appendImm("H",yytext());  return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());}
+
+
 
 
 

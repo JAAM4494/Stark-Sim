@@ -8,6 +8,8 @@ import java.io.*;
 import starkemulator.arch.Register;
 import starkemulator.arch.ALU;
 import starkemulator.arch.Shift;
+import starkemulator.machineCodeAdmin.SimulateMachineCode;
+
 
 
                 /**** ACTION CODE ****/
@@ -16,6 +18,7 @@ action code {:
 
 ALU alu = new ALU();
 Shift shiftOp= new Shift();
+SimulateMachineCode simMachine= new SimulateMachineCode();
     
 :}
 
@@ -68,6 +71,7 @@ terminal   NewLine, SemCo;
 terminal   Hexadecimal;
 
 
+
 terminal    Comma, Tag, Points;
 
 
@@ -100,6 +104,8 @@ non terminal    TAG_STATEMENT ;
 
 non terminal    COPERAND;
 
+non terminal     BIN_STATEMENT;
+
 
                 /**** PRECEDENCIAS ****/
 
@@ -120,7 +126,8 @@ AND_STATEMENT | NAND_STATEMENT | OR_STATEMENT | XOR_STATEMENT |
  SHL_STATEMENT | SHR_STATEMENT | SB_STATEMENT | 
 LB_STATEMENT | SHW_STATEMENT | LHW_STATEMENT | SW_STATEMENT | LW_STATEMENT |
   JE_STATEMENT | JNE_STATEMENT | JLT_STATEMENT | JGT_STATEMENT | J_STATEMENT
- | TAG_STATEMENT ;
+ | TAG_STATEMENT | BIN_STATEMENT ;
+
 
 PLUS_STATEMENT ::= Plus:p REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine {: alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  :}  ;
 
@@ -175,6 +182,9 @@ COPERAND ::= INMEDIATE:d {: RESULT=d; :}   |  REGISTERS:d {: RESULT=d; :} ;
 
 
 INMEDIATE ::= (Tag Num ):d {: RESULT=d; :}   |  ( Hexadecimal):d {: RESULT=d; :} ;
+
+BIN_STATEMENT ::= Num:d NewLine {: RESULT=d;   simMachine.proccessMachineCode(d.toString());   :} ;
+
 
 
 REGISTERS ::= R0:s{: RESULT=s.toString(); :}  | R1:s {: RESULT=s.toString(); :} | R2:s {: RESULT=s.toString(); :} | R3:s {: RESULT=s.toString(); :} 
