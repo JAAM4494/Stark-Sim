@@ -55,7 +55,7 @@ public class MainFrame extends javax.swing.JFrame {
     public static String newVal;
     public static String regMod;
     
-    private MyCompiler compiler;
+    public static MyCompiler compiler;
 
     /**
      * Creates new form MainFrame
@@ -85,7 +85,7 @@ public class MainFrame extends javax.swing.JFrame {
         decFlag = false;
         binFlag = false;
         hexFlag = true;
-        compiler = new MyCompiler();
+        
         updateManager();
         
         
@@ -855,7 +855,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         // running the selected script 
-        compiler.procesarEntrada(temp.getAbsolutePath());
+        compiler = new MyCompiler();
+        if(compiler.procesarEntrada(temp))
+            compiler.crearBancoInstr(temp);
+        if(compiler.isBranchFlag())
+            compiler.execBranches();
     }
 
     private void convertion(int pType) {

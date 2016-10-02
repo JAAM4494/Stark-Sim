@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import starkemulator.help.MCodeGenerator;
+import starkemulator.ui.MainFrame;
 
 
 /**
@@ -44,16 +45,16 @@ public class MyLexer implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\11\0\1\11\1\6\1\57\1\11\1\7\22\0\1\11\2\0\1\53"+
-    "\3\0\1\12\1\47\1\50\2\0\1\54\3\0\1\4\1\37\1\40"+
-    "\1\41\1\42\1\43\1\44\1\45\1\46\1\2\1\56\1\55\5\0"+
-    "\1\24\1\31\1\1\1\25\1\34\1\1\1\36\1\30\1\22\1\33"+
-    "\1\1\1\14\1\20\1\23\1\26\1\13\1\1\1\27\1\17\1\35"+
-    "\1\15\1\1\1\32\1\5\2\1\4\0\1\3\1\0\1\24\1\31"+
-    "\1\1\1\25\1\34\1\1\1\36\1\30\1\22\1\33\1\1\1\14"+
-    "\1\20\1\23\1\26\1\13\1\1\1\27\1\17\1\35\1\15\1\1"+
-    "\1\32\1\5\2\1\1\51\1\10\1\52\7\0\1\57\252\0\2\21"+
-    "\115\0\1\16\u1ea8\0\1\57\1\57\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
+    "\11\0\1\12\1\7\1\60\1\12\1\10\22\0\1\12\2\0\1\54"+
+    "\1\3\2\0\1\13\1\50\1\51\2\0\1\55\3\0\1\5\1\40"+
+    "\1\41\1\42\1\43\1\44\1\45\1\46\1\47\1\2\1\57\1\56"+
+    "\5\0\1\25\1\32\1\1\1\26\1\35\1\1\1\37\1\31\1\23"+
+    "\1\34\1\1\1\15\1\21\1\24\1\27\1\14\1\1\1\30\1\20"+
+    "\1\36\1\16\1\1\1\33\1\6\2\1\4\0\1\4\1\0\1\25"+
+    "\1\32\1\1\1\26\1\35\1\1\1\37\1\31\1\23\1\34\1\1"+
+    "\1\15\1\21\1\24\1\27\1\14\1\1\1\30\1\20\1\36\1\16"+
+    "\1\1\1\33\1\6\2\1\1\52\1\11\1\53\7\0\1\60\252\0"+
+    "\2\22\115\0\1\17\u1ea8\0\1\60\1\60\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
 
   /** 
    * Translates characters to character classes
@@ -66,19 +67,19 @@ public class MyLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\1\1\2\1\3\2\4\1\3\1\5\1\1\1\6"+
-    "\1\7\1\10\2\3\1\2\6\3\1\11\1\12\1\13"+
-    "\1\14\1\15\1\16\1\17\1\20\1\21\1\22\3\3"+
-    "\1\23\1\24\2\0\1\25\1\26\2\3\1\25\1\26"+
-    "\1\3\1\0\3\3\1\27\1\30\1\31\1\32\1\33"+
-    "\1\34\1\35\1\36\1\37\1\40\1\41\2\3\1\42"+
-    "\1\3\1\43\1\3\1\44\1\45\1\46\1\47\1\45"+
-    "\1\46\1\47\1\50\2\51\1\3\1\52\1\53\1\54"+
-    "\1\55\1\56\1\57\1\60\1\61\1\62\1\63\2\64"+
-    "\1\65";
+    "\1\0\1\1\1\2\1\3\1\4\1\3\1\2\1\5"+
+    "\1\6\1\7\1\10\1\11\2\2\1\1\6\2\1\12"+
+    "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
+    "\1\23\1\2\1\6\2\2\1\24\1\25\2\0\1\26"+
+    "\1\27\2\2\1\26\1\27\1\2\1\0\3\2\1\30"+
+    "\1\31\1\32\1\33\1\34\1\35\1\36\1\37\1\40"+
+    "\1\41\1\42\2\2\1\43\1\2\1\44\1\2\1\45"+
+    "\1\46\1\47\1\50\1\46\1\47\1\50\1\51\2\52"+
+    "\1\2\1\53\1\54\1\55\1\56\1\57\1\60\1\61"+
+    "\1\62\1\63\1\64\2\65\1\66";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[89];
+    int [] result = new int[91];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -103,21 +104,21 @@ public class MyLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\60\0\140\0\220\0\300\0\360\0\u0120\0\u0120"+
-    "\0\60\0\60\0\60\0\u0150\0\u0180\0\u01b0\0\u01e0\0\u0210"+
-    "\0\u0240\0\u0270\0\u02a0\0\u02d0\0\u0300\0\60\0\60\0\60"+
-    "\0\60\0\60\0\60\0\60\0\60\0\u0330\0\u0360\0\u0390"+
-    "\0\u03c0\0\140\0\140\0\u03f0\0\u0420\0\60\0\60\0\u0450"+
-    "\0\u0480\0\140\0\140\0\u04b0\0\u04e0\0\u0510\0\u0540\0\u0570"+
-    "\0\140\0\140\0\140\0\u05a0\0\140\0\140\0\140\0\140"+
-    "\0\140\0\140\0\140\0\u05d0\0\u0600\0\140\0\u0630\0\140"+
-    "\0\u0660\0\140\0\60\0\60\0\60\0\140\0\140\0\140"+
-    "\0\140\0\60\0\140\0\u0690\0\140\0\140\0\140\0\140"+
-    "\0\140\0\140\0\140\0\140\0\140\0\140\0\60\0\140"+
-    "\0\140";
+    "\0\0\0\61\0\142\0\223\0\61\0\304\0\365\0\61"+
+    "\0\u0126\0\61\0\61\0\61\0\u0157\0\u0188\0\u01b9\0\u01ea"+
+    "\0\u021b\0\u024c\0\u027d\0\u02ae\0\u02df\0\u0310\0\61\0\61"+
+    "\0\61\0\61\0\61\0\61\0\61\0\61\0\u0341\0\u0372"+
+    "\0\61\0\u03a3\0\u03d4\0\142\0\142\0\u0405\0\u0436\0\61"+
+    "\0\61\0\u0467\0\u0498\0\142\0\142\0\u04c9\0\u04fa\0\u052b"+
+    "\0\u055c\0\u058d\0\142\0\142\0\142\0\u05be\0\142\0\142"+
+    "\0\142\0\142\0\142\0\142\0\142\0\u05ef\0\u0620\0\142"+
+    "\0\u0651\0\142\0\u0682\0\142\0\61\0\61\0\61\0\142"+
+    "\0\142\0\142\0\142\0\61\0\142\0\u06b3\0\142\0\142"+
+    "\0\142\0\142\0\142\0\142\0\142\0\142\0\142\0\142"+
+    "\0\61\0\142\0\142";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[89];
+    int [] result = new int[91];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -140,61 +141,61 @@ public class MyLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\3\1\5\1\6\1\7\1\10"+
-    "\1\11\1\12\1\13\1\14\1\15\1\3\1\16\1\17"+
-    "\1\20\1\2\1\3\1\21\1\22\1\3\1\23\1\24"+
-    "\3\3\1\25\3\3\10\4\1\26\1\27\1\30\1\31"+
-    "\1\32\1\33\1\34\1\35\62\0\2\3\1\0\2\3"+
-    "\5\0\3\3\1\0\2\3\1\0\25\3\13\0\1\4"+
-    "\1\0\1\4\32\0\10\4\13\0\1\4\1\0\1\4"+
-    "\1\36\31\0\10\4\12\0\2\3\1\0\2\3\5\0"+
-    "\3\3\1\0\2\3\1\0\4\3\1\37\20\3\17\0"+
-    "\2\10\51\0\2\3\1\0\2\3\5\0\1\3\1\40"+
-    "\1\3\1\0\2\3\1\0\25\3\12\0\2\3\1\0"+
-    "\2\3\5\0\3\3\1\0\1\3\1\41\1\0\7\3"+
-    "\1\42\1\43\14\3\31\0\1\44\7\0\1\45\1\46"+
-    "\1\47\26\0\2\3\1\0\2\3\5\0\3\3\1\0"+
-    "\1\3\1\50\1\0\6\3\1\51\1\52\1\53\14\3"+
-    "\12\0\2\3\1\0\2\3\5\0\2\3\1\54\1\0"+
-    "\2\3\1\55\1\56\24\3\12\0\2\3\1\0\2\3"+
-    "\5\0\3\3\1\0\2\3\1\0\2\3\1\57\22\3"+
-    "\12\0\2\3\1\0\2\3\5\0\3\3\1\0\2\3"+
-    "\1\0\1\3\1\60\23\3\12\0\2\3\1\0\2\3"+
-    "\5\0\3\3\1\0\2\3\1\0\5\3\1\61\17\3"+
-    "\12\0\1\3\1\62\1\0\1\63\1\3\5\0\3\3"+
-    "\1\0\2\3\1\0\15\3\1\64\1\65\1\66\1\67"+
-    "\1\70\1\71\1\72\1\73\12\0\2\3\1\0\2\3"+
-    "\5\0\1\3\1\74\1\3\1\0\2\3\1\0\1\3"+
-    "\1\75\10\3\1\76\1\3\1\77\10\3\12\0\2\36"+
-    "\1\0\2\36\5\0\3\36\1\0\2\36\1\0\25\36"+
-    "\12\0\2\3\1\0\2\3\5\0\3\3\1\0\2\3"+
-    "\1\0\5\3\1\100\17\3\12\0\2\3\1\0\2\3"+
-    "\5\0\2\3\1\101\1\0\2\3\1\0\25\3\12\0"+
-    "\2\3\1\0\2\3\5\0\3\3\1\0\2\3\1\0"+
-    "\10\3\1\102\14\3\43\0\1\103\41\0\1\104\12\0"+
-    "\1\105\31\0\2\3\1\0\2\3\5\0\3\3\1\0"+
-    "\2\3\1\0\10\3\1\106\14\3\12\0\2\3\1\0"+
-    "\2\3\5\0\1\3\1\107\1\3\1\0\2\3\1\0"+
-    "\5\3\1\110\17\3\12\0\2\3\1\0\2\3\5\0"+
-    "\1\3\1\111\1\3\1\0\2\3\1\0\25\3\34\0"+
-    "\1\112\35\0\2\3\1\0\2\3\5\0\3\3\1\0"+
-    "\2\3\1\0\1\3\1\113\23\3\12\0\2\3\1\0"+
-    "\2\3\5\0\3\3\1\0\2\3\1\0\1\3\1\114"+
-    "\23\3\12\0\2\3\1\0\2\3\5\0\3\3\1\0"+
-    "\2\3\1\0\3\3\1\115\21\3\12\0\2\3\1\0"+
-    "\1\116\1\3\5\0\3\3\1\0\2\3\1\0\15\3"+
-    "\1\117\1\120\1\121\1\122\1\123\3\3\12\0\2\3"+
-    "\1\0\2\3\5\0\3\3\1\0\2\3\1\0\13\3"+
-    "\1\124\11\3\12\0\2\3\1\0\2\3\5\0\3\3"+
-    "\1\0\2\3\1\0\12\3\1\125\12\3\12\0\2\3"+
-    "\1\0\2\3\5\0\3\3\1\0\2\3\1\0\13\3"+
-    "\1\126\11\3\12\0\2\3\1\0\2\3\5\0\3\3"+
-    "\1\127\1\130\1\3\1\0\25\3\12\0\2\3\1\0"+
-    "\2\3\5\0\3\3\1\0\2\3\1\0\3\3\1\131"+
-    "\21\3\11\0";
+    "\1\2\1\3\1\4\1\5\1\3\1\6\1\7\1\10"+
+    "\1\11\1\12\1\13\1\14\1\15\1\16\1\3\1\17"+
+    "\1\20\1\21\1\2\1\3\1\22\1\23\1\3\1\24"+
+    "\1\25\3\3\1\26\3\3\10\4\1\27\1\30\1\31"+
+    "\1\32\1\33\1\34\1\35\1\36\63\0\2\3\2\0"+
+    "\2\3\5\0\3\3\1\0\2\3\1\0\25\3\13\0"+
+    "\1\4\2\0\1\4\32\0\10\4\13\0\1\4\2\0"+
+    "\1\4\1\37\31\0\10\4\12\0\2\3\2\0\2\3"+
+    "\5\0\3\3\1\0\2\3\1\0\4\3\1\40\20\3"+
+    "\20\0\1\41\52\0\2\3\2\0\2\3\5\0\1\3"+
+    "\1\42\1\3\1\0\2\3\1\0\25\3\12\0\2\3"+
+    "\2\0\2\3\5\0\3\3\1\0\1\3\1\43\1\0"+
+    "\7\3\1\44\1\45\14\3\32\0\1\46\7\0\1\47"+
+    "\1\50\1\51\26\0\2\3\2\0\2\3\5\0\3\3"+
+    "\1\0\1\3\1\52\1\0\6\3\1\53\1\54\1\55"+
+    "\14\3\12\0\2\3\2\0\2\3\5\0\2\3\1\56"+
+    "\1\0\2\3\1\57\1\60\24\3\12\0\2\3\2\0"+
+    "\2\3\5\0\3\3\1\0\2\3\1\0\2\3\1\61"+
+    "\22\3\12\0\2\3\2\0\2\3\5\0\3\3\1\0"+
+    "\2\3\1\0\1\3\1\62\23\3\12\0\2\3\2\0"+
+    "\2\3\5\0\3\3\1\0\2\3\1\0\5\3\1\63"+
+    "\17\3\12\0\1\3\1\64\2\0\1\65\1\3\5\0"+
+    "\3\3\1\0\2\3\1\0\15\3\1\66\1\67\1\70"+
+    "\1\71\1\72\1\73\1\74\1\75\12\0\2\3\2\0"+
+    "\2\3\5\0\1\3\1\76\1\3\1\0\2\3\1\0"+
+    "\1\3\1\77\10\3\1\100\1\3\1\101\10\3\12\0"+
+    "\2\37\2\0\2\37\5\0\3\37\1\0\2\37\1\0"+
+    "\25\37\12\0\2\3\2\0\2\3\5\0\3\3\1\0"+
+    "\2\3\1\0\5\3\1\102\17\3\12\0\2\3\2\0"+
+    "\2\3\5\0\2\3\1\103\1\0\2\3\1\0\25\3"+
+    "\12\0\2\3\2\0\2\3\5\0\3\3\1\0\2\3"+
+    "\1\0\10\3\1\104\14\3\44\0\1\105\42\0\1\106"+
+    "\12\0\1\107\31\0\2\3\2\0\2\3\5\0\3\3"+
+    "\1\0\2\3\1\0\10\3\1\110\14\3\12\0\2\3"+
+    "\2\0\2\3\5\0\1\3\1\111\1\3\1\0\2\3"+
+    "\1\0\5\3\1\112\17\3\12\0\2\3\2\0\2\3"+
+    "\5\0\1\3\1\113\1\3\1\0\2\3\1\0\25\3"+
+    "\35\0\1\114\35\0\2\3\2\0\2\3\5\0\3\3"+
+    "\1\0\2\3\1\0\1\3\1\115\23\3\12\0\2\3"+
+    "\2\0\2\3\5\0\3\3\1\0\2\3\1\0\1\3"+
+    "\1\116\23\3\12\0\2\3\2\0\2\3\5\0\3\3"+
+    "\1\0\2\3\1\0\3\3\1\117\21\3\12\0\2\3"+
+    "\2\0\1\120\1\3\5\0\3\3\1\0\2\3\1\0"+
+    "\15\3\1\121\1\122\1\123\1\124\1\125\3\3\12\0"+
+    "\2\3\2\0\2\3\5\0\3\3\1\0\2\3\1\0"+
+    "\13\3\1\126\11\3\12\0\2\3\2\0\2\3\5\0"+
+    "\3\3\1\0\2\3\1\0\12\3\1\127\12\3\12\0"+
+    "\2\3\2\0\2\3\5\0\3\3\1\0\2\3\1\0"+
+    "\13\3\1\130\11\3\12\0\2\3\2\0\2\3\5\0"+
+    "\3\3\1\131\1\132\1\3\1\0\25\3\12\0\2\3"+
+    "\2\0\2\3\5\0\3\3\1\0\2\3\1\0\3\3"+
+    "\1\133\21\3\11\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1728];
+    int [] result = new int[1764];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -232,12 +233,12 @@ public class MyLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\1\1\11\6\1\3\11\12\1\10\11\6\1\2\0"+
-    "\2\11\5\1\1\0\25\1\3\11\4\1\1\11\14\1"+
-    "\1\11\2\1";
+    "\1\0\1\11\2\1\1\11\2\1\1\11\1\1\3\11"+
+    "\12\1\10\11\2\1\1\11\4\1\2\0\2\11\5\1"+
+    "\1\0\25\1\3\11\4\1\1\11\14\1\1\11\2\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[89];
+    int [] result = new int[91];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -324,6 +325,13 @@ boolean newLineFlag = false;
 Vector TokensOut = new Vector();
 
 public MCodeGenerator codeGen = new MCodeGenerator();
+public boolean branchFlag = false;
+
+public boolean genMCodeFlag = false;
+
+public void setGenMCode() {
+    genMCodeFlag = true;
+}
 
 public void echo(int pToken)  {
       try {
@@ -406,7 +414,7 @@ private static String returnTokenName(int pIntToken) throws IllegalArgumentExcep
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 224) {
+    while (i < 226) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -616,7 +624,14 @@ private static String returnTokenName(int pIntToken) throws IllegalArgumentExcep
   private void zzDoEOF() throws java.io.IOException {
     if (!zzEOFDone) {
       zzEOFDone = true;
+    if(genMCodeFlag==true) {
     writeOut(TokensOut);
+    codeGen.genFinal();
+}
+
+if(branchFlag == true) {
+    MainFrame.compiler.setBranchFlag(true);
+}
   yyclose();
     }
   }
@@ -770,225 +785,228 @@ private static String returnTokenName(int pIntToken) throws IllegalArgumentExcep
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { echo(sym.NewLine); codeGen.genMid();
-                                    return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
+            { TokensOut.addElement("WARNING, Unknow character, line: " + yyline + ", column: " + yychar);
+System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " + yychar);
+            }
+          case 55: break;
+          case 2: 
+            { echo(sym.ID); return new Symbol(sym.ID,         yyline, yychar, yytext());
+            }
+          case 56: break;
+          case 3: 
+            { echo(sym.Num); //codeGen.appendImm("D",yytext());  
+                                                    return new Symbol(sym.Num,       yyline, yychar, yytext());
+            }
+          case 57: break;
+          case 4: 
+            { codeGen.genMid();
+            }
+          case 58: break;
+          case 5: 
+            { yychar=0;
+            }
+          case 59: break;
+          case 6: 
+            { //return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
                                     /* if(newLineFlag == true) {
                                         //System.out.println("Salto linea");
                                         newLineFlag = false;
                                         return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
                                     }*/
             }
-          case 54: break;
-          case 2: 
-            { TokensOut.addElement("WARNING, Unknow character, line: " + yyline + ", column: " + yychar);
-System.out.println("WARNING, Unknow character, line: " + yyline + ", column: " + yychar);
-            }
-          case 55: break;
-          case 3: 
-            { echo(sym.ID); return new Symbol(sym.ID,         yyline, yychar, yytext());
-            }
-          case 56: break;
-          case 4: 
-            { echo(sym.Num); //codeGen.appendImm("D",yytext());  
-                                                    return new Symbol(sym.Num,       yyline, yychar, yytext());
-            }
-          case 57: break;
-          case 5: 
-            { yychar=0;
-            }
-          case 58: break;
-          case 6: 
+          case 60: break;
+          case 7: 
             { /*no hace nada, aumenta una columna,continua lectura*/yychar++;
             }
-          case 59: break;
-          case 7: 
+          case 61: break;
+          case 8: 
             { /* ignore white space. */
             }
-          case 60: break;
-          case 8: 
+          case 62: break;
+          case 9: 
             { /* ignora apostrofes. */
             }
-          case 61: break;
-          case 9: 
-            { echo(sym.J);    codeGen.appendOp("j");     return new Symbol(sym.J,           yyline, yychar, yytext());
-            }
-          case 62: break;
-          case 10: 
-            { echo(sym.OpPar); return new Symbol(sym.OpPar,   yyline, yychar, yytext());
-            }
           case 63: break;
-          case 11: 
-            { echo(sym.ClPar); return new Symbol(sym.ClPar,   yyline, yychar, yytext());
+          case 10: 
+            { echo(sym.J);    branchFlag = true; codeGen.appendOp("j");     return new Symbol(sym.J,           yyline, yychar, yytext());
             }
           case 64: break;
-          case 12: 
-            { echo(sym.OpKey); return new Symbol(sym.OpKey,   yyline, yychar, yytext());
+          case 11: 
+            { echo(sym.OpPar); return new Symbol(sym.OpPar,   yyline, yychar, yytext());
             }
           case 65: break;
-          case 13: 
-            { echo(sym.ClKey); return new Symbol(sym.ClKey,   yyline, yychar, yytext());
+          case 12: 
+            { echo(sym.ClPar); return new Symbol(sym.ClPar,   yyline, yychar, yytext());
             }
           case 66: break;
-          case 14: 
-            { echo(sym.Tag );  return new Symbol(sym.Tag,      yyline, yychar, yytext());
+          case 13: 
+            { echo(sym.OpKey); return new Symbol(sym.OpKey,   yyline, yychar, yytext());
             }
           case 67: break;
-          case 15: 
-            { echo(sym.Comma); return new Symbol(sym.Comma,   yyline, yychar, yytext());
+          case 14: 
+            { echo(sym.ClKey); return new Symbol(sym.ClKey,   yyline, yychar, yytext());
             }
           case 68: break;
-          case 16: 
-            { echo(sym.SemCo); return new Symbol(sym.SemCo,   yyline, yychar, yytext());
+          case 15: 
+            { echo(sym.Tag );  return new Symbol(sym.Tag,      yyline, yychar, yytext());
             }
           case 69: break;
-          case 17: 
-            { echo(sym.Points); codeGen.genFinal(); return new Symbol(sym.Points, yyline, yychar, yytext());
+          case 16: 
+            { echo(sym.Comma); return new Symbol(sym.Comma,   yyline, yychar, yytext());
             }
           case 70: break;
-          case 18: 
-            { echo(sym.Hexadecimal); codeGen.appendImm("H",yytext());  return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
+          case 17: 
+            { echo(sym.SemCo); return new Symbol(sym.SemCo,   yyline, yychar, yytext());
             }
           case 71: break;
-          case 19: 
-            { echo(sym.Lb);   codeGen.appendOp("lb");    return new Symbol(sym.Lb,         yyline, yychar, yytext());
+          case 18: 
+            { echo(sym.Points); return new Symbol(sym.Points, yyline, yychar, yytext());
             }
           case 72: break;
-          case 20: 
-            { echo(sym.Lw);   codeGen.appendOp("lw");    return new Symbol(sym.Lw,         yyline, yychar, yytext());
+          case 19: 
+            { echo(sym.Hexadecimal); codeGen.appendImm("H",yytext());  return new Symbol(sym.Hexadecimal,         yyline, yychar, yytext());
             }
           case 73: break;
-          case 21: 
-            { echo(sym.Sb);   codeGen.appendOp("sb");    return new Symbol(sym.Sb,         yyline, yychar, yytext());
+          case 20: 
+            { echo(sym.Lb);   codeGen.appendOp("lb");    return new Symbol(sym.Lb,         yyline, yychar, yytext());
             }
           case 74: break;
-          case 22: 
-            { echo(sym.Sw);   codeGen.appendOp("sw");    return new Symbol(sym.Sw,         yyline, yychar, yytext());
+          case 21: 
+            { echo(sym.Lw);   codeGen.appendOp("lw");    return new Symbol(sym.Lw,         yyline, yychar, yytext());
             }
           case 75: break;
-          case 23: 
-            { echo(sym.Or);   codeGen.appendOp("or");    return new Symbol(sym.Or,         yyline, yychar, yytext());
+          case 22: 
+            { echo(sym.Sb);   codeGen.appendOp("sb");    return new Symbol(sym.Sb,         yyline, yychar, yytext());
             }
           case 76: break;
-          case 24: 
-            { echo(sym.R9);   codeGen.appendReg("r9");return new Symbol(sym.R9,         yyline, yychar, yytext());
+          case 23: 
+            { echo(sym.Sw);   codeGen.appendOp("sw");    return new Symbol(sym.Sw,         yyline, yychar, yytext());
             }
           case 77: break;
-          case 25: 
-            { echo(sym.R0);   codeGen.appendReg("r0");    return new Symbol(sym.R0,         yyline, yychar, yytext());
+          case 24: 
+            { echo(sym.Or);   codeGen.appendOp("or");    return new Symbol(sym.Or,         yyline, yychar, yytext());
             }
           case 78: break;
-          case 26: 
-            { echo(sym.R1);   codeGen.appendReg("r1");  return new Symbol(sym.R1,         yyline, yychar, yytext());
+          case 25: 
+            { echo(sym.R9);   codeGen.appendReg("r9");return new Symbol(sym.R9,         yyline, yychar, yytext());
             }
           case 79: break;
-          case 27: 
-            { echo(sym.R2);   codeGen.appendReg("r2"); return new Symbol(sym.R2,         yyline, yychar, yytext());
+          case 26: 
+            { echo(sym.R0);   codeGen.appendReg("r0");    return new Symbol(sym.R0,         yyline, yychar, yytext());
             }
           case 80: break;
-          case 28: 
-            { echo(sym.R3);   codeGen.appendReg("r3");return new Symbol(sym.R3,         yyline, yychar, yytext());
+          case 27: 
+            { echo(sym.R1);   codeGen.appendReg("r1");  return new Symbol(sym.R1,         yyline, yychar, yytext());
             }
           case 81: break;
-          case 29: 
-            { echo(sym.R4);   codeGen.appendReg("r4");return new Symbol(sym.R4,         yyline, yychar, yytext());
+          case 28: 
+            { echo(sym.R2);   codeGen.appendReg("r2"); return new Symbol(sym.R2,         yyline, yychar, yytext());
             }
           case 82: break;
-          case 30: 
-            { echo(sym.R5);   codeGen.appendReg("r5");return new Symbol(sym.R5,         yyline, yychar, yytext());
+          case 29: 
+            { echo(sym.R3);   codeGen.appendReg("r3");return new Symbol(sym.R3,         yyline, yychar, yytext());
             }
           case 83: break;
-          case 31: 
-            { echo(sym.R6);   codeGen.appendReg("r6");return new Symbol(sym.R6,         yyline, yychar, yytext());
+          case 30: 
+            { echo(sym.R4);   codeGen.appendReg("r4");return new Symbol(sym.R4,         yyline, yychar, yytext());
             }
           case 84: break;
-          case 32: 
-            { echo(sym.R7);   codeGen.appendReg("r7");return new Symbol(sym.R7,         yyline, yychar, yytext());
+          case 31: 
+            { echo(sym.R5);   codeGen.appendReg("r5");return new Symbol(sym.R5,         yyline, yychar, yytext());
             }
           case 85: break;
-          case 33: 
-            { echo(sym.R8);   codeGen.appendReg("r8");return new Symbol(sym.R8,         yyline, yychar, yytext());
+          case 32: 
+            { echo(sym.R6);   codeGen.appendReg("r6");return new Symbol(sym.R6,         yyline, yychar, yytext());
             }
           case 86: break;
-          case 34: 
-            { echo(sym.Je);   codeGen.appendOp("je");    return new Symbol(sym.Je,         yyline, yychar, yytext());
+          case 33: 
+            { echo(sym.R7);   codeGen.appendReg("r7");return new Symbol(sym.R7,         yyline, yychar, yytext());
             }
           case 87: break;
-          case 35: 
-            { echo(sym.Xor);  codeGen.appendOp("xor");   return new Symbol(sym.Xor,       yyline, yychar, yytext());
+          case 34: 
+            { echo(sym.R8);   codeGen.appendReg("r8");return new Symbol(sym.R8,         yyline, yychar, yytext());
             }
           case 88: break;
-          case 36: 
-            { echo(sym.Lmw);  codeGen.appendOp("lmw");   return new Symbol(sym.Lmw,       yyline, yychar, yytext());
+          case 35: 
+            { echo(sym.Je);   branchFlag = true; codeGen.appendOp("je");    return new Symbol(sym.Je,         yyline, yychar, yytext());
             }
           case 89: break;
-          case 37: 
-            { echo(sym.Smw);  codeGen.appendOp("smw");   return new Symbol(sym.Smw,       yyline, yychar, yytext());
+          case 36: 
+            { echo(sym.Xor);  codeGen.appendOp("xor");   return new Symbol(sym.Xor,       yyline, yychar, yytext());
             }
           case 90: break;
-          case 38: 
-            { echo(sym.Shl);  codeGen.appendOp("shl");   return new Symbol(sym.Shl,       yyline, yychar, yytext());
+          case 37: 
+            { echo(sym.Lmw);  codeGen.appendOp("lmw");   return new Symbol(sym.Lmw,       yyline, yychar, yytext());
             }
           case 91: break;
-          case 39: 
-            { echo(sym.Shr);  codeGen.appendOp("shr");   return new Symbol(sym.Shr,       yyline, yychar, yytext());
+          case 38: 
+            { echo(sym.Smw);  codeGen.appendOp("smw");   return new Symbol(sym.Smw,       yyline, yychar, yytext());
             }
           case 92: break;
-          case 40: 
-            { echo(sym.Mul);  codeGen.appendOp("mul");   return new Symbol(sym.Mul,       yyline, yychar, yytext());
+          case 39: 
+            { echo(sym.Shl);  codeGen.appendOp("shl");   return new Symbol(sym.Shl,       yyline, yychar, yytext());
             }
           case 93: break;
-          case 41: 
-            { echo(sym.Min);  codeGen.appendOp("min");   return new Symbol(sym.Min,       yyline, yychar, yytext());
+          case 40: 
+            { echo(sym.Shr);  codeGen.appendOp("shr");   return new Symbol(sym.Shr,       yyline, yychar, yytext());
             }
           case 94: break;
-          case 42: 
-            { echo(sym.And);  codeGen.appendOp("and");   return new Symbol(sym.And,       yyline, yychar, yytext());
+          case 41: 
+            { echo(sym.Mul);  codeGen.appendOp("mul");   return new Symbol(sym.Mul,       yyline, yychar, yytext());
             }
           case 95: break;
-          case 43: 
-            { echo(sym.R10);  codeGen.appendReg("r10");return new Symbol(sym.R10,       yyline, yychar, yytext());
+          case 42: 
+            { echo(sym.Min);  codeGen.appendOp("min");   return new Symbol(sym.Min,       yyline, yychar, yytext());
             }
           case 96: break;
-          case 44: 
-            { echo(sym.R11);  codeGen.appendReg("r11");return new Symbol(sym.R11,       yyline, yychar, yytext());
+          case 43: 
+            { echo(sym.And);  codeGen.appendOp("and");   return new Symbol(sym.And,       yyline, yychar, yytext());
             }
           case 97: break;
-          case 45: 
-            { echo(sym.R12);  codeGen.appendReg("r12");return new Symbol(sym.R12,       yyline, yychar, yytext());
+          case 44: 
+            { echo(sym.R10);  codeGen.appendReg("r10");return new Symbol(sym.R10,       yyline, yychar, yytext());
             }
           case 98: break;
-          case 46: 
-            { echo(sym.R13);  codeGen.appendReg("r13");return new Symbol(sym.R13,       yyline, yychar, yytext());
+          case 45: 
+            { echo(sym.R11);  codeGen.appendReg("r11");return new Symbol(sym.R11,       yyline, yychar, yytext());
             }
           case 99: break;
-          case 47: 
-            { echo(sym.R14);  codeGen.appendReg("r14");return new Symbol(sym.R14,       yyline, yychar, yytext());
+          case 46: 
+            { echo(sym.R12);  codeGen.appendReg("r12");return new Symbol(sym.R12,       yyline, yychar, yytext());
             }
           case 100: break;
-          case 48: 
-            { echo(sym.R15);  codeGen.appendReg("r15");return new Symbol(sym.R15,       yyline, yychar, yytext());
+          case 47: 
+            { echo(sym.R13);  codeGen.appendReg("r13");return new Symbol(sym.R13,       yyline, yychar, yytext());
             }
           case 101: break;
-          case 49: 
-            { echo(sym.Jlt);  codeGen.appendOp("jlt");   return new Symbol(sym.Jlt,       yyline, yychar, yytext());
+          case 48: 
+            { echo(sym.R14);  codeGen.appendReg("r14");return new Symbol(sym.R14,       yyline, yychar, yytext());
             }
           case 102: break;
-          case 50: 
-            { echo(sym.Jne);  codeGen.appendOp("jne");   return new Symbol(sym.Jne,       yyline, yychar, yytext());
+          case 49: 
+            { echo(sym.R15);  codeGen.appendReg("r15");return new Symbol(sym.R15,       yyline, yychar, yytext());
             }
           case 103: break;
-          case 51: 
-            { echo(sym.Jgt);  codeGen.appendOp("jgt");   return new Symbol(sym.Jgt,       yyline, yychar, yytext());
+          case 50: 
+            { echo(sym.Jlt);  branchFlag = true; codeGen.appendOp("jlt");   return new Symbol(sym.Jlt,       yyline, yychar, yytext());
             }
           case 104: break;
-          case 52: 
-            { echo(sym.Plus); codeGen.appendOp("plus");   return new Symbol(sym.Plus,     yyline, yychar, yytext());
+          case 51: 
+            { echo(sym.Jne);  branchFlag = true; codeGen.appendOp("jne");   return new Symbol(sym.Jne,       yyline, yychar, yytext());
             }
           case 105: break;
-          case 53: 
-            { echo(sym.Nand); codeGen.appendOp("nand");  return new Symbol(sym.Nand,     yyline, yychar, yytext());
+          case 52: 
+            { echo(sym.Jgt);  branchFlag = true; codeGen.appendOp("jgt");   return new Symbol(sym.Jgt,       yyline, yychar, yytext());
             }
           case 106: break;
+          case 53: 
+            { echo(sym.Plus); codeGen.appendOp("plus");   return new Symbol(sym.Plus,     yyline, yychar, yytext());
+            }
+          case 107: break;
+          case 54: 
+            { echo(sym.Nand); codeGen.appendOp("nand");  return new Symbol(sym.Nand,     yyline, yychar, yytext());
+            }
+          case 108: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

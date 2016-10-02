@@ -57,7 +57,6 @@ public class ALU {
         else{
             makeRegistersOp(opCode,regDest,pOperand1,pOperand2);
         }
-         
     }
     /*
     * Makes the arithmeti,logic operation in the case that the second operand is
@@ -215,8 +214,5 @@ public class ALU {
         
        
     }
-    
-    
-    
     
 }

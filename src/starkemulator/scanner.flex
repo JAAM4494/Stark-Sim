@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import starkemulator.help.MCodeGenerator;
+import starkemulator.ui.MainFrame;
 
 %%
 %class MyLexer
@@ -42,6 +43,13 @@ boolean newLineFlag = false;
 Vector TokensOut = new Vector();
 
 public MCodeGenerator codeGen = new MCodeGenerator();
+public boolean branchFlag = false;
+
+public boolean genMCodeFlag = false;
+
+public void setGenMCode() {
+    genMCodeFlag = true;
+}
 
 public void echo(int pToken)  {
       try {
@@ -109,12 +117,21 @@ private static String returnTokenName(int pIntToken) throws IllegalArgumentExcep
 %eofval}
 
 %eof{
-writeOut(TokensOut);
+if(genMCodeFlag==true) {
+    writeOut(TokensOut);
+    codeGen.genFinal();
+}
+
+if(branchFlag == true) {
+    MainFrame.compiler.setBranchFlag(true);
+}
 %eof}
 
 LETTER=[a-zA-Z]
 DIGIT=[0-9]
 ALPHA_NUMERIC={LETTER}|{DIGIT}
+
+EOL=[$]
 
 
 ID=("_"|{LETTER})({ALPHA_NUMERIC})*
@@ -137,14 +154,16 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 \' { /* ignora apostrofes. */ }
 
 <YYINITIAL> {WHITE_SPACE}      {/*no hace nada, aumenta una columna,continua lectura*/yychar++; }
-<YYINITIAL> {NEW_LINE}*        { echo(sym.NewLine); codeGen.genMid();
-                                    return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
+<YYINITIAL> {NEW_LINE}         { 
+                                    //return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
                                     /* if(newLineFlag == true) {
                                         //System.out.println("Salto linea");
                                         newLineFlag = false;
                                         return  new Symbol(sym.NewLine,  yyline, yychar, yytext());
                                     }*/
 }
+
+<YYINITIAL> {EOL}              {codeGen.genMid();}
 
 <YYINITIAL>"plus"              {echo(sym.Plus); codeGen.appendOp("plus");   return new Symbol(sym.Plus,     yyline, yychar, yytext());}
 <YYINITIAL>"min"               {echo(sym.Min);  codeGen.appendOp("min");   return new Symbol(sym.Min,       yyline, yychar, yytext());}
@@ -161,11 +180,11 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 <YYINITIAL>"lw"                {echo(sym.Lw);   codeGen.appendOp("lw");    return new Symbol(sym.Lw,         yyline, yychar, yytext());}
 <YYINITIAL>"smw"               {echo(sym.Smw);  codeGen.appendOp("smw");   return new Symbol(sym.Smw,       yyline, yychar, yytext());}
 <YYINITIAL>"lmw"               {echo(sym.Lmw);  codeGen.appendOp("lmw");   return new Symbol(sym.Lmw,       yyline, yychar, yytext());}
-<YYINITIAL>"je"                {echo(sym.Je);   codeGen.appendOp("je");    return new Symbol(sym.Je,         yyline, yychar, yytext());}
-<YYINITIAL>"jne"               {echo(sym.Jne);  codeGen.appendOp("jne");   return new Symbol(sym.Jne,       yyline, yychar, yytext());}
-<YYINITIAL>"jlt"               {echo(sym.Jlt);  codeGen.appendOp("jlt");   return new Symbol(sym.Jlt,       yyline, yychar, yytext());}		
-<YYINITIAL>"jgt"               {echo(sym.Jgt);  codeGen.appendOp("jgt");   return new Symbol(sym.Jgt,       yyline, yychar, yytext());}
-<YYINITIAL>"j"                 {echo(sym.J);    codeGen.appendOp("j");     return new Symbol(sym.J,           yyline, yychar, yytext());}
+<YYINITIAL>"je"                {echo(sym.Je);   branchFlag = true; codeGen.appendOp("je");    return new Symbol(sym.Je,         yyline, yychar, yytext());}
+<YYINITIAL>"jne"               {echo(sym.Jne);  branchFlag = true; codeGen.appendOp("jne");   return new Symbol(sym.Jne,       yyline, yychar, yytext());}
+<YYINITIAL>"jlt"               {echo(sym.Jlt);  branchFlag = true; codeGen.appendOp("jlt");   return new Symbol(sym.Jlt,       yyline, yychar, yytext());}		
+<YYINITIAL>"jgt"               {echo(sym.Jgt);  branchFlag = true; codeGen.appendOp("jgt");   return new Symbol(sym.Jgt,       yyline, yychar, yytext());}
+<YYINITIAL>"j"                 {echo(sym.J);    branchFlag = true; codeGen.appendOp("j");     return new Symbol(sym.J,           yyline, yychar, yytext());}
 
 <YYINITIAL>"r0"                {echo(sym.R0);   codeGen.appendReg("r0");    return new Symbol(sym.R0,         yyline, yychar, yytext());}
 <YYINITIAL>"r1"                {echo(sym.R1);   codeGen.appendReg("r1");  return new Symbol(sym.R1,         yyline, yychar, yytext());}
@@ -192,7 +211,7 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 <YYINITIAL>"#"                 {echo(sym.Tag );  return new Symbol(sym.Tag,      yyline, yychar, yytext());}
 <YYINITIAL>","                 {echo(sym.Comma); return new Symbol(sym.Comma,   yyline, yychar, yytext());}
 <YYINITIAL>";"                 {echo(sym.SemCo); return new Symbol(sym.SemCo,   yyline, yychar, yytext());}
-<YYINITIAL>":"                 {echo(sym.Points); codeGen.genFinal(); return new Symbol(sym.Points, yyline, yychar, yytext());}
+<YYINITIAL>":"                 {echo(sym.Points); return new Symbol(sym.Points, yyline, yychar, yytext());}
 
 <YYINITIAL>{DIGIT}+            {echo(sym.Num); //codeGen.appendImm("D",yytext());  
                                                     return new Symbol(sym.Num,       yyline, yychar, yytext());}

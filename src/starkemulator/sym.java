@@ -9,13 +9,13 @@ package starkemulator;
 public class sym {
   /* terminals */
   public static final int R10 = 32;
-  public static final int Comma = 47;
+  public static final int Comma = 46;
   public static final int Or = 7;
   public static final int ClKey = 41;
-  public static final int Hexadecimal = 46;
-  public static final int SemCo = 45;
+  public static final int Hexadecimal = 45;
+  public static final int SemCo = 44;
   public static final int Lb = 12;
-  public static final int Points = 49;
+  public static final int Points = 48;
   public static final int J = 21;
   public static final int OpPar = 38;
   public static final int Shr = 10;
@@ -27,7 +27,7 @@ public class sym {
   public static final int Jne = 18;
   public static final int EOF = 0;
   public static final int And = 5;
-  public static final int Tag = 48;
+  public static final int Tag = 47;
   public static final int error = 1;
   public static final int Smw = 15;
   public static final int Jgt = 20;
@@ -46,7 +46,6 @@ public class sym {
   public static final int R0 = 22;
   public static final int Mul = 4;
   public static final int Je = 17;
-  public static final int NewLine = 44;
   public static final int Nand = 6;
   public static final int ClPar = 39;
   public static final int Sb = 11;
@@ -103,7 +102,6 @@ public class sym {
   "ClKey",
   "Num",
   "ID",
-  "NewLine",
   "SemCo",
   "Hexadecimal",
   "Comma",

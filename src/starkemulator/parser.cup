@@ -67,7 +67,7 @@ terminal   OpKey,    ClKey;
 
 terminal   String Num;
 terminal   ID;
-terminal   NewLine, SemCo;
+terminal   SemCo;
 terminal   Hexadecimal;
 
 
@@ -129,61 +129,61 @@ LB_STATEMENT | SHW_STATEMENT | LHW_STATEMENT | SW_STATEMENT | LW_STATEMENT |
  | TAG_STATEMENT | BIN_STATEMENT ;
 
 
-PLUS_STATEMENT ::= Plus:p REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine {: alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  :}  ;
+PLUS_STATEMENT ::= Plus:p REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  :}  ;
 
-MIN_STATEMENT ::= Min REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine {: alu.aluArithmeticLogicAdmin(1,s,d,t.toString());   :}  ;
+MIN_STATEMENT ::= Min REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(1,s,d,t.toString());   :}  ;
 
-MUL_STATEMENT ::= Mul REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine{: alu.aluArithmeticLogicAdmin(2,s,d,t.toString());    :}  ; 
-
-
-AND_STATEMENT ::= And REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine {: alu.aluArithmeticLogicAdmin(3,s,d,t.toString());   :}  ; 
-
-NAND_STATEMENT ::= Nand REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine {: alu.aluArithmeticLogicAdmin(6,s,d,t.toString());   :}  ; 
-
-OR_STATEMENT ::= Or REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine {: alu.aluArithmeticLogicAdmin(4,s,d,t.toString());   :} ;
-
-XOR_STATEMENT ::= Xor REGISTERS:s Comma REGISTERS:d Comma COPERAND:t NewLine  {: alu.aluArithmeticLogicAdmin(5,s,d,t.toString());   :} ;
-
-SHL_STATEMENT ::= Shl REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t NewLine {: shiftOp.makeShiftOp(1,s,d,t.toString());   :} ;
-
-SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t NewLine {: shiftOp.makeShiftOp(0,s,d,t.toString());   :} ;
+MUL_STATEMENT ::= Mul REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(2,s,d,t.toString());    :}  ; 
 
 
+AND_STATEMENT ::= And REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(3,s,d,t.toString());   :}  ; 
 
-SB_STATEMENT ::= Sb REGISTERS Comma COPERAND OpPar REGISTERS ClPar NewLine  ; 
+NAND_STATEMENT ::= Nand REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(6,s,d,t.toString());   :}  ; 
 
-LB_STATEMENT ::= Lb REGISTERS Comma COPERAND OpPar REGISTERS ClPar NewLine  ; 
+OR_STATEMENT ::= Or REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(4,s,d,t.toString());   :} ;
 
-SHW_STATEMENT ::= Smw REGISTERS Comma COPERAND OpPar REGISTERS ClPar NewLine  ; 
+XOR_STATEMENT ::= Xor REGISTERS:s Comma REGISTERS:d Comma COPERAND:t  {: alu.aluArithmeticLogicAdmin(5,s,d,t.toString());   :} ;
 
-LHW_STATEMENT ::= Lmw REGISTERS Comma COPERAND OpPar REGISTERS ClPar NewLine  ; 
+SHL_STATEMENT ::= Shl REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(1,s,d,t.toString());   :} ;
 
-
-SW_STATEMENT ::= Sw REGISTERS Comma COPERAND OpPar REGISTERS ClPar NewLine  ; 
-
-LW_STATEMENT ::= Lw REGISTERS Comma COPERAND OpPar REGISTERS ClPar NewLine  ;
+SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(0,s,d,t.toString());   :} ;
 
 
 
-JE_STATEMENT ::= Je REGISTERS Comma REGISTERS Comma ID NewLine ;
+SB_STATEMENT ::= Sb REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-JNE_STATEMENT ::= Jne REGISTERS Comma REGISTERS Comma ID NewLine ;
+LB_STATEMENT ::= Lb REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-JLT_STATEMENT ::= Jlt REGISTERS Comma REGISTERS Comma ID NewLine ;
+SHW_STATEMENT ::= Smw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-JGT_STATEMENT ::= Jgt REGISTERS Comma REGISTERS Comma ID NewLine ;
+LHW_STATEMENT ::= Lmw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
 
-J_STATEMENT ::= J ID:id NewLine  ;
+SW_STATEMENT ::= Sw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-TAG_STATEMENT ::= ID  Points NewLine ;
+LW_STATEMENT ::= Lw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ;
+
+
+
+JE_STATEMENT ::= Je REGISTERS Comma REGISTERS Comma ID ;
+
+JNE_STATEMENT ::= Jne REGISTERS Comma REGISTERS Comma ID ;
+
+JLT_STATEMENT ::= Jlt REGISTERS Comma REGISTERS Comma ID ;
+
+JGT_STATEMENT ::= Jgt REGISTERS Comma REGISTERS Comma ID ;
+
+
+J_STATEMENT ::= J ID:id  ;
+
+TAG_STATEMENT ::= ID  Points ;
 
 COPERAND ::= INMEDIATE:d {: RESULT=d; :}   |  REGISTERS:d {: RESULT=d; :} ;
 
 
 INMEDIATE ::= (Tag Num ):d {: RESULT=d; :}   |  ( Hexadecimal):d {: RESULT=d; :} ;
 
-BIN_STATEMENT ::= Num:d NewLine {: RESULT=d;   simMachine.proccessMachineCode(d.toString());   :} ;
+BIN_STATEMENT ::= Num:d {: RESULT=d;   simMachine.proccessMachineCode(d.toString());   :} ;
 
 
 
