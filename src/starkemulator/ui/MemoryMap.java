@@ -5,6 +5,11 @@
  */
 package starkemulator.ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import starkemulator.arch.Memory;
+
 /**
  *
  * @author jaam
@@ -19,6 +24,28 @@ public class MemoryMap extends javax.swing.JFrame {
         
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+    }
+    
+    public void updateMap() {
+        byte [] storage = Memory.getMemory();
+        DefaultTableModel newModel = new DefaultTableModel();
+        newModel.addColumn("Address");
+        newModel.addColumn("Content");
+        newModel.setRowCount(storage.length);
+        for(int i=0; i < storage.length;i++) {
+            String tmp = Integer.toHexString(i); // dec to bin
+            tmp = tmp.toUpperCase();
+            tmp = "0x" + tmp; 
+            newModel.setValueAt(tmp, i, 0);
+            String tmp2 = Integer.toHexString(storage[i]);
+            tmp2 = tmp2.toUpperCase();
+            newModel.setValueAt("0x" + tmp2, i, 1);
+        }
+        jTable1.setModel(newModel);
+        
+        for (byte b : storage) {
+            System.out.format("0x%x ", b);
+        }
     }
 
     /**

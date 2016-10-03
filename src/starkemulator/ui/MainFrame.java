@@ -861,8 +861,11 @@ public class MainFrame extends javax.swing.JFrame {
         //</editor-fold>
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            MemoryMap window;
             public void run() {
-                new MemoryMap().setVisible(true);
+                window = new MemoryMap();
+                window.setVisible(true);
+                window.updateMap();
             }
         });
     }//GEN-LAST:event_meMapMenuActionPerformed

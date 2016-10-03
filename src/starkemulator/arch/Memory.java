@@ -8,6 +8,7 @@ package starkemulator.arch;
 import static java.lang.Thread.sleep;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import starkemulator.ui.MainFrame;
 
 /**
@@ -16,7 +17,11 @@ import starkemulator.ui.MainFrame;
  */
 public class Memory {
 
-    private byte[] storage = new byte[2048];
+    private static byte[] storage = new byte[2048];
+    
+    public static byte[] getMemory() {
+        return Memory.storage;
+    }
 
     public void memoryAdmin(int opCode, String regDest, String pOperand1, String pOperand2) throws InterruptedException {
         if (!pOperand2.contains("r") || pOperand2.contains("0x")) {
@@ -36,7 +41,7 @@ public class Memory {
             if (opCode == 1 || opCode == 3 || opCode == 5) {
                 setReg(regDest, result);
                 updateGUI(regDest, result);
-            }
+            } 
         } else {
             int regtoModVal = getReg(regDest);
             int op1 = getReg(pOperand1);
@@ -44,7 +49,7 @@ public class Memory {
             if (opCode == 1 || opCode == 3 || opCode == 5) {
                 setReg(regDest, result);
                 updateGUI(regDest, result);
-            }
+            } 
 
         }
     }
@@ -58,7 +63,7 @@ public class Memory {
         if (opCode == 1 || opCode == 3 || opCode == 5) {
             setReg(regDest, result);
             updateGUI(regDest, result);
-        }
+        } 
     }
 
     /*
