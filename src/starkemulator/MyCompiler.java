@@ -1,8 +1,11 @@
 package starkemulator;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -33,28 +36,38 @@ public class MyCompiler {
 
         boolean canGenerateBlock = false;
 
-        try {
+        MyLexer AnalizadorLexico = null;
+        MyParser AnalizadorSintactico = null;
 
-            MyLexer AnalizadorLexico = new MyLexer(new FileReader(pFile));
-            MyParser AnalizadorSintactico = new MyParser(AnalizadorLexico);
+        if (!hasTags(pFile)) {
 
-            if (hasTags(pFile)) {
+            try {
+
+                AnalizadorLexico = new MyLexer(new FileReader(pFile));
+                AnalizadorSintactico = new MyParser(AnalizadorLexico);
+
                 AnalizadorLexico.setGenMCode();
+
+                AnalizadorSintactico.parse();
+
+                canGenerateBlock = true;
+
+                System.out.println("Fin de escaneo..!!");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            AnalizadorSintactico.parse();
-
-            canGenerateBlock = true;
-
-            // Symbol currToken;
-            //   do {
-            // currToken = AnalizadorLexico.next_token();
-            // } while (currToken.sym != sym.EOF);
-            System.out.println("Fin de escaneo..!!");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            Symbol currToken = null;
+            try {
+                AnalizadorLexico = new MyLexer(new FileReader(pFile));
+                do {
+                    currToken = AnalizadorLexico.next_token();
+                } while (currToken.sym != sym.EOF);
+            } catch (IOException ex) {
+                Logger.getLogger(MyCompiler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return canGenerateBlock;
@@ -88,7 +101,102 @@ public class MyCompiler {
     }
 
     public void execBranches() {
-        System.out.println("Going to run branches");
+        //System.out.println("Going to run code with branches");
+        BasicBlock firstBlock = progrBlocks.get(0);
+        
+        if(firstBlock.getBlockTag().equals("d3f4ul7_")) {
+            String tmpStr = execBranchesAux(firstBlock.getInstructions());
+            stepAnalysis(tmpStr);
+            firstBlock.setChecked(true);
+        } else {
+            int index = 1;
+            do {
+                BasicBlock tempBlock = progrBlocks.get(index);
+                if(blockhasBranches(tempBlock.getInstructions())) {
+                    // ejecutar cada bloque de codigo que tiene algun tipo de salto
+                    //
+                    //
+                } else {
+                    tempBlock.setChecked(true);
+                }
+            } while(isAllChecked(progrBlocks));
+        }
+    }
+    
+    private boolean isAllChecked(ArrayList<BasicBlock> pBlocks) {
+        boolean retVal = false;
+        
+        int count = 0;
+        
+        for (int i = 0; i < pBlocks.size(); i++) {
+            if(pBlocks.get(i).isChecked()) {
+                count += 1;
+            }
+        }
+        
+        if(count == pBlocks.size()) {
+            retVal = true;
+        }
+        
+        return retVal;
+    }
+    
+    private boolean blockhasBranches(ArrayList<String> pBlock) {
+        boolean retVal = false;
+        
+        for (int i = 0; i < pBlock.size(); i++) {
+            if(pBlock.get(i).contains("j") || pBlock.get(i).contains("je") ||
+                    pBlock.get(i).contains("jne") || pBlock.get(i).contains("jlt") ||
+                    pBlock.get(i).contains("jgt")) 
+            {
+                retVal = true;
+                break;
+            }
+        }
+        
+        return retVal;
+    }
+    
+    private String execBranchesAux(ArrayList<String> pBlock) {
+        String retCode = "";
+        
+        for (int i = 0; i < pBlock.size(); i++) {
+            retCode = retCode + pBlock.get(i) + "\n";
+        }
+        
+        return retCode;
+    }
+    
+    private void stepAnalysis(String pCode) {
+        BufferedWriter out = null;
+        File temp = null;
+        
+        try {
+            temp = File.createTempFile("TmpScrpt", ".txt");
+            //create a temp file
+            temp.deleteOnExit();
+            
+            out = new BufferedWriter(new FileWriter(temp.getAbsolutePath()));
+            out.write(pCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        MyLexer AnalizadorLexico = null;
+        MyParser AnalizadorSintactico = null;
+        try {
+            AnalizadorLexico = new MyLexer(new FileReader(temp));
+            AnalizadorSintactico = new MyParser(AnalizadorLexico);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MyCompiler.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
     public void crearBancoInstr(File pTempFile) {

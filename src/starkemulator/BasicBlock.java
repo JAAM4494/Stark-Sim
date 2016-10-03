@@ -14,11 +14,13 @@ import java.util.ArrayList;
 public class BasicBlock {
     
     private String blockTag;
+    private boolean checked;
     private ArrayList<String> instructions;
     
     public BasicBlock() {
         blockTag = "";
         instructions = new ArrayList<>();
+        checked = false;
     }
     
     public void addInstr(String pInstr) {
@@ -35,6 +37,14 @@ public class BasicBlock {
 
     public ArrayList<String> getInstructions() {
         return instructions;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
     
 }
