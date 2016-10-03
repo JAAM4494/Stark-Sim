@@ -89,9 +89,9 @@ public class Memory {
             case 3: // load halfword
                 ByteBuffer bb = ByteBuffer.allocate(4);
 
-                bb.putShort(this.loadHalfWord(address));
                 short tmp = 0;
                 bb.putShort(tmp);
+                bb.putShort(this.loadHalfWord(address));
 
                 retVal = bb.getInt(0);
                 break;
@@ -104,11 +104,11 @@ public class Memory {
             case 5: // load byte
                 ByteBuffer bb2 = ByteBuffer.allocate(4);
 
-                bb2.put(this.loadByte(address));
                 short tmp2 = 0;
                 byte tmp3 = 0;
                 bb2.putShort(tmp2);
-                bb2.putShort(tmp3);
+                bb2.put(tmp3);
+                bb2.put(this.loadByte(address));
 
                 retVal = bb2.getInt(0);
                 break;
