@@ -242,6 +242,7 @@ public class MainFrame extends javax.swing.JFrame {
         stepFBtn = new javax.swing.JButton();
         stepBBtn = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
+        perfLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenuItem();
@@ -625,6 +626,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/starkemulator/ui/images/stark.png"))); // NOI18N
         jLabel19.setText("jLabel19");
 
+        perfLbl.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        perfLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        perfLbl.setText("Performance");
+
         fileMenu.setText("File");
 
         newMenu.setText("New Script");
@@ -683,6 +688,11 @@ public class MainFrame extends javax.swing.JFrame {
         toolsMenu.setText("Tools");
 
         meMapMenu.setText("View Memory Map");
+        meMapMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                meMapMenuActionPerformed(evt);
+            }
+        });
         toolsMenu.add(meMapMenu);
 
         jMenuBar1.add(toolsMenu);
@@ -711,7 +721,9 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(openMcBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(perfLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(runBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stepFBtn)
@@ -736,7 +748,8 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(stepFBtn)
                     .addComponent(stepBBtn)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(perfLbl))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1)
@@ -821,6 +834,38 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         runScript();
     }//GEN-LAST:event_runBtnActionPerformed
+
+    private void meMapMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meMapMenuActionPerformed
+        // TODO add your handling code here:
+                /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MemoryMap().setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_meMapMenuActionPerformed
 
     private void runScript() {
 
@@ -1068,6 +1113,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton openMcBtn;
     private javax.swing.JMenuItem openMcMenu;
     private javax.swing.JMenuItem openMenu;
+    private javax.swing.JLabel perfLbl;
     private javax.swing.JTextField r0Tv;
     private javax.swing.JTextField r10Tv;
     private javax.swing.JTextField r11Tv;
