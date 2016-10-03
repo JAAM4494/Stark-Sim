@@ -103,7 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
                            preparenewVal();
                            updateRegisters();
                         }
-                        sleep(500); 
+                        sleep(1000); 
                     }
                 } catch(InterruptedException v) {
                     System.out.println(v);
