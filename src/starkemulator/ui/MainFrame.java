@@ -250,12 +250,11 @@ public class MainFrame extends javax.swing.JFrame {
         openMcMenu = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenu = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
         runningMenu = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         toolsMenu = new javax.swing.JMenu();
-        helpMenu = new javax.swing.JMenu();
+        meMapMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -671,9 +670,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(fileMenu);
 
-        editMenu.setText("Edit");
-        jMenuBar1.add(editMenu);
-
         runningMenu.setText("Running");
 
         jMenuItem6.setText("Run");
@@ -685,10 +681,11 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1.add(runningMenu);
 
         toolsMenu.setText("Tools");
-        jMenuBar1.add(toolsMenu);
 
-        helpMenu.setText("Help");
-        jMenuBar1.add(helpMenu);
+        meMapMenu.setText("View Memory Map");
+        toolsMenu.add(meMapMenu);
+
+        jMenuBar1.add(toolsMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -1033,10 +1030,8 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton binBtn;
     private javax.swing.JButton decBtn;
-    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
     private javax.swing.JButton hexBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1066,6 +1061,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextPane mainTextPane;
+    private javax.swing.JMenuItem meMapMenu;
     private javax.swing.JButton newBtn;
     private javax.swing.JMenuItem newMenu;
     private javax.swing.JButton openBtn;

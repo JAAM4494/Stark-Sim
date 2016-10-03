@@ -53,11 +53,6 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="editMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Edit"/>
-          </Properties>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="runningMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Running"/>
@@ -79,11 +74,13 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Tools"/>
           </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="helpMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Help"/>
-          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="meMapMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="View Memory Map"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>

@@ -7,6 +7,7 @@ import java.io.*;
 
 import starkemulator.arch.Register;
 import starkemulator.arch.ALU;
+import starkemulator.arch.Memory;
 import starkemulator.arch.Shift;
 import starkemulator.machineCodeAdmin.SimulateMachineCode;
 import starkemulator.performanceMetrics.PerformanceMetricsAdmin;
@@ -19,7 +20,9 @@ import starkemulator.performanceMetrics.PerformanceMetricsAdmin;
 action code {:
 
 ALU alu = new ALU();
+Memory memory = new Memory();
 Shift shiftOp= new Shift();
+
 SimulateMachineCode simMachine= new SimulateMachineCode();
 PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 :}
@@ -153,18 +156,20 @@ SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp
 
 
 
-SB_STATEMENT ::= Sb REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
+SW_STATEMENT ::= Sw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(0,f,t,s.toString()); :}; 
 
-LB_STATEMENT ::= Lb REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
+LW_STATEMENT ::= Lw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(1,f,t,s.toString()); :};
 
-SHW_STATEMENT ::= Smw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
+SHW_STATEMENT ::= Smw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(2,f,t,s.toString()); :}; 
 
-LHW_STATEMENT ::= Lmw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
+LHW_STATEMENT ::= Lmw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(3,f,t,s.toString()); :}; 
+
+SB_STATEMENT ::= Sb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(4,f,t,s.toString()); :}; 
+
+LB_STATEMENT ::= Lb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(5,f,t,s.toString()); :}; 
 
 
-SW_STATEMENT ::= Sw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ; 
 
-LW_STATEMENT ::= Lw REGISTERS Comma COPERAND OpPar REGISTERS ClPar  ;
 
 
 

@@ -11,6 +11,7 @@ import java.util.*;
 import java.io.*;
 import starkemulator.arch.Register;
 import starkemulator.arch.ALU;
+import starkemulator.arch.Memory;
 import starkemulator.arch.Shift;
 import starkemulator.machineCodeAdmin.SimulateMachineCode;
 import starkemulator.performanceMetrics.PerformanceMetricsAdmin;
@@ -50,8 +51,8 @@ public class MyParser extends java_cup.runtime.lr_parser {
     "\007\003\000\002\007\003\000\002\012\010\000\002\011" +
     "\010\000\002\013\010\000\002\014\010\000\002\015\010" +
     "\000\002\016\010\000\002\017\010\000\002\020\010\000" +
-    "\002\021\010\000\002\022\011\000\002\023\011\000\002" +
-    "\024\011\000\002\025\011\000\002\026\011\000\002\027" +
+    "\002\021\010\000\002\026\011\000\002\027\011\000\002" +
+    "\024\011\000\002\025\011\000\002\022\011\000\002\023" +
     "\011\000\002\030\010\000\002\031\010\000\002\032\010" +
     "\000\002\033\010\000\002\003\003\000\002\034\004\000" +
     "\002\035\004\000\002\036\003\000\002\036\003\000\002" +
@@ -333,11 +334,11 @@ public class MyParser extends java_cup.runtime.lr_parser {
     "\000\004\050\121\001\002\000\042\030\075\031\074\032" +
     "\073\033\072\034\071\035\070\036\067\037\066\040\065" +
     "\041\105\042\103\043\102\044\101\045\100\046\077\047" +
-    "\076\001\002\000\004\051\123\001\002\000\062\002\uffd8" +
-    "\004\uffd8\005\uffd8\006\uffd8\007\uffd8\010\uffd8\011\uffd8\012" +
-    "\uffd8\013\uffd8\014\uffd8\015\uffd8\016\uffd8\017\uffd8\020\uffd8" +
-    "\021\uffd8\022\uffd8\023\uffd8\024\uffd8\025\uffd8\026\uffd8\027" +
-    "\uffd8\054\uffd8\055\uffd8\060\uffd8\001\002\000\064\002\uffce" +
+    "\076\001\002\000\004\051\123\001\002\000\062\002\uffdc" +
+    "\004\uffdc\005\uffdc\006\uffdc\007\uffdc\010\uffdc\011\uffdc\012" +
+    "\uffdc\013\uffdc\014\uffdc\015\uffdc\016\uffdc\017\uffdc\020\uffdc" +
+    "\021\uffdc\022\uffdc\023\uffdc\024\uffdc\025\uffdc\026\uffdc\027" +
+    "\uffdc\054\uffdc\055\uffdc\060\uffdc\001\002\000\064\002\uffce" +
     "\004\uffce\005\uffce\006\uffce\007\uffce\010\uffce\011\uffce\012" +
     "\uffce\013\uffce\014\uffce\015\uffce\016\uffce\017\uffce\020\uffce" +
     "\021\uffce\022\uffce\023\uffce\024\uffce\025\uffce\026\uffce\027" +
@@ -364,10 +365,10 @@ public class MyParser extends java_cup.runtime.lr_parser {
     "\074\032\073\033\072\034\071\035\070\036\067\037\066" +
     "\040\065\041\105\042\103\043\102\044\101\045\100\046" +
     "\077\047\076\001\002\000\004\051\140\001\002\000\062" +
-    "\002\uffdd\004\uffdd\005\uffdd\006\uffdd\007\uffdd\010\uffdd\011" +
-    "\uffdd\012\uffdd\013\uffdd\014\uffdd\015\uffdd\016\uffdd\017\uffdd" +
-    "\020\uffdd\021\uffdd\022\uffdd\023\uffdd\024\uffdd\025\uffdd\026" +
-    "\uffdd\027\uffdd\054\uffdd\055\uffdd\060\uffdd\001\002\000\004" +
+    "\002\uffd9\004\uffd9\005\uffd9\006\uffd9\007\uffd9\010\uffd9\011" +
+    "\uffd9\012\uffd9\013\uffd9\014\uffd9\015\uffd9\016\uffd9\017\uffd9" +
+    "\020\uffd9\021\uffd9\022\uffd9\023\uffd9\024\uffd9\025\uffd9\026" +
+    "\uffd9\027\uffd9\054\uffd9\055\uffd9\060\uffd9\001\002\000\004" +
     "\061\142\001\002\000\042\030\075\031\074\032\073\033" +
     "\072\034\071\035\070\036\067\037\066\040\065\041\105" +
     "\042\103\043\102\044\101\045\100\046\077\047\076\001" +
@@ -415,11 +416,11 @@ public class MyParser extends java_cup.runtime.lr_parser {
     "\050\170\001\002\000\042\030\075\031\074\032\073\033" +
     "\072\034\071\035\070\036\067\037\066\040\065\041\105" +
     "\042\103\043\102\044\101\045\100\046\077\047\076\001" +
-    "\002\000\004\051\172\001\002\000\062\002\uffd9\004\uffd9" +
-    "\005\uffd9\006\uffd9\007\uffd9\010\uffd9\011\uffd9\012\uffd9\013" +
-    "\uffd9\014\uffd9\015\uffd9\016\uffd9\017\uffd9\020\uffd9\021\uffd9" +
-    "\022\uffd9\023\uffd9\024\uffd9\025\uffd9\026\uffd9\027\uffd9\054" +
-    "\uffd9\055\uffd9\060\uffd9\001\002\000\004\061\174\001\002" +
+    "\002\000\004\051\172\001\002\000\062\002\uffdd\004\uffdd" +
+    "\005\uffdd\006\uffdd\007\uffdd\010\uffdd\011\uffdd\012\uffdd\013" +
+    "\uffdd\014\uffdd\015\uffdd\016\uffdd\017\uffdd\020\uffdd\021\uffdd" +
+    "\022\uffdd\023\uffdd\024\uffdd\025\uffdd\026\uffdd\027\uffdd\054" +
+    "\uffdd\055\uffdd\060\uffdd\001\002\000\004\061\174\001\002" +
     "\000\042\030\075\031\074\032\073\033\072\034\071\035" +
     "\070\036\067\037\066\040\065\041\105\042\103\043\102" +
     "\044\101\045\100\046\077\047\076\001\002\000\004\061" +
@@ -511,11 +512,11 @@ public class MyParser extends java_cup.runtime.lr_parser {
     "\000\004\050\252\001\002\000\042\030\075\031\074\032" +
     "\073\033\072\034\071\035\070\036\067\037\066\040\065" +
     "\041\105\042\103\043\102\044\101\045\100\046\077\047" +
-    "\076\001\002\000\004\051\254\001\002\000\062\002\uffdc" +
-    "\004\uffdc\005\uffdc\006\uffdc\007\uffdc\010\uffdc\011\uffdc\012" +
-    "\uffdc\013\uffdc\014\uffdc\015\uffdc\016\uffdc\017\uffdc\020\uffdc" +
-    "\021\uffdc\022\uffdc\023\uffdc\024\uffdc\025\uffdc\026\uffdc\027" +
-    "\uffdc\054\uffdc\055\uffdc\060\uffdc\001\002\000\004\002\001" +
+    "\076\001\002\000\004\051\254\001\002\000\062\002\uffd8" +
+    "\004\uffd8\005\uffd8\006\uffd8\007\uffd8\010\uffd8\011\uffd8\012" +
+    "\uffd8\013\uffd8\014\uffd8\015\uffd8\016\uffd8\017\uffd8\020\uffd8" +
+    "\021\uffd8\022\uffd8\023\uffd8\024\uffd8\025\uffd8\026\uffd8\027" +
+    "\uffd8\054\uffd8\055\uffd8\060\uffd8\001\002\000\004\002\001" +
     "\001\002\000\004\061\257\001\002\000\042\030\075\031" +
     "\074\032\073\033\072\034\071\035\070\036\067\037\066" +
     "\040\065\041\105\042\103\043\102\044\101\045\100\046" +
@@ -679,7 +680,9 @@ class CUP$MyParser$actions {
 
 
 ALU alu = new ALU();
+Memory memory = new Memory();
 Shift shiftOp= new Shift();
+
 SimulateMachineCode simMachine= new SimulateMachineCode();
 PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 
@@ -1121,20 +1124,38 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
           return CUP$MyParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 36: // SB_STATEMENT ::= Sb REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
+          case 36: // SW_STATEMENT ::= Sw REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
             {
               Object RESULT =null;
-
-              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SB_STATEMENT",16, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
+		int fleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String f = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 memory.memoryAdmin(0,f,t,s.toString()); 
+              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SW_STATEMENT",20, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 37: // LB_STATEMENT ::= Lb REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
+          case 37: // LW_STATEMENT ::= Lw REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
             {
               Object RESULT =null;
-
-              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LB_STATEMENT",17, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
+		int fleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String f = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 memory.memoryAdmin(1,f,t,s.toString()); 
+              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LW_STATEMENT",21, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
 
@@ -1142,7 +1163,16 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
           case 38: // SHW_STATEMENT ::= Smw REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
             {
               Object RESULT =null;
-
+		int fleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String f = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 memory.memoryAdmin(2,f,t,s.toString()); 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SHW_STATEMENT",18, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1151,26 +1181,53 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
           case 39: // LHW_STATEMENT ::= Lmw REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
             {
               Object RESULT =null;
-
+		int fleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String f = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 memory.memoryAdmin(3,f,t,s.toString()); 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LHW_STATEMENT",19, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 40: // SW_STATEMENT ::= Sw REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
+          case 40: // SB_STATEMENT ::= Sb REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
             {
               Object RESULT =null;
-
-              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SW_STATEMENT",20, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
+		int fleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String f = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 memory.memoryAdmin(4,f,t,s.toString()); 
+              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SB_STATEMENT",16, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 41: // LW_STATEMENT ::= Lw REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
+          case 41: // LB_STATEMENT ::= Lb REGISTERS Comma COPERAND OpPar REGISTERS ClPar 
             {
               Object RESULT =null;
-
-              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LW_STATEMENT",21, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
+		int fleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).right;
+		String f = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-3)).value;
+		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
+		 memory.memoryAdmin(5,f,t,s.toString()); 
+              CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LB_STATEMENT",17, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
 
