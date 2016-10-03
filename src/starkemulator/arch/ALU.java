@@ -5,6 +5,7 @@
  */
 package starkemulator.arch;
 
+import static java.lang.Thread.sleep;
 import starkemulator.ui.MainFrame;
 
 /**
@@ -50,7 +51,7 @@ public class ALU {
     *Verifies if the second operand is a immediate or register
     *And calls the methods depending of the result
     */
-    public void aluArithmeticLogicAdmin(int opCode,String regDest,String pOperand1,String pOperand2){
+    public void aluArithmeticLogicAdmin(int opCode,String regDest,String pOperand1,String pOperand2) throws InterruptedException{
         if(!pOperand2.contains("r")|| pOperand2.contains("0x")  ){ 
             makeImmOp(opCode,regDest,pOperand1,pOperand2);  
         }
@@ -64,7 +65,7 @@ public class ALU {
     *
     */
     
-    private void makeImmOp(int opCode,String regDest,String pOperand1,String pOperand2){
+    private void makeImmOp(int opCode,String regDest,String pOperand1,String pOperand2) throws InterruptedException{
         if(pOperand2.contains("0x")){
             pOperand2=pOperand2.replace("0x", "");
             pOperand2=Integer.toString(Integer.parseInt(pOperand2, 16 ));
@@ -89,7 +90,7 @@ public class ALU {
     *
     */
     
-    private void makeRegistersOp(int opCode,String regDest,String pOperand1,String pOperand2){
+    private void makeRegistersOp(int opCode,String regDest,String pOperand1,String pOperand2) throws InterruptedException{
         int regtoModVal=getReg(regDest);
         int op1=getReg(pOperand1);
         int op2=getReg(pOperand2);
@@ -105,10 +106,12 @@ public class ALU {
     * changed
     *
     */
-    private void updateGUI(String regDest,int regtoModVal){
+    private void updateGUI(String regDest,int regtoModVal) throws InterruptedException{
         MainFrame.modified=true;
         MainFrame.regMod=regDest;
         MainFrame.newVal=Integer.toString(regtoModVal);
+        System.out.println("Updating");
+        sleep(1000);
     }
     
     

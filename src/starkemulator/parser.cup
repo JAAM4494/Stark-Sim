@@ -9,6 +9,8 @@ import starkemulator.arch.Register;
 import starkemulator.arch.ALU;
 import starkemulator.arch.Shift;
 import starkemulator.machineCodeAdmin.SimulateMachineCode;
+import starkemulator.performanceMetrics.PerformanceMetricsAdmin;
+
 
 
 
@@ -19,7 +21,7 @@ action code {:
 ALU alu = new ALU();
 Shift shiftOp= new Shift();
 SimulateMachineCode simMachine= new SimulateMachineCode();
-    
+PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 :}
 
                 /**** PARSER CODE ****/
@@ -69,6 +71,7 @@ terminal   String Num;
 terminal   ID;
 terminal   SemCo;
 terminal   Hexadecimal;
+terminal   End;
 
 
 
@@ -77,7 +80,7 @@ terminal    Comma, Tag, Points;
 
                 /**** NO TERMINALES ****/
 
-non terminal    PROGRAMA;
+non terminal    PROGRAMA,END_STATEMENT;
 
 non terminal     PLUS_COPERAND, INMEDIATE;
 
@@ -126,27 +129,27 @@ AND_STATEMENT | NAND_STATEMENT | OR_STATEMENT | XOR_STATEMENT |
  SHL_STATEMENT | SHR_STATEMENT | SB_STATEMENT | 
 LB_STATEMENT | SHW_STATEMENT | LHW_STATEMENT | SW_STATEMENT | LW_STATEMENT |
   JE_STATEMENT | JNE_STATEMENT | JLT_STATEMENT | JGT_STATEMENT | J_STATEMENT
- | TAG_STATEMENT | BIN_STATEMENT ;
+ | TAG_STATEMENT | BIN_STATEMENT | END_STATEMENT ;
 
 
-PLUS_STATEMENT ::= Plus:p REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  :}  ;
+PLUS_STATEMENT ::= Plus:p REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );     :}  ;
 
-MIN_STATEMENT ::= Min REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(1,s,d,t.toString());   :}  ;
+MIN_STATEMENT ::= Min REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(1,s,d,t.toString());  calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );  :}  ;
 
-MUL_STATEMENT ::= Mul REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(2,s,d,t.toString());    :}  ; 
+MUL_STATEMENT ::= Mul REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(2,s,d,t.toString()); calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );    :}  ; 
 
 
-AND_STATEMENT ::= And REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(3,s,d,t.toString());   :}  ; 
+AND_STATEMENT ::= And REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(3,s,d,t.toString()); calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  :}  ; 
 
-NAND_STATEMENT ::= Nand REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(6,s,d,t.toString());   :}  ; 
+NAND_STATEMENT ::= Nand REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(6,s,d,t.toString()); calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );   :}  ; 
 
-OR_STATEMENT ::= Or REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(4,s,d,t.toString());   :} ;
+OR_STATEMENT ::= Or REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(4,s,d,t.toString());  calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  :} ;
 
-XOR_STATEMENT ::= Xor REGISTERS:s Comma REGISTERS:d Comma COPERAND:t  {: alu.aluArithmeticLogicAdmin(5,s,d,t.toString());   :} ;
+XOR_STATEMENT ::= Xor REGISTERS:s Comma REGISTERS:d Comma COPERAND:t  {: alu.aluArithmeticLogicAdmin(5,s,d,t.toString());  calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  :} ;
 
-SHL_STATEMENT ::= Shl REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(1,s,d,t.toString());   :} ;
+SHL_STATEMENT ::= Shl REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(1,s,d,t.toString()); calcPerf.newInstr("S"); calcPerf.verifyLostData("S",s,d,t.toString() );   :} ;
 
-SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(0,s,d,t.toString());   :} ;
+SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(0,s,d,t.toString());  calcPerf.newInstr("S"); calcPerf.verifyLostData("S",s,d,t.toString() ); :} ;
 
 
 
@@ -173,6 +176,7 @@ JLT_STATEMENT ::= Jlt REGISTERS Comma REGISTERS Comma ID ;
 
 JGT_STATEMENT ::= Jgt REGISTERS Comma REGISTERS Comma ID ;
 
+END_STATEMENT ::= End {: calcPerf.makeCalc(); :};
 
 J_STATEMENT ::= J ID:id  ;
 
@@ -184,6 +188,7 @@ COPERAND ::= INMEDIATE:d {: RESULT=d; :}   |  REGISTERS:d {: RESULT=d; :} ;
 INMEDIATE ::= (Tag Num ):d {: RESULT=d; :}   |  ( Hexadecimal):d {: RESULT=d; :} ;
 
 BIN_STATEMENT ::= Num:d {: RESULT=d;   simMachine.proccessMachineCode(d.toString());   :} ;
+
 
 
 

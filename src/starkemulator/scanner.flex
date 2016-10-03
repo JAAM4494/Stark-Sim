@@ -215,6 +215,7 @@ PHRASE=("_"|{ALPHA_NUMERIC})("_"|{ALPHA_NUMERIC})*
 
 <YYINITIAL>{DIGIT}+            {echo(sym.Num); //codeGen.appendImm("D",yytext());  
                                                     return new Symbol(sym.Num,       yyline, yychar, yytext());}
+<YYINITIAL>"end"                 {echo(sym.End); return new Symbol(sym.End, yyline, yychar, yytext());}
 
 <YYINITIAL>{ID}                {echo(sym.ID); return new Symbol(sym.ID,         yyline, yychar, yytext());}
 
