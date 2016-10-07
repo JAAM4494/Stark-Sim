@@ -910,6 +910,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void resetFunction() {
         Register.resetRegisters();
         Memory.cleanMem();
+        this.stepFlag = false;
         
         if(this.hexFlag) {
             r1Tv.setText("0x");r2Tv.setText("0x");r3Tv.setText("0x");
@@ -942,11 +943,17 @@ public class MainFrame extends javax.swing.JFrame {
             }
             stepScanner = new Scanner(this.stepCode);
             String line = stepScanner.nextLine();
+            if(line.equals("") && stepScanner.hasNext()) {
+                line = stepScanner.nextLine();
+            }
             compiler = new MyCompiler();
             compiler.stepAnalysis(line);
         } else {
             if(stepScanner.hasNext()) {
                 String line = stepScanner.nextLine();
+                if(line.equals("") && stepScanner.hasNext()) {
+                    line = stepScanner.nextLine();
+                }
                 compiler = new MyCompiler();
                 compiler.stepAnalysis(line);
             } else {
