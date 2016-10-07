@@ -13,3 +13,17 @@ Token: R1 Lex: r1
 Token: OpPar Lex: (
 Token: R1 Lex: r1
 Token: ClPar Lex: )
+Token: Plus Lex: plus
+Token: R3 Lex: r3
+Token: Comma Lex: ,
+Token: R3 Lex: r3
+Token: Comma Lex: ,
+Token: Tag Lex: #
+Token: Num Lex: 3
+Token: Lb Lex: lb
+Token: R5 Lex: r5
+Token: Comma Lex: ,
+Token: R1 Lex: r1
+Token: OpPar Lex: (
+Token: R3 Lex: r3
+Token: ClPar Lex: )

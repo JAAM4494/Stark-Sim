@@ -50,8 +50,7 @@ public class MyCompiler {
 
                 AnalizadorSintactico.parse();
 
-                canGenerateBlock = true;
-
+                //canGenerateBlock = true;
                 System.out.println("Fin de escaneo..!!");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,6 +60,8 @@ public class MyCompiler {
         } else {
             Symbol currToken = null;
             try {
+                canGenerateBlock = true;
+
                 AnalizadorLexico = new MyLexer(new FileReader(pFile));
                 do {
                     currToken = AnalizadorLexico.next_token();
@@ -102,80 +103,131 @@ public class MyCompiler {
 
     public void execBranches() {
         //System.out.println("Going to run code with branches");
-        BasicBlock firstBlock = progrBlocks.get(0);
+        //BasicBlock firstBlock = progrBlocks.get(0);
+        int index = 0;
+
+        do {
+            BasicBlock tempBlock = progrBlocks.get(index);
+            
+            if (tempBlock.getBlockTag().equals("d3f4ul7_")) {
+                String tmpStr = execBranchesAux(tempBlock.getInstructions());
+                stepAnalysis(tmpStr);
+                tempBlock.setChecked(true);
+            } else //System.out.println("Index: " + index);
+            if (blockhasBranches(tempBlock.getInstructions())) {
+                // ejecutar cada bloque de codigo que tiene algun tipo de salto
+                runBranchesOnBlock(tempBlock);
+                tempBlock.setChecked(true);
+            } else {
+                String tmpStr = execBranchesAux(tempBlock.getInstructions());
+                stepAnalysis(tmpStr);
+                tempBlock.setChecked(true);
+            }
+            // incrementar el indice
+            if (index == progrBlocks.size()) {
+                index = 1;
+            } else {
+                index += 1;
+            }
+        } while (!isAllChecked(progrBlocks));
         
-        if(firstBlock.getBlockTag().equals("d3f4ul7_")) {
-            String tmpStr = execBranchesAux(firstBlock.getInstructions());
-            stepAnalysis(tmpStr);
-            firstBlock.setChecked(true);
-        } else {
-            int index = 1;
-            do {
-                BasicBlock tempBlock = progrBlocks.get(index);
-                if(blockhasBranches(tempBlock.getInstructions())) {
-                    // ejecutar cada bloque de codigo que tiene algun tipo de salto
-                    //
-                    //
-                } else {
-                    tempBlock.setChecked(true);
-                }
-            } while(isAllChecked(progrBlocks));
+        System.out.println("execBranches_Done");
+    }
+
+    private void runBranchesOnBlock(BasicBlock pCurrentBlock) {
+        ArrayList<String> currentBlockInstr = pCurrentBlock.getInstructions();
+        String lastInstr = currentBlockInstr.get(currentBlockInstr.size() - 1);
+
+        if (lastInstr.startsWith("j") && !lastInstr.startsWith("je") && !lastInstr.startsWith("jne")
+                && !lastInstr.startsWith("jlt") && !lastInstr.startsWith("jgt")) {
+            runJBranch(pCurrentBlock, lastInstr);
+        } else if (lastInstr.startsWith("je")) {
+
+        } else if (lastInstr.startsWith("jne")) {
+
+        } else if (lastInstr.startsWith("jlt")) {
+
+        } else if (lastInstr.startsWith("jgt")) {
+
         }
     }
+
+    private void runJBranch(BasicBlock pCurrentBlock, String pBranchInstr) {
+        String currentBranchInstr = pBranchInstr;
+
+        String jumpTag = currentBranchInstr.substring(2, currentBranchInstr.length());
+        //System.out.println("Jump Tag: " + jumpTag);
+        String tmpStr = execBranchesAux(pCurrentBlock.getInstructions());
+        stepAnalysis(tmpStr);
+        
+        tmpStr = execBranchesAux(getJumpBlock(jumpTag).getInstructions());
+        stepAnalysis(tmpStr);
+    }
     
-    private boolean isAllChecked(ArrayList<BasicBlock> pBlocks) {
-        boolean retVal = false;
+    private BasicBlock getJumpBlock(String pTag) {
+        BasicBlock retBlock = null;
         
-        int count = 0;
-        
-        for (int i = 0; i < pBlocks.size(); i++) {
-            if(pBlocks.get(i).isChecked()) {
-                count += 1;
+        for (int i = 0; i < progrBlocks.size(); i++) {
+            if(progrBlocks.get(i).getBlockTag().equals(pTag)) {
+                retBlock = progrBlocks.get(i);
             }
         }
         
-        if(count == pBlocks.size()) {
+        return retBlock;
+    }
+
+    private boolean isAllChecked(ArrayList<BasicBlock> pBlocks) {
+        boolean retVal = false;
+
+        int count = 0;
+
+        for (int i = 0; i < pBlocks.size(); i++) {
+            if (pBlocks.get(i).isChecked()) {
+                count += 1;
+            }
+        }
+
+        if (count == pBlocks.size()) {
             retVal = true;
         }
-        
+
         return retVal;
     }
-    
+
     private boolean blockhasBranches(ArrayList<String> pBlock) {
         boolean retVal = false;
-        
+
         for (int i = 0; i < pBlock.size(); i++) {
-            if(pBlock.get(i).contains("j") || pBlock.get(i).contains("je") ||
-                    pBlock.get(i).contains("jne") || pBlock.get(i).contains("jlt") ||
-                    pBlock.get(i).contains("jgt")) 
-            {
+            if (pBlock.get(i).contains("j") || pBlock.get(i).contains("je")
+                    || pBlock.get(i).contains("jne") || pBlock.get(i).contains("jlt")
+                    || pBlock.get(i).contains("jgt")) {
                 retVal = true;
                 break;
             }
         }
-        
+
         return retVal;
     }
-    
+
     private String execBranchesAux(ArrayList<String> pBlock) {
         String retCode = "";
-        
+
         for (int i = 0; i < pBlock.size(); i++) {
             retCode = retCode + pBlock.get(i) + "\n";
         }
-        
+
         return retCode;
     }
-    
+
     private void stepAnalysis(String pCode) {
         BufferedWriter out = null;
         File temp = null;
-        
+
         try {
             temp = File.createTempFile("TmpScrpt", ".txt");
             //create a temp file
             temp.deleteOnExit();
-            
+
             out = new BufferedWriter(new FileWriter(temp.getAbsolutePath()));
             out.write(pCode);
         } catch (IOException e) {
@@ -187,16 +239,18 @@ public class MyCompiler {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
+
         MyLexer AnalizadorLexico = null;
         MyParser AnalizadorSintactico = null;
         try {
             AnalizadorLexico = new MyLexer(new FileReader(temp));
             AnalizadorSintactico = new MyParser(AnalizadorLexico);
+            AnalizadorSintactico.parse();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MyCompiler.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        } catch (Exception ex) {
+            Logger.getLogger(MyCompiler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void crearBancoInstr(File pTempFile) {
