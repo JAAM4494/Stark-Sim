@@ -121,7 +121,7 @@ non terminal     BIN_STATEMENT;
 
 start with PROGRAMA;
 
-PROGRAMA ::=  STATEMENTLIST ;
+PROGRAMA ::=  STATEMENTLIST {: calcPerf.makeCalc(); :};
 
 
 STATEMENTLIST  ::= STATEMENTLIST STATEMENT | STATEMENT  ;
@@ -132,7 +132,7 @@ AND_STATEMENT | NAND_STATEMENT | OR_STATEMENT | XOR_STATEMENT |
  SHL_STATEMENT | SHR_STATEMENT | SB_STATEMENT | 
 LB_STATEMENT | SHW_STATEMENT | LHW_STATEMENT | SW_STATEMENT | LW_STATEMENT |
   JE_STATEMENT | JNE_STATEMENT | JLT_STATEMENT | JGT_STATEMENT | J_STATEMENT
- | TAG_STATEMENT | BIN_STATEMENT | END_STATEMENT ;
+ | TAG_STATEMENT | BIN_STATEMENT  ;
 
 
 PLUS_STATEMENT ::= Plus:p REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );     :}  ;
@@ -156,34 +156,31 @@ SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp
 
 
 
-SW_STATEMENT ::= Sw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(0,f,t,s.toString()); :}; 
+SW_STATEMENT ::= Sw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(0,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
 
-LW_STATEMENT ::= Lw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(1,f,t,s.toString()); :};
+LW_STATEMENT ::= Lw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(1,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString() ,t ); :};
 
-SHW_STATEMENT ::= Smw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(2,f,t,s.toString()); :}; 
+SHW_STATEMENT ::= Smw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(2,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
 
-LHW_STATEMENT ::= Lmw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(3,f,t,s.toString()); :}; 
+LHW_STATEMENT ::= Lmw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(3,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
 
-SB_STATEMENT ::= Sb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(4,f,t,s.toString()); :}; 
+SB_STATEMENT ::= Sb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(4,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
 
-LB_STATEMENT ::= Lb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(5,f,t,s.toString()); :}; 
-
-
+LB_STATEMENT ::= Lb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(5,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
 
 
 
 
-JE_STATEMENT ::= Je REGISTERS Comma REGISTERS Comma ID ;
+JE_STATEMENT ::= Je REGISTERS:s Comma REGISTERS:t Comma ID  {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
 
-JNE_STATEMENT ::= Jne REGISTERS Comma REGISTERS Comma ID ;
+JNE_STATEMENT ::= Jne REGISTERS:s Comma REGISTERS:t Comma ID {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
 
-JLT_STATEMENT ::= Jlt REGISTERS Comma REGISTERS Comma ID ;
+JLT_STATEMENT ::= Jlt REGISTERS:s Comma REGISTERS:t Comma ID {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
 
-JGT_STATEMENT ::= Jgt REGISTERS Comma REGISTERS Comma ID ;
+JGT_STATEMENT ::= Jgt REGISTERS:s Comma REGISTERS:t Comma ID {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
 
-END_STATEMENT ::= End {: calcPerf.makeCalc(); :};
 
-J_STATEMENT ::= J ID:id  ;
+J_STATEMENT ::= J ID {: calcPerf.newInstr("J"); :}; 
 
 TAG_STATEMENT ::= ID  Points ;
 

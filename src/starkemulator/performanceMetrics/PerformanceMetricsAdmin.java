@@ -5,10 +5,13 @@
  */
 package starkemulator.performanceMetrics;
 
+import starkemulator.ui.MainFrame;
+
 /**
  *
  * @author edwin
  */
+
 public class PerformanceMetricsAdmin {
     int freqclk=1000000;
     String regWritten;
@@ -42,16 +45,21 @@ public class PerformanceMetricsAdmin {
     }
     public void makeCalc(){
         float result1=(cantArith*durArith)+(cantLog*durLog)+(cantShift*durShift)+(cantMem*durMem)+(cantJmp*durJmp);
+        System.out.println("Revisando Mul:"+cantArith*durArith);
         float cantInstr=cantArith+cantLog+cantShift+cantMem+cantJmp;
         float CPI=result1/cantInstr;
         float IPC=1/CPI;
         float IPS=1000000/CPI;
-        System.out.println("result1"+result1);
+        System.out.println("durArith:"+durArith);
+        System.out.println("durLog:"+durLog);
+        System.out.println("durMem:"+durMem);
+        System.out.println("result1:"+result1);
         System.out.println("cantInstr"+cantInstr);
         System.out.println("CPI"+CPI);
         System.out.println("IPC"+IPC);
         System.out.println("IPS"+IPS);
-
+        MainFrame.modifiedPerformance=true;
+        MainFrame.performanceData="IPC:"+IPC +"  "+"IPS:"+IPS;
     }
     
     public void verifyLostData(String instrType,String pRegWritten,String regOp1,String regOp2){
@@ -61,6 +69,10 @@ public class PerformanceMetricsAdmin {
         regWritten=pRegWritten;
         
     }
+    
+    
+    
+    
     private void addNopsDuration(String instrType){
           switch(instrType) {
             case "A":

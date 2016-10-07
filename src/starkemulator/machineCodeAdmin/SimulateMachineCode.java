@@ -32,7 +32,7 @@ public class SimulateMachineCode {
     * If it is not, the instructions is not analized
     *
    */
-    public void proccessMachineCode(String pmachineCode){
+    public void proccessMachineCode(String pmachineCode) throws InterruptedException{
         if(pmachineCode.length()!=32){
             
         }
@@ -50,7 +50,7 @@ public class SimulateMachineCode {
     *
     *
    */
-    private void processInstByType(String pType,String pInstruction){
+    private void processInstByType(String pType,String pInstruction) throws InterruptedException{
         switch(pType) {
             case "A":
                proccessArithInstr(pInstruction);
@@ -83,7 +83,7 @@ public class SimulateMachineCode {
     *
    */
     
-    private void proccessArithInstr(String pInstruction){
+    private void proccessArithInstr(String pInstruction) throws InterruptedException{
         String opType=pInstruction.substring(26, 29);
         int OpTypeI=getOpTypeA(opType);
         String immFlag= pInstruction.substring(25, 26);
@@ -102,7 +102,7 @@ public class SimulateMachineCode {
     *
    */
     
-    private void proccessLogicInstr(String pInstruction){
+    private void proccessLogicInstr(String pInstruction) throws InterruptedException{
         String opType=pInstruction.substring(26, 29);
         int OpTypeI=getOpTypeL(opType);
         String immFlag= pInstruction.substring(25, 26);

@@ -56,6 +56,8 @@ public class MainFrame extends javax.swing.JFrame {
     public static String regMod;
     
     public static MyCompiler compiler;
+    public static String performanceData;
+    public static boolean modifiedPerformance;
 
     /**
      * Creates new form MainFrame
@@ -103,6 +105,11 @@ public class MainFrame extends javax.swing.JFrame {
                            preparenewVal();
                            updateRegisters();
                         }
+                        if(modifiedPerformance){
+                            modifiedPerformance=false;
+                            updatePerformance();
+
+                        }
                         sleep(1000); 
                     }
                 } catch(InterruptedException v) {
@@ -112,6 +119,10 @@ public class MainFrame extends javax.swing.JFrame {
         };
 
         one.start();
+    }
+    
+     private void updatePerformance(){
+        perfLbl.setText(performanceData);
     }
     
     private void preparenewVal(){
