@@ -5,6 +5,9 @@
  */
 package starkemulator.arch;
 
+import static java.lang.Thread.sleep;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import starkemulator.ui.MainFrame;
 
 /**
@@ -64,6 +67,11 @@ public class Shift {
         MainFrame.modified=true;
         MainFrame.regMod=regDest;
         MainFrame.newVal=Integer.toString(regtoModVal);
+        try {
+            sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Shift.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /*
     *
@@ -76,6 +84,7 @@ public class Shift {
          int operandReg=getReg(pRegister);
         if(pDisp.contains("0x") ){   pDisp= hexImm(pDisp);     }
         int resultVal=(operandReg << Integer.parseInt(pDisp)); 
+        System.out.println("--------------------------Result: " + resultVal);
         setReg(pRegDest, resultVal);
         updateGUI(pRegDest, resultVal);
     }

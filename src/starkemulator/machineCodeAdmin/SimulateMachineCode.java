@@ -6,6 +6,7 @@
 package starkemulator.machineCodeAdmin;
 
 import starkemulator.arch.ALU;
+import starkemulator.arch.Memory;
 import starkemulator.arch.Shift;
 
 /**
@@ -20,10 +21,12 @@ import starkemulator.arch.Shift;
 */
 public class SimulateMachineCode {
     ALU arithLog;
+    Memory memAdmin;
     Shift ShiftOp;
     public SimulateMachineCode(){
        arithLog=new ALU();
        ShiftOp= new Shift();
+       memAdmin = new Memory();
         
     }
     /*
@@ -64,7 +67,7 @@ public class SimulateMachineCode {
 
                 break;
             case "M":
-               // proccessMemInstr(pInstruction);
+                proccessMemInstr(pInstruction);
 
                 break;
             case "J":
@@ -72,6 +75,49 @@ public class SimulateMachineCode {
                 break;
            
         }
+        
+    }
+    
+    private void proccessMemInstr(String pInstruction) throws InterruptedException{
+        String opType=pInstruction.substring(26, 29);
+        int OpTypeI=getOpTypeM(opType);
+        String immFlag= pInstruction.substring(25, 26);
+        String cmp=pInstruction.substring(8, 25);
+        String rb =getRb(cmp,immFlag);
+        String ra =getRegister(pInstruction.substring(4, 8));
+        String rc =getRegister(pInstruction.substring(0, 4));
+        memAdmin.memoryAdmin(OpTypeI, rc, ra, rb);
+        System.out.println("........................");
+        System.out.println(rc);
+        System.out.println(ra);
+        System.out.println(rb);
+        System.out.println("........................");
+    }
+    
+    private int getOpTypeM(String pOpType){
+        int result=9;
+        switch(pOpType) {
+            case "000":
+               result=0;
+                break;
+            case "001":
+                result=1;
+                break;
+            case "010":
+                result=2;
+                break;
+            case "011":
+                result=3;
+                break;
+            case "100":
+                result=4;
+                break;
+            case "101":
+                result=5;
+                break;
+        }
+        
+        return result;
         
     }
     
