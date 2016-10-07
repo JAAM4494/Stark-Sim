@@ -37,14 +37,15 @@ public class MemoryMap extends javax.swing.JFrame {
             tmp = tmp.toUpperCase();
             tmp = "0x" + tmp; 
             newModel.setValueAt(tmp, i, 0);
-            String tmp2 = Integer.toHexString(storage[i]);
+            String tmp2 = String.format("0x%x", storage[i]);
             tmp2 = tmp2.toUpperCase();
-            newModel.setValueAt("0x" + tmp2, i, 1);
+            newModel.setValueAt(tmp2, i, 1);
         }
         jTable1.setModel(newModel);
         
         for (byte b : storage) {
             System.out.format("0x%x ", b);
+            //System.out.print(b);
         }
     }
 

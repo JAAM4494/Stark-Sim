@@ -86,33 +86,35 @@ public class Memory {
                 break;
             case 2: // store halfword
                 ByteBuffer byb = ByteBuffer.allocate(4);
+                byb.order(ByteOrder.LITTLE_ENDIAN);
                 byb.putInt(pDestiny);
 
                 this.storeHalfWord(byb.getShort(0), address);
                 break;
             case 3: // load halfword
                 ByteBuffer bb = ByteBuffer.allocate(4);
-
+                bb.order(ByteOrder.LITTLE_ENDIAN);
+                bb.putShort(this.loadHalfWord(address));
                 short tmp = 0;
                 bb.putShort(tmp);
-                bb.putShort(this.loadHalfWord(address));
 
                 retVal = bb.getInt(0);
                 break;
             case 4: // store byte
                 ByteBuffer byb2 = ByteBuffer.allocate(4);
+                byb2.order(ByteOrder.LITTLE_ENDIAN);
                 byb2.putInt(pDestiny);
 
                 this.storeByte(byb2.get(0), address);
                 break;
             case 5: // load byte
                 ByteBuffer bb2 = ByteBuffer.allocate(4);
-
+                bb2.order(ByteOrder.LITTLE_ENDIAN);
                 short tmp2 = 0;
                 byte tmp3 = 0;
+                bb2.put(this.loadByte(address));
                 bb2.putShort(tmp2);
                 bb2.put(tmp3);
-                bb2.put(this.loadByte(address));
 
                 retVal = bb2.getInt(0);
                 break;
@@ -121,11 +123,17 @@ public class Memory {
     }
 
     private void storeWord(int pStoreVar, int pPos) {
-        byte[] word = ByteBuffer.allocate(4).putInt(pStoreVar).array();
+        //byte[] word = ByteBuffer.allocate(4).putInt(pStoreVar).array();
+        
+        ByteBuffer bb = ByteBuffer.allocate(4);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.putInt(pStoreVar);
+        
+        byte[] word = bb.array();
 
         int tempPointer = pPos;
         for (byte b : word) {
-            this.storage[tempPointer] = b;
+            Memory.storage[tempPointer] = b;
             tempPointer += 1;
         }
     }
@@ -134,11 +142,11 @@ public class Memory {
         int retVal = 0;
 
         ByteBuffer bb = ByteBuffer.allocate(4);
-        //bb.order(ByteOrder.LITTLE_ENDIAN);
-        bb.put(this.storage[pPos]);
-        bb.put(this.storage[pPos + 1]);
-        bb.put(this.storage[pPos + 2]);
-        bb.put(this.storage[pPos + 3]);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.put(Memory.storage[pPos]);
+        bb.put(Memory.storage[pPos + 1]);
+        bb.put(Memory.storage[pPos + 2]);
+        bb.put(Memory.storage[pPos + 3]);
 
         retVal = bb.getInt(0);
 
@@ -146,11 +154,17 @@ public class Memory {
     }
 
     private void storeHalfWord(short pStoreVar, int pPos) {
-        byte[] halfword = ByteBuffer.allocate(2).putShort(pStoreVar).array();
+        //byte[] halfword = ByteBuffer.allocate(2).putShort(pStoreVar).array();
+        
+        ByteBuffer bb = ByteBuffer.allocate(2);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.putShort(pStoreVar);
+        
+        byte[] halfword = bb.array();
 
         int tempPointer = pPos;
         for (byte b : halfword) {
-            this.storage[tempPointer] = b;
+            Memory.storage[tempPointer] = b;
             tempPointer += 1;
         }
     }
@@ -159,9 +173,9 @@ public class Memory {
         short retVal = 0;
 
         ByteBuffer bb = ByteBuffer.allocate(2);
-        //bb.order(ByteOrder.LITTLE_ENDIAN);
-        bb.put(this.storage[pPos]);
-        bb.put(this.storage[pPos + 1]);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.put(Memory.storage[pPos]);
+        bb.put(Memory.storage[pPos + 1]);
 
         retVal = bb.getShort(0);
 
@@ -170,14 +184,14 @@ public class Memory {
 
     private void storeByte(byte pStoreVar, int pPos) {
 
-        this.storage[pPos] = pStoreVar;
+        Memory.storage[pPos] = pStoreVar;
 
     }
 
     private byte loadByte(int pPos) {
         byte retVal = 0;
 
-        retVal = this.storage[pPos];
+        retVal = Memory.storage[pPos];
 
         return retVal;
     }
