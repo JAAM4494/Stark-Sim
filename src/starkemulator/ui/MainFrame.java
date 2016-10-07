@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -31,6 +32,8 @@ import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import starkemulator.MyCompiler;
+import starkemulator.arch.Memory;
+import starkemulator.arch.Register;
 import starkemulator.help.Converter;
 
 /**
@@ -54,10 +57,15 @@ public class MainFrame extends javax.swing.JFrame {
     public static boolean modified;
     public static String newVal;
     public static String regMod;
-    
+
     public static MyCompiler compiler;
     public static String performanceData;
     public static boolean modifiedPerformance;
+
+    private String stepCode;
+    private boolean stepFlag;
+    
+    private Scanner stepScanner;
 
     /**
      * Creates new form MainFrame
@@ -77,6 +85,8 @@ public class MainFrame extends javax.swing.JFrame {
         numTabs = 0;
 
         jTabbedPane1.setToolTipTextAt(0, "Script 1");
+        stepCode = "";
+        stepFlag = false;
 
         TextLineNumber lineNum = new TextLineNumber(mainTextPane);
         jScrollPane3.setRowHeaderView(lineNum);
@@ -87,111 +97,106 @@ public class MainFrame extends javax.swing.JFrame {
         decFlag = false;
         binFlag = false;
         hexFlag = true;
-        
+
         updateManager();
-        
-        
-        
+
     }
-    
-    public void updateManager() throws InterruptedException{
+
+    public void updateManager() throws InterruptedException {
 
         Thread one = new Thread() {
             public void run() {
                 try {
-                    while(true){
-                        if(modified){
-                           modified=false;
-                           preparenewVal();
-                           updateRegisters();
+                    while (true) {
+                        if (modified) {
+                            modified = false;
+                            preparenewVal();
+                            updateRegisters();
                         }
-                        if(modifiedPerformance){
-                            modifiedPerformance=false;
+                        if (modifiedPerformance) {
+                            modifiedPerformance = false;
                             updatePerformance();
 
                         }
-                        sleep(1000); 
+                        sleep(1000);
                     }
-                } catch(InterruptedException v) {
+                } catch (InterruptedException v) {
                     System.out.println(v);
                 }
-            }  
+            }
         };
 
         one.start();
     }
-    
-     private void updatePerformance(){
+
+    private void updatePerformance() {
         perfLbl.setText(performanceData);
     }
-    
-    private void preparenewVal(){
-        if(hexFlag){
-            newVal= Integer.toHexString(Integer.parseInt(newVal));
+
+    private void preparenewVal() {
+        if (hexFlag) {
+            newVal = Integer.toHexString(Integer.parseInt(newVal));
             newVal = "0x" + newVal.toUpperCase();
-        }
-        else if(binFlag){
-            newVal= Integer.toBinaryString(Integer.parseInt(newVal));
+        } else if (binFlag) {
+            newVal = Integer.toBinaryString(Integer.parseInt(newVal));
             newVal = newVal.toUpperCase();
         }
-        
-    }
-    
-    private void updateRegisters(){
-        switch(regMod) {
-        case "r0":
-            r0Tv.setText(newVal);
-            break;
-        case "r1":
-            r1Tv.setText(newVal);
-            break;
-        case "r2":
-            r2Tv.setText(newVal);
-            break;
-        case "r3":
-            r3Tv.setText(newVal);
-            break;
-        case "r4":
-            r4Tv.setText(newVal);
-            break;
-        case "r5":
-            r5Tv.setText(newVal);
-            break;
-        case "r6":
-            r6Tv.setText(newVal);
-            break;
-        case "r7":
-            r7Tv.setText(newVal);
-            break;
-        case "r8":
-            r8Tv.setText(newVal);
-            break;
-        case "r9":
-            r9Tv.setText(newVal);
-            break;
-        case "r10":
-            r10Tv.setText(newVal);
-            break;
-        case "r11":
-            r11Tv.setText(newVal);
-            break;
-        case "r12":
-            r12Tv.setText(newVal);
-            break;
-        case "r13":
-            r13Tv.setText(newVal);
-            break;
-        case "r14":
-            r14Tv.setText(newVal);
-            break;
-        case "r15":
-            r15Tv.setText(newVal);
-            break;
+
     }
 
-        
+    private void updateRegisters() {
+        switch (regMod) {
+            case "r0":
+                r0Tv.setText(newVal);
+                break;
+            case "r1":
+                r1Tv.setText(newVal);
+                break;
+            case "r2":
+                r2Tv.setText(newVal);
+                break;
+            case "r3":
+                r3Tv.setText(newVal);
+                break;
+            case "r4":
+                r4Tv.setText(newVal);
+                break;
+            case "r5":
+                r5Tv.setText(newVal);
+                break;
+            case "r6":
+                r6Tv.setText(newVal);
+                break;
+            case "r7":
+                r7Tv.setText(newVal);
+                break;
+            case "r8":
+                r8Tv.setText(newVal);
+                break;
+            case "r9":
+                r9Tv.setText(newVal);
+                break;
+            case "r10":
+                r10Tv.setText(newVal);
+                break;
+            case "r11":
+                r11Tv.setText(newVal);
+                break;
+            case "r12":
+                r12Tv.setText(newVal);
+                break;
+            case "r13":
+                r13Tv.setText(newVal);
+                break;
+            case "r14":
+                r14Tv.setText(newVal);
+                break;
+            case "r15":
+                r15Tv.setText(newVal);
+                break;
+        }
+
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -251,7 +256,6 @@ public class MainFrame extends javax.swing.JFrame {
         openMcBtn = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         stepFBtn = new javax.swing.JButton();
-        stepBBtn = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         perfLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -304,6 +308,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         resBtn.setText("Reset");
         resBtn.setToolTipText("Reset");
+        resBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resBtnActionPerformed(evt);
+            }
+        });
 
         jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         jTabbedPane1.setToolTipText("");
@@ -630,14 +639,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         stepFBtn.setText("StepF");
         stepFBtn.setToolTipText("Step Forward");
-
-        stepBBtn.setText("StepB");
-        stepBBtn.setToolTipText("Step Backward");
+        stepFBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepFBtnActionPerformed(evt);
+            }
+        });
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/starkemulator/ui/images/stark.png"))); // NOI18N
         jLabel19.setText("jLabel19");
 
-        perfLbl.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        perfLbl.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
         perfLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         perfLbl.setText("Performance");
 
@@ -732,14 +743,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(openMcBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(perfLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(perfLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(runBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stepFBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stepBBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(resBtn)
                         .addContainerGap())
@@ -748,20 +757,26 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newBtn)
-                    .addComponent(openBtn)
-                    .addComponent(saveBtn)
-                    .addComponent(runBtn)
-                    .addComponent(resBtn)
-                    .addComponent(openMcBtn)
-                    .addComponent(jLabel18)
-                    .addComponent(stepFBtn)
-                    .addComponent(stepBBtn)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(perfLbl))
-                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(resBtn)
+                                .addComponent(stepFBtn))
+                            .addComponent(runBtn)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(newBtn)
+                                .addComponent(openBtn)
+                                .addComponent(openMcBtn)
+                                .addComponent(saveBtn))))
+                    .addComponent(perfLbl, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1)
                     .addGroup(layout.createSequentialGroup()
@@ -848,7 +863,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void meMapMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meMapMenuActionPerformed
         // TODO add your handling code here:
-                /* Set the Nimbus look and feel */
+        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -873,6 +888,7 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             MemoryMap window;
+
             public void run() {
                 window = new MemoryMap();
                 window.setVisible(true);
@@ -881,11 +897,70 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_meMapMenuActionPerformed
 
-    private void runScript() {
+    private void stepFBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepFBtnActionPerformed
+        // TODO add your handling code here:
+        runStepScript();
+    }//GEN-LAST:event_stepFBtnActionPerformed
 
+    private void resBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resBtnActionPerformed
+        // TODO add your handling code here:
+        resetFunction();
+    }//GEN-LAST:event_resBtnActionPerformed
+
+    private void resetFunction() {
+        Register.resetRegisters();
+        Memory.cleanMem();
+        
+        if(this.hexFlag) {
+            r1Tv.setText("0x");r2Tv.setText("0x");r3Tv.setText("0x");
+            r4Tv.setText("0x");r5Tv.setText("0x");r6Tv.setText("0x");
+            r7Tv.setText("0x");r8Tv.setText("0x");r9Tv.setText("0x");
+            r10Tv.setText("0x");r11Tv.setText("0x");r12Tv.setText("0x");
+            r13Tv.setText("0x");r14Tv.setText("0x");r15Tv.setText("0x");
+            r0Tv.setText("0x");
+        }
+        if(this.decFlag || this.binFlag) {
+            r1Tv.setText("0");r2Tv.setText("0");r3Tv.setText("0");
+            r4Tv.setText("0");r5Tv.setText("0");r6Tv.setText("0");
+            r7Tv.setText("0");r8Tv.setText("0");r9Tv.setText("0");
+            r10Tv.setText("0");r11Tv.setText("0");r12Tv.setText("0");
+            r13Tv.setText("0");r14Tv.setText("0");r15Tv.setText("0");
+            r0Tv.setText("0");
+        }
+    }
+    
+    private void runStepScript() {
+        if (stepFlag == false) {
+            this.stepFlag = true;
+            JTextPane tempPane = null;
+            int textPaneSelected = jTabbedPane1.getSelectedIndex();
+            if (textPaneSelected != -1) {
+                tempPane = paneList.get(textPaneSelected);
+            }
+            if (tempPane != null) {
+                this.stepCode = tempPane.getText();
+            }
+            stepScanner = new Scanner(this.stepCode);
+            String line = stepScanner.nextLine();
+            compiler = new MyCompiler();
+            compiler.stepAnalysis(line);
+        } else {
+            if(stepScanner.hasNext()) {
+                String line = stepScanner.nextLine();
+                compiler = new MyCompiler();
+                compiler.stepAnalysis(line);
+            } else {
+                this.stepFlag = false;
+            }
+        }
+    }
+
+    private void runScript() {
+        this.stepFlag = false;
+        
         BufferedWriter out = null;
         File temp = null;
-        
+
         try {
             temp = File.createTempFile("Script", ".txt");
             //create a temp file
@@ -912,10 +987,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
         // running the selected script 
         compiler = new MyCompiler();
-        if(compiler.procesarEntrada(temp))
+        if (compiler.procesarEntrada(temp)) {
             compiler.crearBancoInstr(temp);
-        if(compiler.isBranchFlag())
+        }
+        if (compiler.isBranchFlag()) {
             compiler.execBranches();
+        }
     }
 
     private void convertion(int pType) {
@@ -992,13 +1069,13 @@ public class MainFrame extends javax.swing.JFrame {
         list.add(r13Tv);
         list.add(r14Tv);
         list.add(r15Tv);
-        
+
         return list;
     }
-    
-  
 
     private void newScript(String pContent) {
+        this.stepFlag = false;
+        
         JTextPane newScriptPane = new JTextPane();
         newScriptPane.setLayout(new BorderLayout());
         newScriptPane.setText(pContent);
@@ -1023,6 +1100,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void openScript() {
+        this.stepFlag = false;
+        
         JFileChooser Buscador = new JFileChooser();
         Buscador.setAcceptAllFileFilterUsed(false);
         Buscador.setMultiSelectionEnabled(false);
@@ -1039,6 +1118,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void openMachineCode() {
+        this.stepFlag = false;
+        
         JFileChooser Buscador = new JFileChooser();
         Buscador.setAcceptAllFileFilterUsed(false);
         Buscador.setMultiSelectionEnabled(false);
@@ -1149,7 +1230,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu runningMenu;
     private javax.swing.JButton saveBtn;
     private javax.swing.JMenuItem saveMenu;
-    private javax.swing.JButton stepBBtn;
     private javax.swing.JButton stepFBtn;
     private javax.swing.JMenu toolsMenu;
     // End of variables declaration//GEN-END:variables

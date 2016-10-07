@@ -58,8 +58,8 @@ public class Main {
             }
         });
         
-         generateScanner();
-         generateParser();      
+        // generateScanner();
+        // generateParser();      
        
     }
     

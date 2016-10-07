@@ -22,6 +22,10 @@ public class Memory {
     public static byte[] getMemory() {
         return Memory.storage;
     }
+    
+    public static void cleanMem() {
+        Memory.storage = new byte[2048];
+    }
 
     public void memoryAdmin(int opCode, String regDest, String pOperand1, String pOperand2) throws InterruptedException {
         if (!pOperand2.contains("r") || pOperand2.contains("0x")) {

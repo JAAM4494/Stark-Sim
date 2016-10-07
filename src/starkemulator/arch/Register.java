@@ -28,5 +28,12 @@ public class Register {
     public static int R14= 0;
     public static int R15= 0;
     
+    public static void resetRegisters() {
+        Register.R0 = 0;Register.R1 = 0;Register.R2 = 0;Register.R3 = 0;
+        Register.R4 = 0;Register.R5 = 0;Register.R6 = 0;Register.R7 = 0;
+        Register.R8 = 0;Register.R9 = 0;Register.R10 = 0;Register.R11 = 0;
+        Register.R12 = 0;Register.R13 = 0;Register.R14 = 0;Register.R15 = 0;
+    }
+    
     
 }

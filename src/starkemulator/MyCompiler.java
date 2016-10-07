@@ -390,7 +390,7 @@ public class MyCompiler {
         return retCode;
     }
 
-    private void stepAnalysis(String pCode) {
+    public void stepAnalysis(String pCode) {
         BufferedWriter out = null;
         File temp = null;
 
@@ -437,7 +437,7 @@ public class MyCompiler {
         BasicBlock newBlock = new BasicBlock();
         newBlock.setBlockTag("d3f4ul7_");
 
-        while (sc.hasNext()) {
+        while (sc.hasNext()) { 
             String line = sc.nextLine();
             //System.out.println(line);
 
