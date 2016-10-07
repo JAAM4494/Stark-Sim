@@ -19,43 +19,55 @@ import javax.swing.text.StyledDocument;
  * @author jaam
  */
 public class CustomDocumentFilter extends DocumentFilter {
-   
+
     // Use a regular expression to find the words you are looking for
     Pattern pattern = buildPattern();
     
+    Pattern pattern2 = buildPattern2();
+
     private StyledDocument styledDocument;
     private StyleContext styleContext;
-    private AttributeSet greenAttributeSet;
-    private AttributeSet blackAttributeSet;
+    private AttributeSet operationAttributeSet;
+    private AttributeSet normalAttributeSet;
     
+    private AttributeSet registerAttributeSet;
+
     private JTextPane textPane;
 
     public CustomDocumentFilter(JTextPane pPane) {
-        
+
         textPane = pPane;
-        
+
         styledDocument = textPane.getStyledDocument();
-        
+
         styleContext = StyleContext.getDefaultStyleContext();
 
         //
         SimpleAttributeSet attrs = new SimpleAttributeSet();
         StyleConstants.setBold(attrs, true);
         StyleConstants.setForeground(attrs, Color.BLUE);
-        StyleConstants.setFontSize(attrs, 16);
+        StyleConstants.setFontSize(attrs, 14);
         StyleConstants.setItalic(attrs, true);
         StyleConstants.setAlignment(attrs, 4);
         //
         SimpleAttributeSet attrs2 = new SimpleAttributeSet();
         StyleConstants.setBold(attrs2, true);
         StyleConstants.setForeground(attrs2, Color.BLACK);
-        StyleConstants.setFontSize(attrs2, 16);
+        StyleConstants.setFontSize(attrs2, 14);
         StyleConstants.setAlignment(attrs2, 4);
+        //
+        SimpleAttributeSet attrs3 = new SimpleAttributeSet();
+        StyleConstants.setBold(attrs3, true);
+        StyleConstants.setForeground(attrs3, Color.ORANGE);
+        StyleConstants.setFontSize(attrs3, 14);
+        StyleConstants.setItalic(attrs3, true);
+        StyleConstants.setAlignment(attrs3, 4);
 
-        greenAttributeSet = styleContext.addAttributes(styleContext.getEmptySet(), attrs);
-        blackAttributeSet = styleContext.addAttributes(styleContext.getEmptySet(), attrs2);
+        operationAttributeSet = styleContext.addAttributes(styleContext.getEmptySet(), attrs);
+        normalAttributeSet = styleContext.addAttributes(styleContext.getEmptySet(), attrs2);
+        registerAttributeSet = styleContext.addAttributes(styleContext.getEmptySet(), attrs3);
     }
-    
+
     public void setPane() {
         ((AbstractDocument) textPane.getDocument()).setDocumentFilter(new CustomDocumentFilter(textPane));
     }
@@ -89,7 +101,7 @@ public class CustomDocumentFilter extends DocumentFilter {
             @Override
             public void run() {
                 updateTextStyles();
-                
+
             }
         });
     }
@@ -103,8 +115,26 @@ public class CustomDocumentFilter extends DocumentFilter {
      */
     private Pattern buildPattern() {
         StringBuilder sb = new StringBuilder();
-        String[] array = {"plus", "min","mul","and","nand","or","xor","shl","shr",
-        "sb","lb","sw","lw","smw","lmw","je","jne","jlt","jgt","j"};
+        String[] array = {"plus", "min", "mul", "and", "nand", "or", "xor", "shl", "shr",
+            "sb", "lb", "sw", "lw", "smw", "lmw", "je", "jne", "jlt", "jgt", "j"};
+        for (String token : array) {
+            sb.append("\\b"); // Start of word boundary
+            sb.append(token);
+            sb.append("\\b|"); // End of word boundary and an or for the next word
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1); // Remove the trailing "|"
+        }
+
+        Pattern p = Pattern.compile(sb.toString());
+
+        return p;
+    }
+
+    private Pattern buildPattern2() {
+        StringBuilder sb = new StringBuilder();
+        String[] array = {"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
+            "r9", "r10", "r11", "r12", "r13", "r14", "r15"};
         for (String token : array) {
             sb.append("\\b"); // Start of word boundary
             sb.append(token);
@@ -121,13 +151,20 @@ public class CustomDocumentFilter extends DocumentFilter {
 
     private void updateTextStyles() {
         // Clear existing styles
-        styledDocument.setCharacterAttributes(0, textPane.getText().length(), blackAttributeSet, true);
+        styledDocument.setCharacterAttributes(0, textPane.getText().length(), normalAttributeSet, true);
 
         // Look for tokens and highlight them
         Matcher matcher = pattern.matcher(textPane.getText());
+        Matcher matcher2 = pattern2.matcher(textPane.getText());
         while (matcher.find()) {
             // Change the color of recognized tokens
-            styledDocument.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), greenAttributeSet, false);
+            styledDocument.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), operationAttributeSet, false);
+            //styledDocument.setCharacterAttributes(matcher2.start(), matcher2.end() - matcher2.start(), registerAttributeSet, false);
+        }
+        while (matcher2.find()) {
+            // Change the color of recognized tokens
+            //styledDocument.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), operationAttributeSet, false);
+            styledDocument.setCharacterAttributes(matcher2.start(), matcher2.end() - matcher2.start(), registerAttributeSet, false);
         }
     }
 }

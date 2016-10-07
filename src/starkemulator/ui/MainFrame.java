@@ -116,13 +116,13 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void preparenewVal(){
         if(hexFlag){
-            newVal= "0x"+Integer.toHexString(Integer.parseInt(newVal));
+            newVal= Integer.toHexString(Integer.parseInt(newVal));
+            newVal = "0x" + newVal.toUpperCase();
         }
         else if(binFlag){
             newVal= Integer.toBinaryString(Integer.parseInt(newVal));
+            newVal = newVal.toUpperCase();
         }
-        
-        
         
     }
     

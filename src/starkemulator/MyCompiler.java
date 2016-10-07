@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 import starkemulator.ui.MainFrame;
 import java_cup.runtime.Symbol;
+import starkemulator.arch.Register;
 
 /**
  * Compiler class
@@ -142,14 +143,184 @@ public class MyCompiler {
                 && !lastInstr.startsWith("jlt") && !lastInstr.startsWith("jgt")) {
             runJBranch(pCurrentBlock, lastInstr);
         } else if (lastInstr.startsWith("je")) {
-
+            runJeBranch(pCurrentBlock, lastInstr);
         } else if (lastInstr.startsWith("jne")) {
-
+            runJneBranch(pCurrentBlock, lastInstr);
         } else if (lastInstr.startsWith("jlt")) {
-
+            runJltBranch(pCurrentBlock, lastInstr);
         } else if (lastInstr.startsWith("jgt")) {
-
+            runJgtBranch(pCurrentBlock, lastInstr);
         }
+    }
+    
+    private void runJgtBranch(BasicBlock pCurrentBlock, String pBranchInstr) {
+        String currentBranchInstr = pBranchInstr;
+
+        String jumpTag = getJumpTag(currentBranchInstr);
+        String firstOp = getFirstOperand(currentBranchInstr);
+        String secOp = getSecOperand(currentBranchInstr);  
+        //System.out.println("Tag:-" + jumpTag + "--");
+        //System.out.println("Fir:-" + firstOp + "--");
+        //System.out.println("Sec:-" + secOp + "--");
+        String tmpStr = execBranchesAux(pCurrentBlock.getInstructions());
+        stepAnalysis(tmpStr);
+        //
+        int op1= getReg(firstOp);
+        int op2= getReg(secOp);
+        
+        if(op1 > op2) {
+            tmpStr = execBranchesAux(getJumpBlock(jumpTag).getInstructions());
+            stepAnalysis(tmpStr);
+        } 
+    }
+    
+    private void runJltBranch(BasicBlock pCurrentBlock, String pBranchInstr) {
+        String currentBranchInstr = pBranchInstr;
+
+        String jumpTag = getJumpTag(currentBranchInstr);
+        String firstOp = getFirstOperand(currentBranchInstr);
+        String secOp = getSecOperand(currentBranchInstr);  
+        //System.out.println("Tag:-" + jumpTag + "--");
+        //System.out.println("Fir:-" + firstOp + "--");
+        //System.out.println("Sec:-" + secOp + "--");
+        String tmpStr = execBranchesAux(pCurrentBlock.getInstructions());
+        stepAnalysis(tmpStr);
+        //
+        int op1= getReg(firstOp);
+        int op2= getReg(secOp);
+        
+        if(op1 < op2) {
+            tmpStr = execBranchesAux(getJumpBlock(jumpTag).getInstructions());
+            stepAnalysis(tmpStr);
+        } 
+    }
+    
+    private void runJneBranch(BasicBlock pCurrentBlock, String pBranchInstr) {
+        String currentBranchInstr = pBranchInstr;
+
+        String jumpTag = getJumpTag(currentBranchInstr);
+        String firstOp = getFirstOperand(currentBranchInstr);
+        String secOp = getSecOperand(currentBranchInstr);  
+        //System.out.println("Tag:-" + jumpTag + "--");
+        //System.out.println("Fir:-" + firstOp + "--");
+        //System.out.println("Sec:-" + secOp + "--");
+        String tmpStr = execBranchesAux(pCurrentBlock.getInstructions());
+        stepAnalysis(tmpStr);
+        //
+        int op1= getReg(firstOp);
+        int op2= getReg(secOp);
+        
+        if(op1 != op2) {
+            tmpStr = execBranchesAux(getJumpBlock(jumpTag).getInstructions());
+            stepAnalysis(tmpStr);
+        } 
+    }
+    
+    private void runJeBranch(BasicBlock pCurrentBlock, String pBranchInstr) {
+        String currentBranchInstr = pBranchInstr;
+
+        String jumpTag = getJumpEqTag(currentBranchInstr);
+        String firstOp = getFirstOperand(currentBranchInstr);
+        String secOp = getSecOperand(currentBranchInstr);  
+        //System.out.println("Tag:-" + jumpTag + "--");
+        //System.out.println("Fir:-" + firstOp + "--");
+        //System.out.println("Sec:-" + secOp + "--");
+        String tmpStr = execBranchesAux(pCurrentBlock.getInstructions());
+        stepAnalysis(tmpStr);
+        //
+        int op1= getReg(firstOp);
+        int op2= getReg(secOp);
+        
+        if(op1 == op2) {
+            tmpStr = execBranchesAux(getJumpBlock(jumpTag).getInstructions());
+            stepAnalysis(tmpStr);
+        } 
+    }
+    
+    private String getSecOperand(String pInstr) {
+        String instr = pInstr;
+        
+        boolean flag = false;
+        String tmp2 = "";
+        for (int i = 0; i < instr.length(); i++) {
+            char tmp = instr.charAt(i);
+            if(tmp == ',') {
+                if(flag == true)
+                    break;
+                else
+                    flag = true;
+                //break;
+            }
+            if(flag) {
+                tmp2 = tmp2 + tmp;
+            }
+        }
+        tmp2 = tmp2.replace(",", "");
+        tmp2 = tmp2.replaceAll(" ", "");
+        
+        return tmp2;
+    }
+    
+    private String getFirstOperand(String pInstr) {
+        String instr = pInstr;
+        
+        //boolean flag = false;
+        String tmp2 = "";
+        for (int i = 0; i < instr.length(); i++) {
+            char tmp = instr.charAt(i);
+            if(tmp == ',') {
+                break;
+            } else {
+                tmp2 = tmp2 + tmp;
+            }
+        }
+        tmp2 = tmp2.replace("je", "");
+        tmp2 = tmp2.replace("jne", "");
+        tmp2 = tmp2.replace("jlt", "");
+        tmp2 = tmp2.replace("jgt", "");
+        tmp2 = tmp2.replaceAll(" ", "");
+        
+        return tmp2;
+    }
+    
+    private String getJumpEqTag(String pInstr) {
+        String retVal = pInstr.substring(7, pInstr.length());
+        retVal = retVal.replaceAll(" ", "");
+        
+        boolean flag = false;
+        String tmp2 = "";
+        for (int i = 0; i < retVal.length(); i++) {
+            char tmp = retVal.charAt(i);
+            if(tmp == ',') {
+                flag = true;
+            }
+            if(flag) {
+                tmp2 = tmp2 + tmp;
+            }
+        }
+        tmp2 = tmp2.replace(",", "");
+        
+        return tmp2;
+    }
+    
+    private String getJumpTag(String pInstr) {
+        String retVal = pInstr.substring(8, pInstr.length());
+        retVal = retVal.replaceAll(" ", "");
+        
+        boolean flag = false;
+        String tmp2 = "";
+        for (int i = 0; i < retVal.length(); i++) {
+            char tmp = retVal.charAt(i);
+            if(tmp == ',') {
+                flag = true;
+            }
+            if(flag) {
+                tmp2 = tmp2 + tmp;
+            }
+        }
+        tmp2 = tmp2.replace(",", "");
+        
+        return tmp2;
     }
 
     private void runJBranch(BasicBlock pCurrentBlock, String pBranchInstr) {
@@ -312,6 +483,50 @@ public class MyCompiler {
             }
         }
         System.out.println("-------------------------");
+    }
+    
+    /*
+    *
+    * Returns the value of the specified register
+    */
+    private int getReg(String pReg){
+        switch(pReg) {
+            case "r0" :
+                return Register.R0;
+            case "r1":
+                return Register.R1;
+            case "r2":
+                return Register.R2;
+            case "r3":
+                return Register.R3;  
+            case "r4":
+                return Register.R4;
+            case "r5":
+                return Register.R5;
+            case "r6":
+               return Register.R6;
+            case "r7":
+                return Register.R7;
+            case "r8":
+                return Register.R8;
+            case "r9":
+                return Register.R9;
+            case "r10":
+                return Register.R10;
+            case "r11":
+                return Register.R11;
+            case "r12":
+                return Register.R12;
+            case "r13":
+                return Register.R13;
+            case "r14":
+                return Register.R14;
+            case "r15":
+               return Register.R15;
+        }
+        return 0;
+        
+       
     }
 
     public boolean isBranchFlag() {
