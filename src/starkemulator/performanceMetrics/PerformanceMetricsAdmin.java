@@ -50,14 +50,14 @@ public class PerformanceMetricsAdmin {
         float CPI=result1/cantInstr;
         float IPC=1/CPI;
         float IPS=1000000/CPI;
-        System.out.println("durArith:"+durArith);
+      /*  System.out.println("durArith:"+durArith);
         System.out.println("durLog:"+durLog);
         System.out.println("durMem:"+durMem);
         System.out.println("result1:"+result1);
         System.out.println("cantInstr"+cantInstr);
         System.out.println("CPI"+CPI);
         System.out.println("IPC"+IPC);
-        System.out.println("IPS"+IPS);
+        System.out.println("IPS"+IPS); */
         MainFrame.modifiedPerformance=true;
         MainFrame.performanceData="IPC:"+IPC +"  "+"IPS:"+IPS;
     }

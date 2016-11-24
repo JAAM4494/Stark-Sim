@@ -342,7 +342,7 @@ public void echo(int pToken)  {
 
           if(!TokenName.equals("NewLine")) {
             TokensOut.addElement("Token: " + TokenName + " Lex: " + yytext());
-            System.out.println("Token: " + TokenName + " Lex: " + yytext());
+            //System.out.println("Token: " + TokenName + " Lex: " + yytext());
           }
       } catch (IllegalArgumentException | IllegalAccessException ex) {
           Logger.getLogger(MyLexer.class.getName()).log(Level.SEVERE, null, ex);

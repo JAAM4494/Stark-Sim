@@ -35,6 +35,7 @@ import starkemulator.MyCompiler;
 import starkemulator.arch.Memory;
 import starkemulator.arch.Register;
 import starkemulator.help.Converter;
+import starkemulator.scheduler.Scheduler;
 
 /**
  *
@@ -66,6 +67,8 @@ public class MainFrame extends javax.swing.JFrame {
     private boolean stepFlag;
     
     private Scanner stepScanner;
+    
+    //public static boolean tomasuloUpdate = false;
 
     /**
      * Creates new form MainFrame
@@ -258,6 +261,8 @@ public class MainFrame extends javax.swing.JFrame {
         stepFBtn = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         perfLbl = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tomasuloTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenuItem();
@@ -652,6 +657,65 @@ public class MainFrame extends javax.swing.JFrame {
         perfLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         perfLbl.setText("Performance");
 
+        tomasuloTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "INSTR", "Issue", "EX", "WB"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tomasuloTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tomasuloTable);
+        if (tomasuloTable.getColumnModel().getColumnCount() > 0) {
+            tomasuloTable.getColumnModel().getColumn(0).setResizable(false);
+            tomasuloTable.getColumnModel().getColumn(1).setResizable(false);
+            tomasuloTable.getColumnModel().getColumn(2).setResizable(false);
+            tomasuloTable.getColumnModel().getColumn(3).setResizable(false);
+        }
+
         fileMenu.setText("File");
 
         newMenu.setText("New Script");
@@ -700,6 +764,11 @@ public class MainFrame extends javax.swing.JFrame {
         runningMenu.setText("Running");
 
         jMenuItem6.setText("Run");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         runningMenu.add(jMenuItem6);
 
         jMenuItem7.setText("Reset");
@@ -736,6 +805,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTabbedPane1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(newBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(openBtn)
@@ -744,15 +817,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(perfLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                        .addComponent(perfLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(runBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stepFBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resBtn)
-                        .addContainerGap())
-                    .addComponent(jTabbedPane1)))
+                        .addComponent(resBtn)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -768,20 +840,23 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(resBtn)
-                                .addComponent(stepFBtn))
-                            .addComponent(runBtn)
+                                .addComponent(stepFBtn)
+                                .addComponent(runBtn))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(newBtn)
                                 .addComponent(openBtn)
                                 .addComponent(openMcBtn)
-                                .addComponent(saveBtn))))
-                    .addComponent(perfLbl, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(saveBtn)
+                                .addComponent(perfLbl)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -907,6 +982,15 @@ public class MainFrame extends javax.swing.JFrame {
         resetFunction();
     }//GEN-LAST:event_resBtnActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        runScript();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    public static void refreshTomasuloTable(String pVal, int pRow, int pColumn) {
+        tomasuloTable.setValueAt(pVal, pRow, pColumn);
+    }
+    
     private void resetFunction() {
         Register.resetRegisters();
         Memory.cleanMem();
@@ -965,6 +1049,24 @@ public class MainFrame extends javax.swing.JFrame {
     private void runScript() {
         this.stepFlag = false;
         
+        String source = "";
+        
+        JTextPane tempPane = null;
+        
+        int textPaneSelected = jTabbedPane1.getSelectedIndex();
+        if (textPaneSelected != -1) {
+            tempPane = paneList.get(textPaneSelected);
+        }
+        
+        if (tempPane != null) {
+            source = tempPane.getText();
+        }
+        
+        Scheduler sched = new Scheduler();
+        sched.start(source);
+        
+        /*
+        
         BufferedWriter out = null;
         File temp = null;
 
@@ -1000,6 +1102,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (compiler.isBranchFlag()) {
             compiler.execBranches();
         }
+        */
     }
 
     private void convertion(int pType) {
@@ -1203,6 +1306,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -1238,6 +1342,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton saveBtn;
     private javax.swing.JMenuItem saveMenu;
     private javax.swing.JButton stepFBtn;
+    public static javax.swing.JTable tomasuloTable;
     private javax.swing.JMenu toolsMenu;
     // End of variables declaration//GEN-END:variables
 
