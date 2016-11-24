@@ -64,9 +64,9 @@ public class Scheduler {
             instructionCounter++;
             try {
                 Thread.sleep(2000);
-                System.out.println("Issue Stage, Instruction-" + instructionCounter + ", Cycle:" + clk);
-                MainFrame.refreshTomasuloTable(Integer.toString(instructionCounter), instructionCounter-1, 0);
-                MainFrame.refreshTomasuloTable(Integer.toString(clk), instructionCounter-1, 1);
+               // System.out.println("Issue Stage, Instruction-" + instructionCounter + ", Cycle:" + clk);
+               // MainFrame.refreshTomasuloTable(Integer.toString(instructionCounter), instructionCounter-1, 0);
+               // MainFrame.refreshTomasuloTable(Integer.toString(clk), instructionCounter-1, 1);
                 RunnableInstruction newInstruction = new RunnableInstruction(Integer.toString(instructionCounter));
                 newInstruction.start(line);
             } catch (InterruptedException ex) {

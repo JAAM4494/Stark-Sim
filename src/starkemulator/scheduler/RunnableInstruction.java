@@ -30,6 +30,11 @@ public class RunnableInstruction implements Runnable {
     private String instruction;
 
     private MyCompiler compiler;
+    
+    private boolean freeALU1 = false;
+    private boolean freeALU2 = false;
+    private boolean freeLDST = false;
+    private boolean freeMUL = false;
 
     public RunnableInstruction(String name) {
         threadName = name;
@@ -56,9 +61,13 @@ public class RunnableInstruction implements Runnable {
                         if(Scheduler.getUnit(0) == false) {
                             //System.out.println("Enter1");
                             cantExecute = false;
+                            freeALU1 = true;
+     
                         } else if (Scheduler.getUnit(1) == false) {
                             //System.out.println("Enter2");
                             cantExecute = false;
+                            freeALU2 = true;
+                            
                         } else {
                             //System.out.println("Invalid---------------");
                             Thread.sleep(2000);
@@ -68,6 +77,8 @@ public class RunnableInstruction implements Runnable {
                         //System.out.println("LD");
                         if (Scheduler.getUnit(2) == false) {
                             cantExecute = false;
+                            freeLDST = true;
+                            
                         } else {
                             Thread.sleep(2000);
                         }
@@ -76,6 +87,8 @@ public class RunnableInstruction implements Runnable {
                         //System.out.println("MUL");
                         if(Scheduler.getUnit(3) == false) {
                             cantExecute = false;
+                            freeMUL = true;
+                            
                         } else {
                             Thread.sleep(2000);
                         }
@@ -85,14 +98,41 @@ public class RunnableInstruction implements Runnable {
                     break;
                 }
             }
+            
+            // Issue Stage
+            System.out.println("Issue Stage, Instruction-" + threadName + ", Cycle:" + clk);
+            MainFrame.refreshTomasuloTable(threadName, Integer.parseInt(threadName)-1, 0);
+            MainFrame.refreshTomasuloTable(Integer.toString(clk), Integer.parseInt(threadName)-1, 1);
+            
             // next, sleep for the execution time
             //System.out.println("PassCheck");
+            
+            // Stop's execution stage
             Thread.sleep(2000);
             System.out.println("Execute Stage, Instruction-"+ threadName + ", Cycle:" + clk);
             MainFrame.refreshTomasuloTable(Integer.toString(clk), Integer.parseInt(threadName)-1, 2);
             long delay = getExecuteDelay(opCode);
             System.out.println("Delay:"+delay);
             Thread.sleep(delay);
+            // Stop's execution stage
+            
+            // free the functional unit
+            if(freeALU1) {
+                Scheduler.alu1busy = false;
+                
+            }
+            if(freeALU2) {
+                Scheduler.alu2busy = false;
+               
+            }
+            if(freeLDST) {
+                Scheduler.ldstbusy = false;
+               
+            }
+            if(freeMUL) {
+                Scheduler.mulbusy = false;
+                
+            }
             
             Thread.sleep(2000);
 
