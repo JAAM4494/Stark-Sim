@@ -57,8 +57,8 @@ public class Scheduler {
         stepScanner = new Scanner(program);
         
         while(stepScanner.hasNext()) {
-             String line = stepScanner.nextLine();
-             if(line.equals("") && stepScanner.hasNext()) {
+            String line = stepScanner.nextLine();
+            if(line.equals("") && stepScanner.hasNext()) {
                  line = stepScanner.nextLine();
             }
             instructionCounter++;
