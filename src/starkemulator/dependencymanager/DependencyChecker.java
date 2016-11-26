@@ -183,7 +183,28 @@ public class DependencyChecker {
                 intrData.setNumInstr(intrCount);
                 intrData.setMnemonic("lb");
                 break; 
+            case "sw": 
+                addInstr();
+                intrData.setNumInstr(intrCount);
+                intrData.setMnemonic("sw");
+                break; 
                 
+            case "lw": 
+                addInstr();
+                intrData.setNumInstr(intrCount);
+                intrData.setMnemonic("lw");
+                break; 
+                
+            case "smw": 
+                addInstr();
+                intrData.setNumInstr(intrCount);
+                intrData.setMnemonic("smw");
+                break; 
+            case "lmw": 
+                addInstr();
+                intrData.setNumInstr(intrCount);
+                intrData.setMnemonic("lmw");
+                break; 
             case "r0":
                 addReg("r0");
                 break;  
