@@ -1,0 +1,205 @@
+package starkemulator;
+
+import java_cup.runtime.Symbol;
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+import starkemulator.arch.Register;
+import starkemulator.arch.ALU;
+import starkemulator.arch.Memory;
+import starkemulator.arch.Shift;
+import starkemulator.machineCodeAdmin.SimulateMachineCode;
+import starkemulator.performanceMetrics.PerformanceMetricsAdmin;
+
+
+
+
+                /**** ACTION CODE ****/
+
+action code {:
+
+ALU alu = new ALU();
+Memory memory = new Memory();
+Shift shiftOp= new Shift();
+
+SimulateMachineCode simMachine= new SimulateMachineCode();
+PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
+:}
+
+                /**** PARSER CODE ****/
+
+parser code {:
+
+ArrayList<String> arraySyntax = new ArrayList<String>();
+ArrayList<String> arraySemantic = new ArrayList<String>();
+
+// protected int error_sync_size () {
+//        System.out.println(":error_sync_size was called.");
+//        return 4;}
+
+ public void syntax_error(Symbol cur_token) {
+                System.out.println("ERROR, syntax error on token: " + cur_token.value);
+                arraySyntax.add("ERROR, syntax error on token: " + cur_token.value);
+                report_error("ERROR, syntax error", null);
+}
+
+public void unrecovered_syntax_error(Symbol cur_token) {
+            System.out.println("ERROR, unreovered syntax error");
+}
+
+ public void semanticError(String pCurToken,String pMsg) {
+                System.out.println("ERROR, semantic error on token: " + pCurToken + " " + pMsg);
+                arraySemantic.add("ERROR, semantic error on token: " + pCurToken + " " + pMsg);
+}
+
+:};
+
+                /**** TERMINALES ****/
+
+terminal   Plus,        Min,     Mul,        And,       Nand,    Or,       Xor;
+terminal   Shl,         Shr,     Sb,         Lb,        Sw,      Lw;
+terminal   Smw,         Lmw,     Je,         Jne,       Jlt;
+terminal   Jgt,         J;
+
+terminal   R0,     R1,     R2,     R3,     R4;
+terminal   R5,     R6,     R7,     R8,     R9;
+terminal   R10,    R11,    R12,    R13,    R14;
+terminal   R15;
+
+terminal   OpPar,    ClPar;
+terminal   OpKey,    ClKey; 
+
+terminal   String Num;
+terminal   ID;
+terminal   SemCo;
+terminal   Hexadecimal;
+terminal   End;
+
+
+
+terminal    Comma, Tag, Points;
+
+
+                /**** NO TERMINALES ****/
+
+non terminal    PROGRAMA,END_STATEMENT;
+
+non terminal     PLUS_COPERAND, INMEDIATE;
+
+non terminal String   REGISTERS;
+
+non terminal    STATEMENT, STATEMENTLIST;
+
+non terminal    MIN_STATEMENT, PLUS_STATEMENT, MUL_STATEMENT;
+
+non terminal    AND_STATEMENT, NAND_STATEMENT, OR_STATEMENT, XOR_STATEMENT ;
+
+non terminal    SHL_STATEMENT, SHR_STATEMENT;
+
+
+non terminal    SB_STATEMENT, LB_STATEMENT;
+
+non terminal    SHW_STATEMENT , LHW_STATEMENT;
+
+non terminal    SW_STATEMENT , LW_STATEMENT;
+
+non terminal    JE_STATEMENT, JNE_STATEMENT, JLT_STATEMENT, JGT_STATEMENT ,J_STATEMENT;
+
+non terminal    TAG_STATEMENT ;
+
+non terminal    COPERAND;
+
+non terminal     BIN_STATEMENT;
+
+
+                /**** PRECEDENCIAS ****/
+
+
+
+                /**** INICIO DE LA GRAMATICA ****/
+
+start with PROGRAMA;
+
+PROGRAMA ::=  STATEMENTLIST {: calcPerf.makeCalc(); :};
+
+
+STATEMENTLIST  ::= STATEMENTLIST STATEMENT | STATEMENT  ;
+
+
+STATEMENT ::= PLUS_STATEMENT:e {: System.out.println("+ " + e); :}  | MIN_STATEMENT | MUL_STATEMENT | 
+AND_STATEMENT | NAND_STATEMENT | OR_STATEMENT | XOR_STATEMENT |
+ SHL_STATEMENT | SHR_STATEMENT | SB_STATEMENT | 
+LB_STATEMENT | SHW_STATEMENT | LHW_STATEMENT | SW_STATEMENT | LW_STATEMENT |
+  JE_STATEMENT | JNE_STATEMENT | JLT_STATEMENT | JGT_STATEMENT | J_STATEMENT
+ | TAG_STATEMENT | BIN_STATEMENT  ;
+
+
+PLUS_STATEMENT ::= Plus:p REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );     :}  ;
+
+MIN_STATEMENT ::= Min REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(1,s,d,t.toString());  calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );  :}  ;
+
+MUL_STATEMENT ::= Mul REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(2,s,d,t.toString()); calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );    :}  ; 
+
+
+AND_STATEMENT ::= And REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(3,s,d,t.toString()); calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  :}  ; 
+
+NAND_STATEMENT ::= Nand REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(6,s,d,t.toString()); calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );   :}  ; 
+
+OR_STATEMENT ::= Or REGISTERS:s Comma REGISTERS:d Comma COPERAND:t {: alu.aluArithmeticLogicAdmin(4,s,d,t.toString());  calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  :} ;
+
+XOR_STATEMENT ::= Xor REGISTERS:s Comma REGISTERS:d Comma COPERAND:t  {: alu.aluArithmeticLogicAdmin(5,s,d,t.toString());  calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  :} ;
+
+SHL_STATEMENT ::= Shl REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(1,s,d,t.toString()); calcPerf.newInstr("S"); calcPerf.verifyLostData("S",s,d,t.toString() );   :} ;
+
+SHR_STATEMENT ::= Shr REGISTERS:s Comma REGISTERS:d Comma INMEDIATE:t {: shiftOp.makeShiftOp(0,s,d,t.toString());  calcPerf.newInstr("S"); calcPerf.verifyLostData("S",s,d,t.toString() ); :} ;
+
+
+
+SW_STATEMENT ::= Sw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(0,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
+
+LW_STATEMENT ::= Lw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(1,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString() ,t ); :};
+
+SHW_STATEMENT ::= Smw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(2,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
+
+LHW_STATEMENT ::= Lmw REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(3,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
+
+SB_STATEMENT ::= Sb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(4,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
+
+LB_STATEMENT ::= Lb REGISTERS:f Comma COPERAND:s OpPar REGISTERS:t ClPar  {: memory.memoryAdmin(5,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); :}; 
+
+
+
+
+JE_STATEMENT ::= Je REGISTERS:s Comma REGISTERS:t Comma ID  {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
+
+JNE_STATEMENT ::= Jne REGISTERS:s Comma REGISTERS:t Comma ID {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
+
+JLT_STATEMENT ::= Jlt REGISTERS:s Comma REGISTERS:t Comma ID {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
+
+JGT_STATEMENT ::= Jgt REGISTERS:s Comma REGISTERS:t Comma ID {: calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); :}; 
+
+
+J_STATEMENT ::= J ID {: calcPerf.newInstr("J"); :}; 
+
+TAG_STATEMENT ::= ID  Points ;
+
+COPERAND ::= INMEDIATE:d {: RESULT=d; :}   |  REGISTERS:d {: RESULT=d; :} ;
+
+
+INMEDIATE ::= (Tag Num ):d {: RESULT=d; :}   |  ( Hexadecimal):d {: RESULT=d; :} ;
+
+BIN_STATEMENT ::= Num:d {: RESULT=d;   simMachine.proccessMachineCode(d.toString());   :} ;
+
+
+
+
+REGISTERS ::= R0:s{: RESULT=s.toString(); :}  | R1:s {: RESULT=s.toString(); :} | R2:s {: RESULT=s.toString(); :} | R3:s {: RESULT=s.toString(); :} 
+| R4:s {: RESULT=s.toString(); :} | R5:s {: RESULT=s.toString(); :} 
+| R6:s {: RESULT=s.toString(); :} | 
+R7:s {: RESULT=s.toString(); :} | R8:s {: RESULT=s.toString(); :} 
+| R9:s {: RESULT=s.toString(); :} | R10:s {: RESULT=s.toString(); :} |
+ R11:s {: RESULT=s.toString(); :} |
+ R12:s {: RESULT=s.toString(); :} 
+| R13:s {: RESULT=s.toString(); :} | R14:s {: RESULT=s.toString(); :} |
+ R15:s {: RESULT=s.toString(); :} ;

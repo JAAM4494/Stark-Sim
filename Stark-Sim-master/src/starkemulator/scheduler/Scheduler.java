@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import starkemulator.Main;
 import starkemulator.ui.MainFrame;
-import starkemulator.dependencymanager.*;
+
 /**
  *
  * @author jaam
@@ -25,7 +25,6 @@ public class Scheduler {
     private Scanner stepScanner;
     
     private Thread clkThread;
-    private DependencyChecker dependencyAdmin;
     public static int clk;
     
     public Scheduler() {
@@ -54,10 +53,9 @@ public class Scheduler {
     public void start(String pInput) {
         String program = pInput;
         int instructionCounter = 0;
-        stepScanner = new Scanner(program);
-        dependencyAdmin=new DependencyChecker(program);
         
-        //clk=0;
+        stepScanner = new Scanner(program);
+        
         while(stepScanner.hasNext()) {
             String line = stepScanner.nextLine();
             if(line.equals("") && stepScanner.hasNext()) {
@@ -70,10 +68,7 @@ public class Scheduler {
                // MainFrame.refreshTomasuloTable(Integer.toString(instructionCounter), instructionCounter-1, 0);
                // MainFrame.refreshTomasuloTable(Integer.toString(clk), instructionCounter-1, 1);
                 RunnableInstruction newInstruction = new RunnableInstruction(Integer.toString(instructionCounter));
-                newInstruction.setInstrDependency(dependencyAdmin.getDependencyList());
                 newInstruction.start(line);
-                
-                System.out.println("Linea"+line);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }

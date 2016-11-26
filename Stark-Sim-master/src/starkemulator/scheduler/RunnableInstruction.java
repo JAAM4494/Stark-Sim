@@ -11,12 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import starkemulator.MyCompiler;
 import starkemulator.MyLexer;
-import starkemulator.dependencymanager.InstrDependency;
 import static starkemulator.scheduler.Scheduler.clk;
 import starkemulator.ui.MainFrame;
 
@@ -28,8 +26,7 @@ public class RunnableInstruction implements Runnable {
 
     private Thread t;
     private String threadName;
-    private ArrayList<InstrDependency> instructionsDep;
-    
+
     private String instruction;
 
     private MyCompiler compiler;
@@ -38,7 +35,6 @@ public class RunnableInstruction implements Runnable {
     private boolean freeALU2 = false;
     private boolean freeLDST = false;
     private boolean freeMUL = false;
-    
 
     public RunnableInstruction(String name) {
         threadName = name;
@@ -112,13 +108,11 @@ public class RunnableInstruction implements Runnable {
             //System.out.println("PassCheck");
             
             // Stop's execution stage
-            int delayExec=checkDependency(threadName);
-            Thread.sleep(delayExec);
+            Thread.sleep(2000);
             System.out.println("Execute Stage, Instruction-"+ threadName + ", Cycle:" + clk);
             MainFrame.refreshTomasuloTable(Integer.toString(clk), Integer.parseInt(threadName)-1, 2);
             long delay = getExecuteDelay(opCode);
             System.out.println("Delay:"+delay);
-    
             Thread.sleep(delay);
             // Stop's execution stage
             
@@ -129,49 +123,26 @@ public class RunnableInstruction implements Runnable {
             }
             if(freeALU2) {
                 Scheduler.alu2busy = false;
+               
             }
             if(freeLDST) {
                 Scheduler.ldstbusy = false;
                
             }
             if(freeMUL) {
-                Scheduler.mulbusy = false;           
+                Scheduler.mulbusy = false;
+                
             }
+            
             Thread.sleep(2000);
+
             compiler = new MyCompiler();
             compiler.stepAnalysis(instruction);
             System.out.println("WriteBack Stage, Instruction-" + threadName + ", Cycle:" + clk);
             MainFrame.refreshTomasuloTable(Integer.toString(clk), Integer.parseInt(threadName)-1, 3);
-            instructionsDep.get(Integer.parseInt(threadName)-1).setWBCLK(clk);
-            
-            
         } catch (InterruptedException ex) {
             Logger.getLogger(RunnableInstruction.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    private int checkDependency(String pInstrCount) throws InterruptedException{
-        System.out.println("----Revisando dependencias!----");
-        System.out.println("Revisando clkWB"+instructionsDep.get(0).getWBClk() );
-        if(pInstrCount.equals("1")){
-            return 2000;
-        }
-        else{
-            if  (instructionsDep.get(Integer.parseInt(pInstrCount)-1 ).getDependency()==1 ){
-                System.out.println("Existe dependencia!"+clk);
-                
-                while(instructionsDep.get(Integer.parseInt(threadName)-2).getWBClk()==0){
-                }
-                System.out.println("Verificando clk:"+clk);
-
-                return 1000;
-            }
-            
-            
-            
-        }
-        
-        return 2000;
     }
 
     public void start(String pInstruction) {
@@ -260,12 +231,5 @@ public class RunnableInstruction implements Runnable {
 
         return retVal;
     }
-    
-    public void setInstrDependency(ArrayList<InstrDependency> pInstrD){
-        instructionsDep=pInstrD;
-        System.out.println("Verifying data 1:" +instructionsDep.get(0).getRegDes());
-        
-    }
-    
 
 }
