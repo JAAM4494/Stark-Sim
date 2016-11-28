@@ -157,6 +157,7 @@ public class RunnableInstruction implements Runnable {
             return 2000;
         }
         else{
+            
             if  (instructionsDep.get(Integer.parseInt(pInstrCount)-1 ).getDependency()==1 ){
                 System.out.println("Existe dependencia!"+clk);
                 
@@ -164,8 +165,26 @@ public class RunnableInstruction implements Runnable {
                 }
                 System.out.println("Verificando clk:"+clk);
 
+                if  (instructionsDep.get(Integer.parseInt(pInstrCount)-1 ).getDependencyL2()==1 ){
+                    while(instructionsDep.get(Integer.parseInt(threadName)-3).getWBClk()==0){
+                    }             
+                }
+                return 1000;                  
+            }
+            else if  (instructionsDep.get(Integer.parseInt(pInstrCount)-1 ).getDependencyL2()==1 ){
+                System.out.println("Existe dependencia!"+clk); 
+                while(instructionsDep.get(Integer.parseInt(threadName)-3).getWBClk()==0){
+                }
+                if  (instructionsDep.get(Integer.parseInt(pInstrCount)-1 ).getDependency()==1 ){
+                
+                    while(instructionsDep.get(Integer.parseInt(threadName)-2).getWBClk()==0){
+                    }
+                 }
                 return 1000;
             }
+            
+            
+            
             
             
             

@@ -16,6 +16,7 @@ public class InstrDependency {
     private String regOp1;
     private String regOp2;
     private int dependency;
+    private int dependencyL2;
     private int wbClk;
     
     public int getNumInstr(){
@@ -38,6 +39,10 @@ public class InstrDependency {
     
     public int getDependency(){
         return dependency;
+    }
+    
+    public int getDependencyL2(){
+        return dependencyL2;
     }
     
      public int getWBClk(){
@@ -64,6 +69,10 @@ public class InstrDependency {
     }
     public void setDependency(int pDependency){
         dependency=pDependency;
+    }
+    
+    public void setDependencyL2(int pDependency){
+        dependencyL2=pDependency;
     }
     public void setWBCLK(int pClk){
         wbClk=pClk;

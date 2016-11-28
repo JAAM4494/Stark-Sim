@@ -1,0 +1,51 @@
+
+//Sirve bien Practica examen
+plus r2,r2,r0
+min r8,r8,r9
+plus r7,r7,r9
+mul r3,r8,r7
+lb r4,r2(r2)
+min r4,r4,r7
+sb r4,r4(r10)
+plus r6,r8,r11
+mul r1,r9,r3
+plus r2,r2,#3
+mul r1,r7,r5
+
+
+//Sirve bien
+
+plus r2,r2,#2
+mul r2,r2,#2
+plus r10,r2,r5
+min r8,r10,r2
+
+//Sirve bien
+
+or r11,r10,#1
+or r10,r10,#1
+mul r5,r10,r11
+or r6,r5,r10
+
+
+//Sirve bien
+lb r2,r2(r8)
+plus r8,r10,r2
+mul r10,r8,r2
+
+//Sirve bien
+or r0,r1,0xfff
+shl r10,r0,#10
+mul r11,r0,r10
+shr r9,r11,#1
+
+
+
+
+
+
+
+
+
+
+

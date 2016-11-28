@@ -110,7 +110,15 @@ public class DependencyChecker {
                 regWritten.equals(instructionsL.get(i).getRegOp2()) ){
                 instructionsL.get(i).setDependency(1);
                 
-            }   
+            }
+            if(i>=2){
+                String regWritten2=instructionsL.get(i-2).getRegDes();
+                if( regWritten2.equals(instructionsL.get(i).getRegOp1()) || 
+                regWritten2.equals(instructionsL.get(i).getRegOp2()) ){
+                instructionsL.get(i).setDependencyL2(1);
+            }       
+                
+            }
         }
     }
     
