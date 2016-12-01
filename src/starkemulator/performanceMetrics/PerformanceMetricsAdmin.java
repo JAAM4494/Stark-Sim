@@ -5,6 +5,8 @@
  */
 package starkemulator.performanceMetrics;
 
+import java.util.ArrayList;
+import starkemulator.dependencymanager.InstrDependency;
 import starkemulator.ui.MainFrame;
 
 /**
@@ -14,131 +16,126 @@ import starkemulator.ui.MainFrame;
 
 public class PerformanceMetricsAdmin {
     int freqclk=1000000;
-    String regWritten;
-    int cantArith;
-    int cantLog;
-    int cantShift;
-    int cantMem;
-    int cantJmp;
-    int durArith;
-    int durLog;
-    int durShift;
-    int durMem;
-    int durJmp;
-    static int resultIPC;
+    ArrayList<InstrDependency> dependencyL; 
+    float IPC;
+    float IPS;
     
-    public PerformanceMetricsAdmin(){
-        cantArith=0;
-        cantLog=0;
-        cantShift=0;
-        cantMem=0;
-        cantJmp=0;
-        durArith=1;
-        durLog=1;
-        durShift=1;
-        durMem=1;
-        durJmp=1;
-        regWritten="";
-        resultIPC=0;
-        
-        
+    
+    
+    public PerformanceMetricsAdmin(ArrayList<InstrDependency> pDependencyL){
+        IPC=0;
+        IPS=0;
+        dependencyL=pDependencyL;
+        makeCalc(); 
     }
-    public void makeCalc(){
-        float result1=(cantArith*durArith)+(cantLog*durLog)+(cantShift*durShift)+(cantMem*durMem)+(cantJmp*durJmp);
-        System.out.println("Revisando Mul:"+cantArith*durArith);
-        float cantInstr=cantArith+cantLog+cantShift+cantMem+cantJmp;
-        float CPI=result1/cantInstr;
-        float IPC=1/CPI;
-        float IPS=1000000/CPI;
-      /*  System.out.println("durArith:"+durArith);
-        System.out.println("durLog:"+durLog);
-        System.out.println("durMem:"+durMem);
-        System.out.println("result1:"+result1);
-        System.out.println("cantInstr"+cantInstr);
-        System.out.println("CPI"+CPI);
-        System.out.println("IPC"+IPC);
-        System.out.println("IPS"+IPS); */
+    
+    private void makeCalc(){
+        processInstr();
         MainFrame.modifiedPerformance=true;
         MainFrame.performanceData="IPC:"+IPC +"  "+"IPS:"+IPS;
     }
     
-    public void verifyLostData(String instrType,String pRegWritten,String regOp1,String regOp2){
-        if(regOp1.equals(regWritten) || regOp2.equals(regWritten)  ){
-            addNopsDuration(instrType);
+    private void processInstr(){
+        for (int i = 0; i < dependencyL.size(); i++) {
+            processType(dependencyL.get(i).getMnemonic(),i );
         }
-        regWritten=pRegWritten;
+        IPC=dependencyL.size()/IPC;
+        System.out.println("VALOR SIZE"+dependencyL.size());
+        System.out.println("VALOR IPC"+IPC);
+        IPS=1000000/( (1/IPC)  ); 
         
-    }
-    
-    
-    
-    
-    private void addNopsDuration(String instrType){
-          switch(instrType) {
-            case "A":
-                durArith=durArith+3;
-                break;
-            case "L":
-                durLog=durLog+3;
-                break;
-            case "S":
-                durShift=durShift+3;
-                break;
-            case "M":
-                durMem=durMem+3;
-                break;
-            case "J":
-                durJmp=durJmp+3;
-                break;
-        }
-    }
-    
-    private void addDurationFInstr(String instrType){
-          switch(instrType) {
-            case "A":
-                durArith=5;
-                break;
-            case "L":
-                durLog=5;
-                break;
-            case "S":
-                durShift=5;
-                break;
-            case "M":
-                durMem=5;
-                break;
-            case "J":
-                durJmp=5;
-                break;
-          }
-    }
-    
-   
-    
-    
-    public void newInstr(String instrType){
-        switch(instrType) {
-            case "A":
-                cantArith++;
-                break;
-            case "L":
-                cantLog++;
-                break;
-            case "S":
-                cantShift++;
-                break;
-            case "M":
-                cantMem++;
-                break;
-            case "J":
-                cantJmp++;
-                break;
-        }
-        if((cantArith+cantLog+cantShift+cantMem+cantJmp)==1){
-            addDurationFInstr(instrType);
-        }
         
+    
     }
+    
+    private void processType(String pToken,int pPos){
+         switch(pToken) {
+            case "plus":
+                arithLogInstr(pPos);
+                break;
+            case "min": 
+                arithLogInstr(pPos);
+                break;
+            case "mul": 
+               mulInstr(pPos);
+                break;    
+            case "and":
+                arithLogInstr(pPos);
+              
+                break;
+            case "nand": 
+                arithLogInstr(pPos);
+                
+                break;  
+            case "or":
+                arithLogInstr(pPos);
+               
+                break;    
+            case "xor":
+                arithLogInstr(pPos);
+                break;
+            case "shl": 
+                arithLogInstr(pPos); 
+                break;
+            case "shr": 
+                arithLogInstr(pPos);
+                break;
+            case "sb":
+                memInstr(pPos);
+                break; 
+            case "lb": 
+                memInstr(pPos);
+                break; 
+            case "sw": 
+                memInstr(pPos);
+                break;        
+            case "lw": 
+                memInstr(pPos);
+                break;      
+            case "smw": 
+               memInstr(pPos);
+                break; 
+            case "lmw": 
+                memInstr(pPos);
+                break; 
+          
+            
+        }   
+    }
+    
+    private void arithLogInstr(int pPos){
+        if(dependencyL.get(pPos).getDependency()==1){
+            IPC+=0.75;
+        }
+        else{
+            IPC+=0.65;
+        }  
+    }
+    
+    private void memInstr(int pPos){
+        if(dependencyL.get(pPos).getDependency()==1){
+            IPC+=0.85;
+        }
+        else{
+            IPC+=0.75;
+        }  
+    }
+    
+    private void mulInstr(int pPos){
+        if(dependencyL.get(pPos).getDependency()==1){
+            IPC+=0.95;
+        }
+        else{
+            IPC+=0.85;
+        }  
+    }
+        
+    
+    
+    
+    
+    
+    
     
     
     

@@ -129,7 +129,6 @@ public class MCodeGenerator {
                break;
         }
     }
-    
     private void appendShiftDisp(String type,String immediate){
         String binaryImm;
         shiftOp=false;

@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import starkemulator.Main;
 import starkemulator.ui.MainFrame;
 import starkemulator.dependencymanager.*;
+import starkemulator.performanceMetrics.PerformanceMetricsAdmin;
 /**
  *
  * @author jaam
@@ -23,7 +24,7 @@ public class Scheduler {
     public static boolean mulbusy = false;
     
     private Scanner stepScanner;
-    
+    PerformanceMetricsAdmin performanceM;
     private Thread clkThread;
     private DependencyChecker dependencyAdmin;
     public static int clk;
@@ -56,7 +57,7 @@ public class Scheduler {
         int instructionCounter = 0;
         stepScanner = new Scanner(program);
         dependencyAdmin=new DependencyChecker(program);
-        
+        performanceM= new PerformanceMetricsAdmin(dependencyAdmin.getDependencyList());        
         //clk=0;
         while(stepScanner.hasNext()) {
             String line = stepScanner.nextLine();
@@ -78,6 +79,13 @@ public class Scheduler {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        /*while(Scheduler.alu1busy ||Scheduler.alu2busy ||ldstbusy ||mulbusy ){
+            System.out.println("Esperando que termine el programa");
+        }
+        System.out.println("Terminado");*/
+
+        
     }
     
     public void stop() {

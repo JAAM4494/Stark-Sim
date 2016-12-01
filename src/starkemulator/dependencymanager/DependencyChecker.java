@@ -36,6 +36,7 @@ public class DependencyChecker {
         intrData= new InstrDependency();
         getTokens();
         regCount=0;
+        
     }  
     
     private void getTokens(){

@@ -665,8 +665,6 @@ Memory memory = new Memory();
 Shift shiftOp= new Shift();
 
 SimulateMachineCode simMachine= new SimulateMachineCode();
-PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
-
   private final MyParser parser;
 
   /** Constructor */
@@ -706,7 +704,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
           case 1: // PROGRAMA ::= STATEMENTLIST 
             {
               Object RESULT =null;
-		 calcPerf.makeCalc(); 
+		 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("PROGRAMA",0, ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -946,7 +944,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 alu.aluArithmeticLogicAdmin(0,s,d,t.toString());  calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );     
+		 alu.aluArithmeticLogicAdmin(0,s,d,t.toString());      
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("PLUS_STATEMENT",8, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -964,7 +962,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 alu.aluArithmeticLogicAdmin(1,s,d,t.toString());  calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );  
+		 alu.aluArithmeticLogicAdmin(1,s,d,t.toString());    
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("MIN_STATEMENT",7, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -982,7 +980,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 alu.aluArithmeticLogicAdmin(2,s,d,t.toString()); calcPerf.newInstr("A"); calcPerf.verifyLostData("A",s,d,t.toString() );    
+		 alu.aluArithmeticLogicAdmin(2,s,d,t.toString());    
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("MUL_STATEMENT",9, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1000,7 +998,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 alu.aluArithmeticLogicAdmin(3,s,d,t.toString()); calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  
+		 alu.aluArithmeticLogicAdmin(3,s,d,t.toString());   
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("AND_STATEMENT",10, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1018,7 +1016,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 alu.aluArithmeticLogicAdmin(6,s,d,t.toString()); calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );   
+		 alu.aluArithmeticLogicAdmin(6,s,d,t.toString());    
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("NAND_STATEMENT",11, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1036,7 +1034,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 alu.aluArithmeticLogicAdmin(4,s,d,t.toString());  calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  
+		 alu.aluArithmeticLogicAdmin(4,s,d,t.toString());    
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("OR_STATEMENT",12, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1054,7 +1052,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 alu.aluArithmeticLogicAdmin(5,s,d,t.toString());  calcPerf.newInstr("L"); calcPerf.verifyLostData("L",s,d,t.toString() );  
+		 alu.aluArithmeticLogicAdmin(5,s,d,t.toString());    
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("XOR_STATEMENT",13, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1072,7 +1070,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 shiftOp.makeShiftOp(1,s,d,t.toString()); calcPerf.newInstr("S"); calcPerf.verifyLostData("S",s,d,t.toString() );   
+		 shiftOp.makeShiftOp(1,s,d,t.toString());  
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SHL_STATEMENT",14, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1090,7 +1088,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$MyParser$stack.peek()).value;
-		 shiftOp.makeShiftOp(0,s,d,t.toString());  calcPerf.newInstr("S"); calcPerf.verifyLostData("S",s,d,t.toString() ); 
+		 shiftOp.makeShiftOp(0,s,d,t.toString());   
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SHR_STATEMENT",15, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1108,7 +1106,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
-		 memory.memoryAdmin(0,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); 
+		 memory.memoryAdmin(0,f,t,s.toString());  
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SW_STATEMENT",20, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1126,7 +1124,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
-		 memory.memoryAdmin(1,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString() ,t ); 
+		 memory.memoryAdmin(1,f,t,s.toString());  
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LW_STATEMENT",21, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1144,7 +1142,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
-		 memory.memoryAdmin(2,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); 
+		 memory.memoryAdmin(2,f,t,s.toString()); 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SHW_STATEMENT",18, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1162,7 +1160,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
-		 memory.memoryAdmin(3,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); 
+		 memory.memoryAdmin(3,f,t,s.toString());  
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LHW_STATEMENT",19, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1180,7 +1178,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
-		 memory.memoryAdmin(4,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); 
+		 memory.memoryAdmin(4,f,t,s.toString()); 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("SB_STATEMENT",16, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1198,7 +1196,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)).value;
-		 memory.memoryAdmin(5,f,t,s.toString()); calcPerf.newInstr("M"); calcPerf.verifyLostData("M",f,s.toString(),t ); 
+		 memory.memoryAdmin(5,f,t,s.toString());  
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("LB_STATEMENT",17, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-6)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1213,7 +1211,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).value;
-		 calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); 
+		 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("JE_STATEMENT",22, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1228,7 +1226,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).value;
-		 calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); 
+		 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("JNE_STATEMENT",23, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1243,7 +1241,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).value;
-		 calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); 
+		  
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("JLT_STATEMENT",24, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1258,7 +1256,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
 		int tleft = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$MyParser$stack.elementAt(CUP$MyParser$top-2)).value;
-		 calcPerf.newInstr("J"); calcPerf.verifyLostData("J","",s,t ); 
+		 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("JGT_STATEMENT",25, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-5)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
@@ -1267,7 +1265,7 @@ PerformanceMetricsAdmin calcPerf= new PerformanceMetricsAdmin();
           case 45: // J_STATEMENT ::= J ID 
             {
               Object RESULT =null;
-		 calcPerf.newInstr("J"); 
+		 
               CUP$MyParser$result = parser.getSymbolFactory().newSymbol("J_STATEMENT",26, ((java_cup.runtime.Symbol)CUP$MyParser$stack.elementAt(CUP$MyParser$top-1)), ((java_cup.runtime.Symbol)CUP$MyParser$stack.peek()), RESULT);
             }
           return CUP$MyParser$result;
