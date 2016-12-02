@@ -68,6 +68,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     private Scanner stepScanner;
     
+    private Scheduler scheduler;
+    
     //public static boolean tomasuloUpdate = false;
 
     /**
@@ -100,6 +102,8 @@ public class MainFrame extends javax.swing.JFrame {
         decFlag = false;
         binFlag = false;
         hexFlag = true;
+        
+        scheduler = new Scheduler();
 
         updateManager();
 
@@ -991,7 +995,21 @@ public class MainFrame extends javax.swing.JFrame {
         tomasuloTable.setValueAt(pVal, pRow, pColumn);
     }
     
+    private void resetTomasuloTable() {
+        int columnsNum = tomasuloTable.getColumnCount();
+        int rowsNum = tomasuloTable.getRowCount();
+        
+        for (int i = 0; i < rowsNum; i++) {
+            for (int j = 0; j < columnsNum; j++) {
+                tomasuloTable.setValueAt("", i, j);
+            }
+        }
+    }
+    
     private void resetFunction() {
+        
+        resetTomasuloTable();
+        
         Register.resetRegisters();
         Memory.cleanMem();
         this.stepFlag = false;
@@ -1062,8 +1080,11 @@ public class MainFrame extends javax.swing.JFrame {
             source = tempPane.getText();
         }
         
-        Scheduler sched = new Scheduler();
-        sched.start(source);
+        if(scheduler.isClkRunning() == true) {
+            scheduler.restartClock(source);
+        } else {
+            scheduler.start(source);
+        }
         
         /*
         

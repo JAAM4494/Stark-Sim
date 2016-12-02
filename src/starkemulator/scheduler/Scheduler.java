@@ -29,30 +29,18 @@ public class Scheduler {
     private DependencyChecker dependencyAdmin;
     public static int clk;
     
+    private boolean clkRunning = false;
+    
     public Scheduler() {
         
-        clk = 0;
+        Scheduler.clk = 0;
         
-        if (clkThread == null) {
-         clkThread = new Thread(new Runnable() {
-             @Override
-             public void run() {
-                 try {
-                     while(true) {
-                         Thread.sleep(2000);
-                         clk++;
-                         System.out.println("CLK:"+clk);
-                     }
-                 } catch (InterruptedException ex) {
-                     Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
-                 }
-             }
-         }, "CLK");
-         clkThread.start ();
-      }
     }
     
     public void start(String pInput) {
+        
+        initClock();
+        
         String program = pInput;
         int instructionCounter = 0;
         stepScanner = new Scanner(program);
@@ -88,8 +76,69 @@ public class Scheduler {
         
     }
     
-    public void stop() {
+    private void initClock() {
+        if (clkThread == null) {
+         clkThread = new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 try {
+                     while(true) {
+                         Thread.sleep(2000);
+                         clk++;
+                         System.out.println("CLK:"+clk);
+                     }
+                 } catch (InterruptedException ex) {
+                     Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         }, "CLK");
+         clkThread.start ();
+         this.clkRunning = true;
+      }
+    }
+    
+    public void restartClock(String pInput) {
+      
+            Scheduler.clk = 0;
+            
+            this.clkRunning = false;
+            
+            //Thread.sleep(2000);
+
+            this.clkRunning = true;
+           
+    
         
+        String program = pInput;
+        int instructionCounter = 0;
+        stepScanner = new Scanner(program);
+        dependencyAdmin=new DependencyChecker(program);
+        performanceM= new PerformanceMetricsAdmin(dependencyAdmin.getDependencyList());        
+        //clk=0;
+        while(stepScanner.hasNext()) {
+            String line = stepScanner.nextLine();
+            if(line.equals("") && stepScanner.hasNext()) {
+                 line = stepScanner.nextLine();
+            }
+            instructionCounter++;
+            try {
+                Thread.sleep(2000);
+               // System.out.println("Issue Stage, Instruction-" + instructionCounter + ", Cycle:" + clk);
+               // MainFrame.refreshTomasuloTable(Integer.toString(instructionCounter), instructionCounter-1, 0);
+               // MainFrame.refreshTomasuloTable(Integer.toString(clk), instructionCounter-1, 1);
+                RunnableInstruction newInstruction = new RunnableInstruction(Integer.toString(instructionCounter));
+                newInstruction.setInstrDependency(dependencyAdmin.getDependencyList());
+                newInstruction.start(line);
+                
+                System.out.println("Linea"+line);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public boolean isClkRunning() {
+        return this.clkRunning;
     }
     
     // return's true if the unit is busy
